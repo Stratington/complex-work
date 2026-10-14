@@ -1,0 +1,63 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfplotstable}
+\begin{document}
+\begin{tikzpicture}[x=1mm,y=1mm]
+\pgfplotstableread[col sep=comma]{f09-nodes.csv}\fnodes
+\pgfplotstableread[col sep=comma]{f09-bands.csv}\fbands
+\def\ctrl{15}  %
+
+\pgfplotstablegetrowsof{\fbands}
+\pgfmathsetmacro{\E}{\pgfmathresult-1}
+\foreach \i in {0,...,\E}{%
+  \pgfplotstablegetelem{\i}{x0}\of{\fbands}\pgfmathsetmacro{\xa}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{yt0}\of{\fbands}\pgfmathsetmacro{\yta}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{yb0}\of{\fbands}\pgfmathsetmacro{\yba}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{x1}\of{\fbands}\pgfmathsetmacro{\xb}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{yt1}\of{\fbands}\pgfmathsetmacro{\ytb}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{yb1}\of{\fbands}\pgfmathsetmacro{\ybb}{\pgfplotsretval}%
+  \fill[black!20]
+    (\xa,\yta) .. controls +(\ctrl,0) and +(-\ctrl,0) .. (\xb,\ytb)
+    -- (\xb,\ybb) .. controls +(-\ctrl,0) and +(\ctrl,0) .. (\xa,\yba)
+    -- cycle;
+}
+
+\pgfplotstablegetrowsof{\fnodes}
+\pgfmathsetmacro{\N}{\pgfmathresult-1}
+\foreach \i in {0,...,\N}{%
+  \pgfplotstablegetelem{\i}{side}\of{\fnodes}\edef\sd{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{x}\of{\fnodes}\pgfmathsetmacro{\x}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{y}\of{\fnodes}\pgfmathsetmacro{\y}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{w}\of{\fnodes}\pgfmathsetmacro{\w}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{h}\of{\fnodes}\pgfmathsetmacro{\h}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{label}\of{\fnodes}\edef\lbl{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{sub}\of{\fnodes}\edef\sub{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{lx}\of{\fnodes}\pgfmathsetmacro{\lx}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{ly}\of{\fnodes}\pgfmathsetmacro{\ly}{\pgfplotsretval}%
+  \if L\sd
+    \fill[black!75] ({\x-\w/2},{\y-\h/2}) rectangle ({\x+\w/2},{\y+\h/2});
+    \draw[black!45,line width=0.2pt] ({\x-\w/2-0.2},\y) -- (\lx,\ly);
+    \node[anchor=east,align=flush right,inner sep=0pt,text width=22mm,font=\tiny]
+      at (\lx,\ly) {\textbf{\lbl}\\[-0.2mm]{\tiny\textcolor{black!65}{\sub}}};
+  \fi
+  \if R\sd
+    \fill[black!75] ({\x-\w/2},{\y-\h/2}) rectangle ({\x+\w/2},{\y+\h/2});
+    \node[anchor=west,align=flush left,inner sep=0pt,text width=20mm,font=\tiny]
+      at (\lx,\ly) {\textbf{\lbl}\\[-0.2mm]{\tiny\textcolor{black!65}{\sub}}};
+  \fi
+  \if D\sd
+    \node[draw=black!50,dashed,fill=black!4,rounded corners=0.8mm,
+          font=\tiny,text=black!70,align=center,inner sep=1mm]
+      at (\x,\y) {\sub};
+  \fi
+}
+
+\node[font=\scriptsize,anchor=south] at (26.25,86.5)
+    {Specification section {\tiny(edges out)}};
+\node[font=\scriptsize,anchor=south] at (61.75,86.5)
+    {Goal section {\tiny(edges in)}};
+\end{tikzpicture}
+\end{document}

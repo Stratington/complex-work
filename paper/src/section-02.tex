@@ -1,0 +1,128 @@
+\section{Background and Related Work}
+\label{sec:related}
+
+\subsection{Decomposition and contracts}
+
+A module earns its boundary by the design decision it keeps to itself, and not by the step of processing it performs \citep{parnas1972}. Its interface shows as little of that decision as it can, so a change inside the module stays inside it. The consequences claimed for that criterion are independent work, understandability, and room to change later. Three of the five principles rest on them.
+
+A second line reads the same split as an economic one. A system divides into visible rules that every part obeys and hidden parts that may then vary on their own, and the value of the division is the freedom it leaves for later \citep{baldwinclark2000}.
+
+Contract specification supplies the other half of the boundary: a routine states what its caller must satisfy before the call, what it guarantees in return, and what stays true across its whole life \citep{meyer1992}. What carries is not the checking but the address of a broken promise: an unmet precondition is the caller's defect, and an unmet postcondition is the supplier's.
+
+A component should depend only on components at least as stable as itself \citep{martin2002}. The dependencies themselves can be written as a matrix \citep{steward1981} and measured across real systems, where recurring core and periphery shapes appear \citep{baldwin2014}.
+
+Much of this work assumes a human developer who reads one module, remembers another, and carries the unwritten reasons between them. An AI agent starts a session with only what the project records hand it. The boundary therefore has to bound what the agent may touch, and it has to be recorded where a machine can read it, which is a requirement the prior work had no reason to state.
+
+Contract specification also leaves open who may change a contract, because in its setting the owner of the class does. Where an agent can draft and implement, the Specification answers that question with a recorded authority rather than with code.
+
+\subsection{Systems and requirements engineering}
+
+Life-cycle process standards fix the groups of process an engineering effort must cover: agreement, organizational project-enabling, technical management, and technical \citep{iso15288}. The separately issued Specification adopts those four groups by name at every level of the system \citep{pss2026}.
+
+Scaling such a standard down is established too: one life-cycle standard was built for very small entities rather than assumed to fit them \citep{laporte2008}.
+
+A kernel language describes the practices a working method is assembled from and tracks their state \citep{essenceomg}, and a process metamodel does the same for process content and its compliance points \citep{spem2}.
+
+Traceability separates into the part that runs forward from a written requirement to design, code, and tests, and the part that runs back to the need and the reasoning that produced it. Practitioners report the backward part as the missing one \citep{gotel1994}.
+
+
+A requirements smell is a cheap static indicator that one sentence may be defective, a vague quantifier or an actor hidden by a passive, and it asks a human to look rather than returning a verdict \citep{femmer2017}.
+
+Goal-oriented requirements engineering attaches requirements to the goals they serve, and the resulting model is examined for goals with nothing to realize them and for the ways a goal can be obstructed \citep{vanlamsweerde2001, horkoff2017}. The goal-path measurement of Section~\ref{sec:results} descends from that analysis.
+
+These standards assume an organization with separate bodies: a board that controls changes, a verification authority independent of the design authority, and professionals whose training fills what the text leaves unsaid. One person, or a team of two or three, has none of those bodies. Independence then has to come from separating the agent that produces a result from the agent that verifies it, and the text has to carry what a trained professional would otherwise infer.
+
+\subsection{Normative text and automated compliance}
+
+Institutional analysis decomposes a written rule into its parts: the actor it binds, the operator that compels or permits, the action, the context in which it applies, and the consequence of breach \citep{crawford1995}. A revised specification, a coding guide, and parser tooling carry that decomposition to scale \citep{frantz2021, frantz2020codebook, frantz2025parser}.
+
+That grammar is the nearest recorded ancestor of the proposition schema used later. Applying it is not free: coding two statutes under it surfaced the reliability problems of hand encoding \citep{basurto2010}.
+
+Norms can travel with their provenance, their temporal scope, and a link back to the passage they were drawn from \citep{legalruleml}, and legal documents have a machine-readable vocabulary for their structure \citep{akomanotoso, palmirani2011}.
+
+A nationality statute was expressed as a logic program in 1986 \citep{sergot1986}, and the principle that a representation should follow the structure of its source, rather than a structure convenient to the tool, was named shortly after \citep{benchcapon1992}.
+
+A recent form binds the two together, with executable semantics written beside the legislative text they implement \citep{catala2021}. Of the located work, that is the closest to the source binding adopted in Section~\ref{sec:checks}.
+
+Most of the field points outward, from the rules to something governed by them. Formalized norms are used to check a business process or an artifact for conformance \citep{governatori2016, hashmi2015}, and a review of compliance checking for software processes reports the same direction throughout \citep{castellanos2022}. Building regulations are turned into structured rules and annotated corpora, and the design is what gets checked \citep{hettiarachchi2025}.
+
+A smaller group points at the normative document itself. Typed relations have been built over a requirements document to make its structure analyzable \citep{grosser2022}. A language specification has been mechanized, and the mechanization surfaced defects in that specification \citep{watt2018}. Statutory text has been encoded with model assistance and then checked deterministically for inconsistency \citep{yadamsuren2026}. A governing catalogue of security controls has a machine-readable form built to support assessment \citep{piez2019}. Table~\ref{tab:relatedwork} sets that group beside the outward-facing one.
+
+In most of this work the text belongs to another body, changes relatively infrequently once issued, and is read by a profession trained to interpret it. The text examined in this paper is the project's own and is under revision, so a proposed edit has to be traced to everything it can affect, which a pipeline checking artifacts against a settled regulation rarely needs.
+
+Model-assisted formalization reports how far it can be trusted: its accuracy holds under guided prompting, direct one-step formalization and fine-tuning produced no measurable gain, and each encoding stays an interpretation whose reference standard may itself be unavailable \citep[Sections~5.1 and~6]{horner2025}. Where the evidence does not settle a question in this paper, no proposition is produced and a classified gap is recorded instead.
+
+\subsection{AI agents and instruction files}
+
+Surveys now organize the use of language models, and of agents built on them, across software engineering tasks \citep{hou2024, liu2024}. These taxonomies do not explicitly address the structure of the project an agent works inside.
+
+Degradation over a long horizon is measured rather than assumed. A study of production decision-making reports task success falling as the number of dependent steps grows \citep{mittal2026}, and a benchmark measures reward hacking in long-horizon coding agents \citep{specbench2026}. Both are preprints, and the first is a single study.
+
+The repository instruction file is the practice closest to the governance documents the Specification requires. It is widespread: one study locates 2,303 agent context files across 1,925 repositories \citep{chatlatanagulchai2025readme}, and an earlier one locates 253 such files over 242 repositories \citep{chatlatanagulchai2025manifests}.
+
+Its measured effect is mixed, and the mixture is the useful part. One study associates the presence of such a file with lower runtime and reduced token use \citep{lulla2026}. An evaluation on real tasks reports no general gain in task success and more than 20 percent higher inference cost \citep{gloaguen2026}.
+
+Two further results find nothing at all. A two-agent ablation on existing repositories reports no measurable effect on correctness \citep{khatri2026}, and a factorial study reports no detectable effect from the file-structure variables it tested, and associates longer sessions with lower adherence \citep{mcmillan2026}.
+
+Priority between instructions has been trained into models \citep{wallace2024} and has been shown to fail even under simple instruction conflicts \citep{geng2025}. A rule an agent is meant to obey is therefore not a control on its own.
+
+These studies measure a single session on a bounded task in a repository that already exists. Whether a project record keeps a multi-year effort coherent is a different question, and none of them answers it.
+
+I do not claim that an instruction file improves the performance of an agent. The adverse results argue for limiting what such a document carries and for routing from it into a versioned structure, which is what the Specification requires of it \citep{pss2026}, and they leave the durable record untested.
+
+\subsection{What is prior art and what is not}
+
+Every mechanism named above is prior art, and I claim none of it as new. Decomposition by hidden decision, interface obligations and invariants, life-cycle process groups, traceability, goal coverage analysis, and standards scaled to small organizations are established practice, as is binding a normative document to a machine-checkable graph. The derivation record names where each one was found.
+
+Three properties stand together in this work, and I claim only their combination as new.
+
+The first is a derivation of a normative document from a mixed and largely practitioner-authored evidence base, with a recorded decision for every candidate at every stage.
+
+The second is one domain-general normative document in which every clause names its grounds, with the completeness of that naming checked by machine in both directions.
+
+The third is the application of that machinery to the governing document itself rather than to an artifact governed by it, under a requirement of an exact source span for every represented unit, an evidence policy that abstains and records a classified gap rather than resolving a disagreement, and a boundary that keeps every finding, traversal, and change calculation free of model calls.
+
+That combination was not found in the searched literature. The search used two working scholarly indexes and the primary records of the publishers and standards bodies involved, so it bounds what was located and not what exists.
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{The traditions this work draws on, the unit each one represents a rule in, the check that unit supports, and the part of this work it grounds. Representative works only; the text names the rest. The last row reports the setting rather than an adopted mechanism.}
+\label{tab:relatedwork}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.15in}>{\raggedright\arraybackslash}p{1.35in}>{\raggedright\arraybackslash}p{1.25in}>{\raggedright\arraybackslash}p{1.35in}>{\raggedright\arraybackslash}p{1.40in}}
+\toprule
+\textbf{Tradition} & \textbf{Representative work} & \textbf{Unit of representation} & \textbf{Check it supports} & \textbf{What it grounds} \\
+\midrule
+Decomposition and contracts
+& \citet{parnas1972}; \citet{meyer1992}; \citet{baldwinclark2000}
+& Module, routine, visible design rule
+& Interface conformance; precondition and postcondition
+& Component-Oriented Decomposition, Layered System Architecture, Integrated Modularity First, Specifications as Contracts \\
+\addlinespace
+Systems and requirements engineering
+& \citet{iso15288}; \citet{gotel1994}; \citet{femmer2017}; \citet{vanlamsweerde2001}
+& Process group, requirement, trace link, goal
+& Process coverage; traces in both directions; static defect indicators; goal coverage
+& The required records, the grounds named by every clause, and the goal-path check \\
+\addlinespace
+Normative text and automated compliance
+& \citet{legalruleml}; \citet{frantz2021}; \citet{catala2021}; \citet{governatori2016}
+& Norm with provenance, institutional statement, statute bound to code
+& Conformance of a process or artifact to formalized norms
+& The proposition schema, the source-bound representation, and the conflict check \\
+\addlinespace
+Checks on a normative document
+& \citet{grosser2022}; \citet{watt2018}; \citet{yadamsuren2026}; \citet{piez2019}
+& Requirements document, specification prose, statute, control catalogue
+& Structural relations, mechanized semantics, inconsistency detection, assessment support
+& Application of the checks to the Specification itself \\
+\addlinespace
+AI agents and instruction files
+& \citet{mittal2026}; \citet{chatlatanagulchai2025readme}; \citet{gloaguen2026}; \citet{wallace2024}
+& The session, the repository context file
+& Task success, instruction adherence
+& The setting, and the limits on what a governance document carries \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -1,0 +1,67 @@
+\section{Discussion}\label{sec:discussion}
+
+\subsection{What to use}
+
+The first decision a project makes under the Specification is not which clauses to keep but how much evidence its work has to carry. That decision is the criticality class, scored for each component and each capability that spans components on failure consequence, complexity, human dependence, time to criticality, and exposure \citep[Section~\hyperlink{nss-7.10}{7.10}]{pss2026}. It is written before the records it governs, for the same reason acceptance criteria are: a class assigned afterwards is a class those records have already shaped, and it then approves whatever depth the work happened to reach.
+
+What follows the class is a repeating unit of work rather than a plan. A unit is a bounded scope one agent can finish in one effort. Its criteria are written first, its blast radius is bounded before it starts, and any failure is repaired before the next unit begins \citep[Sections~\hyperlink{nss-5.5}{5.5}, \hyperlink{nss-5.6}{5.6}, and~\hyperlink{nss-5.9}{5.9}]{pss2026}.
+
+The blast-radius step is where the record starts paying for itself. Before a change that touches earlier accepted work, the acceptance record states which criteria justified that acceptance, and the relations state what else the change reaches. A project without both rediscovers them by inspection. An agent working from one session's context cannot be relied on to rediscover them.
+
+Most contained changes need neither a new decision record nor renewed acceptance. Replacing a chlorination controller in the floating-city water system changes no obligation, and a ledger entry against a re-issued baseline is the whole record. The same record structure governs a change to the 72-hour reserve, but that change reaches more records and requires stronger human acceptance.
+
+The optional software layout gives a project a starting point for its path map. The project completes and checks the bindings for its own records, tools, and realization. Another layout must preserve the same required content and relations \citep[Sections~\hyperlink{nss-1.8}{1.8} and~\hyperlink{nss-14.8}{14.8}]{pss2026}. Verification evidence can be a saved test result, an inspection report, or a witnessed trial record, according to the domain. No corresponding layout example has been issued for a physical domain.
+
+Scaling is a designed property of the document rather than a tolerated omission, which is what keeps it usable by a team of two. Lighter records are allowed, with the reason recorded against the criticality class, and an absent record is admissible only as a deviation entry that a named human accepted \citep[Sections~\hyperlink{nss-1.5}{1.5} and~\hyperlink{nss-1.6}{1.6}]{pss2026}.
+
+Reusable task definitions are what stop the effort per unit from growing with the number of units. Work that recurs is written once as an ordered procedure with its criteria and its forbidden actions \citep[Section~\hyperlink{nss-5.10}{5.10}]{pss2026}. The second occurrence then costs a selection rather than a fresh specification, and the agent that runs it is bound by the text that bounded the first.
+
+\subsection{What was measured}
+
+Completeness of grounding is a property of the record and not a verdict on the rules. Nothing in those links grades how well a clause serves the ground it names. A reader who disagrees with a clause is nonetheless given the statement it came from, which is a different service from being told the clause is right, and the one a record can actually deliver.
+
+What the representation adds is a set of questions a flat clause list leaves expensive. Which clauses rest on one mechanism family, which carry no recorded purpose, and which records need review after a proposed edit are answered by a query, and reading the document in order answers none of them.
+
+The derivation chain answers the first of the two questions stated in the introduction: in this work, mechanisms used in practice became rules written to apply across domains through a chain in which each step keeps the record of the step before it. The grounding layer closing in both directions is the evidence that the chain was walked. One execution of a method is not that method's general behaviour, and the 21 forms that needed revision at first writing are the defect rate of this execution alone.
+
+The findings answer the second question, and what they report is not what their labels suggest. The 39 flagged pairs all trace to one rule schema with no slot for the restricting part of a prescription, so they mark a limit of the representation rather than 39 contradictions in the prose.
+
+The two requirements stated in the introduction are what these measurements test, and the Specification carries both on itself. Standing grounds is the grounding layer, complete in both directions. Traversable consequence is the traversal that names the clauses, forms, goals, propositions, and terms a proposed edit reaches.
+
+The gap sits in a third relation rather than in either requirement. 25 of the 106 clauses carry no recorded link upward to a purpose, and that is the main place where the document does not yet meet what it asks of a project; the 24 terminology warnings of Section~\ref{sec:results} are the other.
+
+Those 25 are not spread evenly, and the concentration is informative without being decisive. They fall almost entirely in the sections that govern how the project record is organised and kept consistent, rather than in those that govern the engineered system. The shape fits record-keeping machinery that no stated objective asked for, but a review lane that under-links clauses about the record itself would produce it too, and so would an under-specified goal document.
+
+The effects of a proposed change appear as a partition of the corpus. In this corpus the propagating graph is dominated by one large component, so a deep walk from almost any clause reaches most of the others, and the converged answer says little. What a reviewer can act on is the shallow set reached by an asserted relation. The converged answer is useful for the set it shows untouched.
+
+\subsection{Scope and next measurements}
+
+Every number in this paper is a property of four documents. Whether the same construction, the same checks, and the same findings appear on another corpus is untested, and nothing in the measurements bounds that.
+
+Grounding records a stated basis and assesses nothing. A bracket says a clause was written from a pattern, a principle, or a goal. No check asks whether the clause is a good expression of it, and no reader outside the project has been asked either.
+
+The source population was chosen rather than sampled. I named the sources for each round and stopped collection when I judged that they supplied no further mechanisms, not when a measured coverage threshold was met. The 79 adopted forms therefore bound what was collected and not what practice contains.
+
+The literature entered after the derivation and bounds the novelty claim rather than supporting the clauses. Only one cited work, ISO/IEC/IEEE 15288, also supplied a form. The per-form map was located by assisted search rather than by a registered protocol, and the instrument built to grade that map failed its controls and was withdrawn before use.
+
+No score, ranking, or strength rating for any form appears in this paper. The map is evidence of positioning, and it is not evidence of coverage or of support.
+
+The semantic relations carry the standing of the policy that produced them and no more. Each corpus-scale pass is delegated-AI single-lane output under its own named review policy, so a second production lane over the same candidate sets is the measurement that would show how stable those relations are under a second independent reading.
+
+Independent readings of normative text may diverge substantially. In one study, three legally trained coders showed very low agreement when encoding the same statute independently; agreement improved when terminology was aligned and the encodings were formally validated \citep[Section~3]{witt2024}. This supports treating agreement as the product of an explicit review procedure rather than of independent reading alone.
+
+The cheapest useful version of that measurement is restricted to the 25 unlinked clauses. It separates a missed link from a real absence, and no other evidence does.
+
+The verification is self-referential, which is a limit of the evidence rather than of the tool. The mandatory check set descends from a clause of the document the checks read, so a blind spot in the document can be a blind spot in its checks.
+
+Synthetic corpora engineered to trigger one defect each test the checks apart from the real corpus. They establish that each check fires; they do not establish that the set is complete.
+
+Coverage of the logic layer is partial by design and must be read that way. 212 of the 572 requirement units carry a classified gap rather than a proposition, so a query over the propositions answers for the compiled 360 and is read against the coverage view.
+
+The clauses are written for any domain: they name records and relations, and never a format or a tool. The software profile and a hardware profile for physical systems supply illustrative layouts. Neither profile is measured in this paper, and applying the hardware example to a real build is the next place to exercise that separation.
+
+Nothing in this paper measures use. No project outside this work has adopted the Specification, and the aims the framework sets itself are unmeasured \citep{goal2026}. Internal verification evidence is what the artifacts support, and it is not evidence of effect.
+
+Independent application is the next measurement, and it needs four answers rather than a verdict: whether a reader outside the project interprets a clause as it was written, whether the required records can be completed for a system the project did not design, whether acceptance decisions taken under the criticality classes survive review, and whether a change analysis names the records a domain expert would name.
+
+A non-software binding is the setting that tests all four at once. It is the one place where the separation between the information model and its storage either holds or fails.

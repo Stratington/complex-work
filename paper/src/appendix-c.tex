@@ -1,0 +1,81 @@
+\begin{multicols}{2}
+\section{Minimum Normative Check Set}
+\label{app:checks}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+The Specification's \hyperlink{nss-16.2}{\S16.2} makes sixteen Normative Checks mandatory at minimum; a Project may add checks and may not remove these except through \S1.5. Table~\ref{tab:checks} lists each check, the clause it enforces, and the defect class it detects. The first two columns come from version~1.0 of the Specification \citep[Section~\hyperlink{nss-16.2}{16.2}]{pss2026}; the third is the defect classification used in this paper.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.58\textwidth} p{0.14\textwidth} p{0.22\textwidth}@{}}
+\caption{The minimum normative check set of the Specification's \S16.2. The defect-class column is this project's analysis.}
+\label{tab:checks} \\
+\toprule
+Check & Clause & Defect class detected \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Check & Clause & Defect class detected \\
+\midrule
+\endhead%
+Every Component Specification contains the five required sections & \hyperlink{nss-6.2}{\S6.2} & malformed specification \\
+Every Component is registered, and every Registry entry resolves to an artifact in the Project Record & \hyperlink{nss-14.7}{\S14.7} & unregistered element; dangling registry entry \\
+Every Obligation carries an identifier, a named human owner, and a verification method; every Constraint additionally carries a provenance marking & \hyperlink{nss-6.5}{\S6.5}--\hyperlink{nss-6.9}{\S6.9} & under-specified obligation \\
+The Component dependency graph is acyclic, and every dependency points toward an element of equal or higher Stability Class & \hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-6.12}{\S6.12} & circular dependency; stability inversion \\
+Every Acceptance Criterion is linked to at least one Verification Procedure, and every Verification Procedure is linked to a Contract clause & \hyperlink{nss-7.13}{\S7.13} & untestable criterion; orphaned procedure \\
+Traceability is complete in both directions: no Obligation lacks a parent path to the Vision Document or a child path to Realization elements and Verification Procedures & \hyperlink{nss-10.2}{\S10.2} & orphan obligation; untraced work \\
+Every Decision Record carries a valid status, and every supersession pointer resolves & \hyperlink{nss-11.2}{\S11.2} & invalid decision state; broken history \\
+Every Gate closure has a Decision Record with discrepancy disposition & \hyperlink{nss-8.4}{\S8.4} & unrecorded gate decision \\
+The Verification Plan records a Reference Realization designation, with rationale, and a comparison interval for every designated Contract & \hyperlink{nss-7.17}{\S7.17} & undetectable drift \\
+Every Baseline level declared in the Entry Point has a corresponding entry in the Baseline Ledger, and every entry carries a status from the fixed vocabulary & \hyperlink{nss-9.1}{\S9.1}, \hyperlink{nss-14.3}{\S14.3} & undeclared or invalid baseline state \\
+Every snapshot identifier in the Baseline Ledger resolves within the Project Record & \hyperlink{nss-9.1}{\S9.1} & dangling baseline reference \\
+Every Baseline whose status is locked has a Gate-closure Decision Record & \hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-9.1}{\S9.1} & uncontrolled baseline change \\
+Every Status Ledger entry recording a change to a locked Baseline names the re-issued Baseline snapshot, an approving named human owner, a change class from the fixed vocabulary, and a structural-or-behavioral classification; and every entry whose class is not ``contained'' carries a Decision Record reference that resolves & \hyperlink{nss-9.2}{\S9.2}, \hyperlink{nss-9.3}{\S9.3}, \hyperlink{nss-9.5}{\S9.5} & unattributed or unclassified change \\
+The Entry Point is named \texttt{INDEX} and resides at the root of the Project Record & \hyperlink{nss-14.3}{\S14.3} & undiscoverable record \\
+Every required Entity of \hyperlink{nss-appA}{Appendix~A} is bound exactly once in the Path Map, every binding resolves to artifacts in the declared format, and the Entity of every artifact in the Project Record is unambiguously resolvable & \hyperlink{nss-14.8}{\S14.8} & missing required artifact; ambiguous binding \\
+Governance Documents are under their size ceiling, and all Entry Point links resolve & \hyperlink{nss-14.2}{\S14.2}, \hyperlink{nss-14.3}{\S14.3} & governance bloat; broken navigation \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+The graph analysis uses a separate check set. Its integrity checks detect broken references, duplicate relations, invalid relation endpoints, and malformed rule records. Its coverage checks find missing clause-to-goal links and report gaps in extraction. Its consistency checks find cycles and possible conflicts between obligations. Its provenance checks test whether relations and extracted propositions have the required evidence and agree with recorded decisions.
+
+Sixteen checks run on the relation database. The dependency database adds a seventeenth check that tests current relations and extracted propositions against the evidence retained through an incremental update. Four further finding types come from the source-text checks: disagreement with a written coverage list, lower-case use of a defined term, an undefined capitalized phrase, and an unused definition.
+
+These checks inspect the four-document corpus and its representation. They do not establish conformance of a project's records. Table~\ref{tab:check-status} separates the graph checks used in the analysis from the project checks still required.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.25\textwidth} p{0.33\textwidth} p{0.36\textwidth}@{}}
+\caption{Implementation status of the required project checks. Graph analogues operate on the Specification's semantic graph, not a project's component graph.}
+\label{tab:check-status} \\
+\toprule
+Required project check & Graph check used in the analysis & Remaining project implementation \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Required project check & Graph check used in the analysis & Remaining project implementation \\
+\midrule
+\endhead%
+Acyclic dependencies and stability direction (\hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-6.12}{\S6.12}) & Cycle detection finds cycles in the corpus dependency graph. & Check a project's component graph for cycles and dependencies toward lower Stability Classes. \\
+Bidirectional traceability (\hyperlink{nss-10.2}{\S10.2}) & Goal-coverage checks find clauses with no outbound goal link and goal units with no inbound clause link. & Check paths from project obligations to vision, realization, and verification records. \\
+Other fourteen required checks & No project-conformance implementation. & Check the required fields, states, links, bindings, and limits in Table~\ref{tab:checks}. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+\subsection{Acceptance responsibility}
+
+A check reports whether its requirement is met. A named human holds acceptance authority. A passing result supplies evidence for that decision; it does not make the decision.
+
+A failure that leaves a gate's success criteria unmet prevents normal gate closure. The discrepancy must be resolved, or a permitted deviation must identify the waived requirement, its reason, and the human who accepted the risk \citep[Sections~\hyperlink{nss-1.5}{1.5}, \hyperlink{nss-8.3}{8.3}, and~\hyperlink{nss-8.4}{8.4}]{pss2026}. The gate's Decision Record must account for every open discrepancy. Checks on gate and baseline records establish that the required decision is recorded, but do not establish that the judgment was correct.
+
+The checks can run on draft records as their inputs become available; a missing required record can itself produce a finding. They do not require an approved Baseline. The substrate checks read the Entry Point, the Registry, the Path Map, and the governance documents. The contract and verification checks read the Component Specifications, the Verification Plan, and the ledgers. No check judges the behavior of the Realization; the checks of \hyperlink{nss-10.2}{\S10.2} and \hyperlink{nss-14.8}{\S14.8} only resolve the locations and links that the records declare for it.
+\end{multicols}

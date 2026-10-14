@@ -1,0 +1,13 @@
+family,label,range,sources,classified,unclassified,verified,abstract,lead,rejected
+1,Durable work record,GP-01 to GP-06,141,121,20,45,42,54,0
+2,Decomposition,GP-07 to GP-16,211,163,48,72,82,55,2
+3,Contract and obligation,GP-17 to GP-30,261,198,63,74,121,66,0
+4,Verification and acceptance,GP-31 to GP-49,323,250,73,92,124,107,0
+5,Configuration control,GP-50 to GP-54,90,75,15,21,31,38,0
+6,Traceability and lineage,GP-55 to GP-59,73,57,16,11,40,22,0
+7,Decision record,GP-60,11,8,3,4,4,3,0
+8,Risk and failure,GP-61 to GP-62,33,22,11,8,15,10,0
+9,Executor boundary,GP-63 to GP-67,108,86,22,31,34,43,0
+10,Governance document,GP-68 to GP-73,74,57,17,23,25,26,0
+11,Role and authority,GP-74 to GP-76,24,21,3,15,7,2,0
+12,Reusable procedure,GP-77 to GP-79,38,32,6,9,22,7,0

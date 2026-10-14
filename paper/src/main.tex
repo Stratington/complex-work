@@ -1,0 +1,139 @@
+\documentclass[twocolumn]{article}
+\usepackage{preprint}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=cyan,urlcolor=blue,citecolor=cyan,anchorcolor=black]{hyperref}
+\urlstyle{same}
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\-\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z\do\0\do\1\do\2\do\3\do\4\do\5\do\6\do\7\do\8\do\9}
+\makeatother
+\hypersetup{pdftitle={Long-Horizon AI-Augmented Engineering under Complexity}}
+\usepackage[numbers,square]{natbib}
+\bibliographystyle{unsrtnat}
+\usepackage{authblk}
+\makeatletter
+\renewcommand\AB@authnote[1]{}
+\renewcommand\AB@affilnote[1]{}
+\makeatother
+\renewcommand\Affilfont{\footnotesize}
+
+\setlength{\leftmargini}{0.5\leftmargini}
+\setlength{\leftmarginii}{0.5\leftmarginii}
+\setlength{\leftmarginiii}{0.5\leftmarginiii}
+\setlength{\leftmarginiv}{0.5\leftmarginiv}
+\setlength{\leftmarginv}{0.5\leftmarginv}
+\setlength{\leftmarginvi}{0.5\leftmarginvi}
+
+\makeatletter
+\def\@halvelistgap{\topsep0.5\topsep \partopsep0.5\partopsep}
+\g@addto@macro\@listI{\@halvelistgap}
+\g@addto@macro\small{\g@addto@macro\@listi{\@halvelistgap}}
+\g@addto@macro\footnotesize{\g@addto@macro\@listi{\@halvelistgap}}
+\makeatother
+
+\title{Long-Horizon AI-Augmented Engineering\\under Complexity\\[0.08in]{\large\normalfont\itshape An Inquiry into Principles and a Framework for Keeping Complex Work Coherent Across Time}}
+\author[1]{Franz Bruckhoff}
+\affil[1]{\href{https://stratington.com}{stratington.com} \textbar{} \href{https://think-bigger.org}{think-bigger.org}}
+\day=25 \month=9 \year=2026
+
+\begin{document}
+
+\lhead{\scshape Preprint \textperiodcentered{} Long-Horizon AI-Augmented Engineering under Complexity \textperiodcentered{} Franz Bruckhoff}
+
+\twocolumn[
+  \begin{@twocolumnfalse}
+  \maketitle
+  \begin{abstract}
+  \begin{multicols}{2}
+  Until recently, the development of highly complex engineered systems was usually reserved for large organizations. What those organizations supplied was not only labor, but the structure that held their work together across many years. The emergence of powerful agentic AI has redefined the scale of what one person, or a small team of two to three, can realistically attempt and accomplish.
+
+  However, complex work over long horizons depends on explicit structure, including bounded components, contracts, verification, and human authority that survive the intervals between decisions and their consequences.
+
+  This paper develops the Framework for Keeping Complex Work Coherent Across Time from mechanisms found in recorded engineering practice.
+  Its domain-general core comprises five principles and the separately issued Specification, whose 106 clauses state the structure needed to preserve coherence and name their grounds in a generalized pattern, a principle, or a stated goal.
+
+  The paper reprints the principles and the clauses in an appendix.
+  It gives the reasoning behind them, explains their derivation, and analyzes the resulting artifacts for internal coherence and traceability.
+
+  A semantic graph represents the clauses, their grounds, their terms, and their relations to stated goals.
+  It supports static analysis of the framework's internal coherence. An internal rebuild from fixed inputs and recorded decisions matched the recorded relation graph exactly.
+
+  The problem is the coherence of a complex project across years: whether its purpose, its contracts, its authority, and its terms of acceptance still hold when most of the work is carried out by AI agents under human direction.
+  Stronger execution at each step does not produce that coherence.
+  The framework makes the structure once supplied by large organizations explicit and durable for one person or a small team working with AI agents.
+  \end{multicols}
+  \end{abstract}
+  {\footnotesize\centering\textcopyright\ 2026 Franz Bruckhoff. This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0):\newline\url{https://creativecommons.org/licenses/by-sa/4.0/}\par}
+  \vspace{0.35cm}
+  \end{@twocolumnfalse}
+]
+
+\input{section-01}
+\input{section-02}
+\input{section-03}
+\input{section-04}
+\input{section-05}
+\input{section-06}
+\input{section-07}
+\input{section-08}
+\input{section-09}
+\input{section-10}
+
+\clearpage
+\begingroup
+\raggedright
+\setlength{\bibsep}{0pt}
+\setlength{\parskip}{0pt}
+\bibliography{references}
+\endgroup
+
+\appendix
+\onecolumn
+\clearpage
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\theHtable}{\thesection.\arabic{table}}
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\theHfigure}{\thesection.\arabic{figure}}
+\makeatletter
+\renewcommand\@seccntformat[1]{\@nameuse{appx@cnt@#1}}
+\newcommand\appx@cnt@section{Appendix~\thesection:\ }
+\newcommand\appx@cnt@subsection{\thesubsection\quad}
+\newcommand\appx@cnt@subsubsection{\thesubsubsection\quad}
+\newcommand\appx@cnt@paragraph{\theparagraph\quad}
+\newcommand\appx@cnt@subparagraph{\thesubparagraph\quad}
+\makeatother
+\sloppy
+\hbadness=10000
+\vbadness=10000
+
+\setlength{\multicolsep}{4pt}
+\setlength{\LTcapwidth}{\textwidth}
+\setlength{\LTpre}{4pt}
+\setlength{\LTpost}{4pt}
+\setlength{\LTleft}{\fill}
+\setlength{\LTright}{\fill}
+\raggedbottom%
+\small
+\renewcommand{\arraystretch}{0.95}
+\input{appendix-a}
+\clearpage
+\input{appendix-b}
+\clearpage
+\input{appendix-c}
+\clearpage
+\input{appendix-d}
+\clearpage
+\input{appendix-e}
+\clearpage
+\input{appendix-f}
+
+\end{document}

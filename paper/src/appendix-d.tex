@@ -1,0 +1,90 @@
+\begin{multicols}{2}
+\section{Measurement Methods and Evidence Status}
+\label{app:repro}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+The graph measurements use fixed versions of four documents: the goal document, Governing Principles, the Specification, and Generalized Patterns. The recorded recomputation date is 2026-09-21. Counts refer to those fixed inputs and their reviewed representation, rather than to later revisions of the documents.
+
+\subsection{Inputs and analysis stages}
+
+The analysis retains four database stages. The source database holds the parsed documents and their explicit links. The extraction database adds propositions and controlled vocabulary. The relation database adds reviewed clause-to-goal links. The dependency database adds reviewed dependencies and incorporates the corrected coverage list. Table~\ref{tab:measurement-methods} identifies the stage and counting rule for each measurement group.
+
+The source graph contains 3,853 nodes and 7,537 edges. The extraction layer adds 353 vocabulary nodes and 888 edges involving those symbols. The relation layer adds 331 clause-to-goal links, giving 4,206 nodes and 8,756 edges. The dependency layer adds 157 edges, giving the final total of 8,913. These totals describe successive layers of one representation.
+
+Source versions were recorded with SHA-256 digests. Each database also retained its source identity, schema version, and review conditions. A separate graph fingerprint identified the logical content independently of the database file's bytes. These records allowed comparisons between analysis stages and between an original graph and a rebuilt graph.
+
+The source, extraction, and relation databases use the earlier Specification, whose written principle-coverage list omitted clause \hyperlink{nss-1.8}{1.8}. The dependency database incorporates the correction made on 2026-09-17. The correction changed the coverage list without changing clause text. A later terminology rename changed the working documents; those later files were not used as substitutes for the fixed measurement inputs.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.21\textwidth} p{0.19\textwidth} p{0.54\textwidth}@{}}
+\caption{Measurement inputs and counting rules for the graph results. Reviewed relations carry the evidence status defined in this appendix.}
+\label{tab:measurement-methods} \\
+\toprule
+Measurement & Database stage & Counting or comparison rule \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Measurement & Database stage & Counting or comparison rule \\
+\midrule
+\endhead%
+Corpus structure & Source & Count nodes by record type and edges by relation type. Keep source nodes separate from vocabulary nodes added during extraction. \\
+Grounding coverage & Source & For each clause, count its explicit grounding links. For each pattern and principle, count distinct clauses that name it as a ground. \\
+Extraction coverage & Extraction & Count requirement units with at least one proposition and units with a classified gap. Count propositions separately, since a unit can yield more than one. \\
+Goal coverage & Relation & Count retained clause-to-goal links and distinct endpoints. Subtract linked clauses and goal units from their respective totals to find missing links. \\
+Dependencies & Dependency & Count retained directed links by endpoint type. Identify directed cycles separately from the links they contain. \\
+Verification findings & Relation and dependency & Run the integrity, coverage, consistency, and provenance checks described in Appendix~\ref{app:checks}. Report source-text findings separately and retain findings whose severity changed by ruling. \\
+Change impact & Dependency & Start from a named unit and follow the propagating relations. Count the seed, reachable nodes, and remaining source nodes separately; test whether the traversal ends before its depth limit. \\
+Rebuild comparison & Relation & Rebuild the graph from recorded decisions, then compare its logical fingerprint and file bytes with the original. Compare repeated derived exports byte for byte. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+\subsection{Review conditions}
+
+Calibration used two isolated sessions of GLM-5.2 High with the same prompt and model settings. Neither session could read the other's output. A result was accepted only when the normalized outputs matched exactly. The settings were temperature 0, seed 0, a sampling probability threshold of 1, and a maximum output length of 16,384 tokens. The approved calibration of 2026-09-10 passed all 21 cases. This establishes agreement between isolated sessions of one model under those conditions.
+
+Production used one generating lane followed by delegated AI review. It did not use the two-lane acceptance rule. The extraction layer and clause-to-goal layer each retain that review status. The dependency layer adds blind review and written decisions for disputed cases. An incremental update retains the review status of the evidence it carries forward. None of these production layers records human ratification of the semantic relations. GPT-6 Astra reviewed and ratified the extraction layer of 572 units under delegated authority.
+
+The clause-to-goal pass answered 2,332 candidate pairs. GPT-6 Astra held final review authority for the first 690 answers, with GPT-5.6 Sol assisting. Claude Opus~5 held final review authority for the remaining answers, with Claude Sonnet~5 assisting. A second production lane was not run.
+
+The dependency pass answered the remaining 42,400 candidate pairs in 191 fixed groups and proposed 240 edges. Claude Opus~5 answered every group after it passed a 24-case qualification benchmark. Blind review by five models examined 369 consequential answers, and GPT-6 Astra, a model of another family, wrote the adjudication rulings and ran the audits. Disputed cases were resolved through 22 reusable rules and three judging rounds, with two additional audits of sampled negative answers. These steps produced 170 decided edges and overturned 75 initial answers. Two later reviews considered mutual pairs and a complete cycle, removing 13 edges and leaving 157.
+
+The dependency review has three limits. The 141 edges accepted by the blind review were not checked again as a set. The negative-answer audits examined only 80 of 42,152 cells. One model decided the disputed cases. Complete coverage of candidate pairs therefore does not establish that every classification is correct.
+
+\subsection{Candidate selection}
+
+The candidate population has 212 endpoints: 106 clauses, 79 patterns, 22 goal units, and 5 principles. Ordered pairs without self-pairs give $212 \times 211 = 44{,}732$ dependency candidates. The clause-to-goal pass answered $106 \times 22 = 2{,}332$ pairs; the dependency pass answered the remaining 42,400. The two sets were checked for omissions and overlap.
+
+Six clause-to-goal pairs already had explicit grounding links. Excluding these leaves 2,326 candidates for additional implementation links, although the pass answered all 2,332 pairs. Grounding and implementation links retain their separate meanings.
+
+\subsection{Findings and their interpretation}
+
+Verification of the relation database failed because its written coverage list omitted clause \hyperlink{nss-1.8}{1.8}. It also reported 39 informational conflicts between represented obligations, 25 clauses without goal links, and 5 goal units without inbound clause links. Two further informational findings recorded the absence of dependency evidence and the presence of extraction gaps. These give 71 analysis findings, separate from 25 stored source-text findings, including the coverage-list error.
+
+The dependency database passed after the coverage-list correction. Its 74 analysis findings comprise the same 39 conflicts, 25 unlinked clauses, 5 unlinked goal units, 4 retained cycles, and one notice of extraction gaps. Its 24 source-text warnings comprise 19 lower-case uses of defined terms, 4 undefined capitalized phrases, and 1 unused definition. A pass means that no finding retained error severity under the recorded rulings; it does not mean that no findings remain.
+
+The ruling of 2026-09-17 traced all 39 conflicts to a representation that omitted the restricting part of a prescription. It lowered their severity to informational and retained them in the results. It did not establish that the corresponding clauses agree. The four cycles were also retained by decision, because the clauses describe mechanisms and their change control together. These are cycles in the Specification's semantic graph, not in a project's component graph.
+
+Both reviewed databases retain 212 extraction gaps: 206 concern missing vocabulary, 2 concern ambiguous source text, and 4 concern structural errors. These gaps remain outside the set of compiled propositions.
+
+\subsection{Change-impact procedure}
+
+A change-impact query starts from a named source unit and follows relations that can transmit an effect. Containment and document order do not transmit effects. Each reached node retains a path from the starting unit. Unreached nodes are classified as unaffected only when the candidate evidence is complete and the traversal ends before its depth limit. Otherwise they remain blocked by missing evidence or an incomplete traversal. The result is relative to the recorded graph and its review conditions.
+
+Starting from premise P2 of the goal document at depth 4, the relation database identifies 1 node to modify and 598 that may be affected. It leaves 3,254 nodes blocked and clears none, because it lacks dependency evidence. The dependency database gives 1 node to modify, 762 that may be affected, and 3,090 outside the reachable set. No nodes remain blocked. The same partition at depths 8 and 16 confirms that the walk ended rather than stopped at the limit.
+
+Section~\ref{sec:checks} uses a different starting unit, clause \hyperlink{nss-16.2}{16.2}, to show how the review set grows with depth. Both examples use the same traversal rule. A comparison of either database with itself produces no edits and no introduced or resolved findings.
+
+\subsection{Figure construction and rebuild checks}
+
+The structural figure groups source nodes by containment depth and type, then counts links between groups. Its source measurements date from 2026-09-15. The goal-coverage figure groups reviewed links by clause section and goal unit. The dependency matrix groups clause-to-clause links by section and orders the sections to minimize backward weight. The full graph figure places source nodes by document order and containment, and distinguishes relation types by gray tone. The captions state the counts and reductions used in each display.
+
+The internal rebuild test reconstructed the relation graph from its recorded decisions. Its logical fingerprint matched the original, and the two database files were byte-identical. The dependency database's fingerprint was recomputed and matched its recorded value; this was not a rebuild of that database. Repeated derived exports were also byte-identical. None of these tests repeated the model calls or established that new model judgments would agree.
+
+The rebuild results report internal checks on the retained analysis records.
+\end{multicols}

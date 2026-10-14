@@ -1,0 +1,68 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfplotstable}
+\usetikzlibrary{calc}
+\begin{document}
+\begin{tikzpicture}[x=1mm,y=1mm]
+\pgfplotstableread[col sep=comma]{f05-nodes.csv}\fnodes
+\pgfplotstableread[col sep=comma]{f05-edges.csv}\fedges
+\pgfplotstableread[col sep=comma]{f05-legend.csv}\fleg
+
+\pgfplotstablegetrowsof{\fnodes}
+\pgfmathsetmacro{\N}{\pgfmathresult-1}
+\foreach \i in {0,...,\N}{%
+  \pgfplotstablegetelem{\i}{key}\of{\fnodes}\edef\k{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{x}\of{\fnodes}\pgfmathsetmacro{\x}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{y}\of{\fnodes}\pgfmathsetmacro{\y}{\pgfplotsretval}%
+  \coordinate (\k) at (\x,\y);
+}
+
+\pgfplotstablegetrowsof{\fedges}
+\pgfmathsetmacro{\E}{\pgfmathresult-1}
+\foreach \i in {0,...,\E}{%
+  \pgfplotstablegetelem{\i}{src}\of{\fedges}\edef\a{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{dst}\of{\fedges}\edef\b{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{weight}\of{\fedges}\pgfmathsetmacro{\w}{\pgfplotsretval}%
+  \pgfmathsetmacro{\lw}{0.20+2.3*sqrt(\w/1013)}%
+  \draw[black!55,line width=\lw pt,opacity=0.5] (\a) -- (\b);
+}
+
+\foreach \i in {0,...,\N}{%
+  \pgfplotstablegetelem{\i}{key}\of{\fnodes}\edef\k{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{abbrev}\of{\fnodes}\edef\ab{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{count}\of{\fnodes}\pgfmathtruncatemacro{\c}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{x}\of{\fnodes}\pgfmathsetmacro{\x}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{y}\of{\fnodes}\pgfmathsetmacro{\y}{\pgfplotsretval}%
+  \node[draw=black!60,fill=white,rounded corners=0.7mm,
+        minimum width=9.2mm,minimum height=5.8mm,inner sep=0.3mm,
+        font=\tiny,align=center] (\k) at (\x,\y)
+        {\textbf{\ab}\\[-0.4mm]\c};
+}
+
+\pgfplotstableread[col sep=comma]{f05-levels.csv}\flevels
+\pgfplotstablegetrowsof{\flevels}
+\pgfmathsetmacro{\L}{\pgfmathresult-1}
+\foreach \i in {0,...,\L}{%
+  \pgfplotstablegetelem{\i}{depth}\of{\flevels}\pgfmathtruncatemacro{\d}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{total}\of{\flevels}\pgfmathtruncatemacro{\t}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{xmin}\of{\flevels}\pgfmathsetmacro{\x}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{y}\of{\flevels}\pgfmathsetmacro{\y}{\pgfplotsretval}%
+  \node[font=\tiny,text=black!60,anchor=south west,inner sep=0pt]
+    at ({\x},{\y+3.4}) {level \d\;·\;\pgfmathprintnumber[assume math mode=true]{\t} nodes};
+}
+
+\pgfplotstablegetrowsof{\fleg}
+\pgfmathsetmacro{\M}{\pgfmathresult-1}
+\node[anchor=north west,align=left,inner sep=0pt] at (-46,{-7*8.6-4.6}) {%
+  \begin{minipage}{92mm}\tiny
+  \foreach \i in {0,...,\M}{%
+    \pgfplotstablegetelem{\i}{abbrev}\of{\fleg}\edef\ab{\pgfplotsretval}%
+    \pgfplotstablegetelem{\i}{type}\of{\fleg}\edef\ty{\pgfplotsretval}%
+    \pgfplotstablegetelem{\i}{total}\of{\fleg}\pgfmathtruncatemacro{\t}{\pgfplotsretval}%
+    \textbf{\ab}~=~\ty\ (\t)\quad
+  }\end{minipage}};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,13 @@
+src/*.aux
+src/*.bbl
+src/*.bcf
+src/*.blg
+src/*.fdb_latexmk
+src/*.fls
+src/*.log
+src/*.out
+src/*.run.xml
+*.synctex.gz
+src/*.toc
+src/*.lof
+src/*.lot

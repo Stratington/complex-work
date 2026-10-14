@@ -1,0 +1,57 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfplotstable}
+\usetikzlibrary{calc}
+\begin{document}
+\begin{tikzpicture}
+\pgfplotstableread[col sep=comma]{f08-coverage.csv}\fdata
+\def\leadgap{0.9mm}
+\begin{axis}[
+    xbar stacked,
+    bar width=7.5mm,
+    scale only axis,
+    width=122mm,
+    height=30mm,
+    xmin=0, xmax=600,
+    ymin=-0.6, ymax=1.6,
+    ytick={0,1},
+    yticklabels={212 classified gaps,572 queue units},
+    yticklabel style={font=\small,xshift=-1mm},
+    axis x line*=bottom,
+    axis y line=left,
+    y axis line style={draw=none},
+    y tick style={draw=none},
+    xtick={0,100,200,300,400,500,600},
+    xmajorgrids,
+    grid style={black!12,line width=0.3pt},
+    x tick style={black!40},
+    tick label style={font=\footnotesize},
+    x axis line style={black!40},
+    xlabel={Requirement units},
+    xlabel style={font=\footnotesize,text=black!70},
+    every axis plot/.append style={draw=white,line width=0.6pt},
+    clip=false,
+    after end axis/.code={
+      \node[font=\footnotesize,text=white] at (axis cs:180,1) {360 compiled (62.9\,\%)};
+      \node[font=\footnotesize,text=white] at (axis cs:463,1) {206 ontology gaps};
+      \node[font=\footnotesize,text=white] at (axis cs:103,0) {206 ontology gaps};
+      \foreach \xe/\yr in {572/1,212/0}{
+        \node[font=\footnotesize,text=black!75,anchor=west,align=left,
+              inner sep=0pt] (note\yr)
+            at ($(axis cs:\xe,\yr)+(7mm,0)$)
+            {4 structural errors\\2 source ambiguities};
+        \draw[black!55,line width=0.4pt]
+            ($(axis cs:\xe,\yr)+(\leadgap,0)$) -- ($(note\yr.west)-(\leadgap,0)$);
+      }
+    },
+]
+\addplot[fill=black!80] table[x=compiled,y=y] {\fdata};
+\addplot[fill=black!50] table[x=ontology,y=y] {\fdata};
+\addplot[fill=black!28] table[x=structural,y=y] {\fdata};
+\addplot[fill=black!12] table[x=ambiguity,y=y] {\fdata};
+\end{axis}
+\end{tikzpicture}
+\end{document}

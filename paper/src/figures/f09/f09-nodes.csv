@@ -1,0 +1,22 @@
+key,side,x,y,w,h,label,sub,extra,lx,ly
+L-10,L,26.25,83.75,2.50,0.50,\S10 Traceability and Lineage,0/4 clauses,0,24.00,81.20
+L-4,L,26.25,77.15,2.50,9.49,\S4 The Project Record,9/9 clauses,51,24.00,75.60
+L-8,L,26.25,69.97,2.50,1.67,\S8 Phases and Gates,5/5 clauses,9,24.00,70.00
+L-9,L,26.25,66.42,2.50,2.23,\S9 Baselines and Change Control,4/6 clauses,12,24.00,64.40
+L-15,L,26.25,62.86,2.50,1.67,\S15 Roles and Human Authority,3/3 clauses,9,24.00,58.80
+L-7,L,26.25,54.66,2.50,11.54,\S7 Verification and Acceptance,18/19 clauses,62,24.00,53.20
+L-12,L,26.25,46.45,2.50,1.67,\S12 Risk and Failure,2/2 clauses,9,24.00,47.60
+L-6,L,26.25,41.22,2.50,5.58,\S6 Component Specifications and Contracts,9/19 clauses,30,24.00,42.00
+L-13,L,26.25,36.08,2.50,1.49,\S13 Executor Boundaries,3/3 clauses,8,24.00,36.40
+L-14,L,26.25,33.18,2.50,1.12,\S14 Governance Documents and Layout,4/8 clauses,6,24.00,30.80
+L-16,L,26.25,29.16,2.50,3.72,\S16 Normative Checks,3/3 clauses,20,24.00,25.20
+L-5,L,26.25,19.75,2.50,11.91,\S5 Decomposition and Work Units,10/10 clauses,64,24.00,19.60
+L-1,L,26.25,9.03,2.50,6.33,\S1 Purpose Scope and Compliance,7/8 clauses,34,24.00,14.00
+L-3,L,26.25,2.87,2.50,2.79,\S3 Purpose,3/3 clauses,15,24.00,8.40
+L-11,L,26.25,-0.38,2.50,0.50,\S11 Decision Records,1/4 clauses,2,24.00,2.80
+R-2,R,61.75,68.78,2.50,12.84,\S2 Premises,3/4 units,69,64.50,68.78
+R-4,R,61.75,51.17,2.50,19.17,\S4 Design Requirements,6/7 units,103,64.50,51.17
+R-6,R,61.75,33.20,2.50,13.59,\S6 Framework Deliverables,4/6 units,73,64.50,33.20
+R-7,R,61.75,16.80,2.50,16.00,\S7 Success Criteria,4/5 units,86,64.50,16.80
+D-R,D,61.75,-7.50,22.50,5.40,,no IMPLEMENTS edge: D4 D5 DR3 P1 S1,0,0.00,0.00
+D-L,D,15.25,-7.50,27.00,5.40,,25/106 clauses reach no goal unit,0,0.00,0.00

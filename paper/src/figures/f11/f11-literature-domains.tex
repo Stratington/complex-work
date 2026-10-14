@@ -1,0 +1,104 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfplotstable}
+\usetikzlibrary{calc}
+\begin{document}
+\begin{tikzpicture}[x=1mm,y=1mm]
+\pgfplotstableread[col sep=comma]{f11-cells.csv}\fcell
+\pgfplotstableread[col sep=comma]{f11-families.csv}\ffam
+\pgfplotstableread[col sep=comma]{f11-domains.csv}\fdom
+
+\def\cw{7.2}          %
+\def\rh{5.0}          %
+\def\nd{11}           %
+\def\nf{12}           %
+\def\smax{60}         %
+\pgfmathsetmacro{\bx}{\cw*\nd+6}  %
+\def\bs{0.105}        %
+
+\pgfplotstablegetrowsof{\fcell}
+\pgfmathsetmacro{\N}{\pgfmathresult-1}
+\foreach \i in {0,...,\N}{%
+  \pgfplotstablegetelem{\i}{family}\of{\fcell}\pgfmathtruncatemacro{\f}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{domain}\of{\fcell}\pgfmathtruncatemacro{\d}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{count}\of{\fcell}\pgfmathtruncatemacro{\c}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{share}\of{\fcell}\pgfmathsetmacro{\s}{\pgfplotsretval}%
+  \pgfmathsetmacro{\p}{min(95,6+89*\s/\smax)}%
+  \ifnum\c>0
+    \ifdim\p pt>50pt \def\tc{white}\else\def\tc{black}\fi
+    \fill[black!\p] ({\cw*(\d-1)},{-\rh*\f}) rectangle ({\cw*\d},{-\rh*(\f-1)});
+    \node[font=\tiny,inner sep=0pt,text=\tc]
+      at ({\cw*(\d-0.5)},{-\rh*(\f-0.5)}) {\c};
+  \fi
+}
+\draw[white,line width=0.6pt] (0,0) grid[xstep=\cw,ystep=\rh] ({\cw*\nd},{-\rh*\nf});
+\draw[black!30,line width=0.3pt] (0,0) rectangle ({\cw*\nd},{-\rh*\nf});
+
+\pgfplotstablegetrowsof{\fdom}
+\pgfmathsetmacro{\M}{\pgfmathresult-1}
+\foreach \i in {0,...,\M}{%
+  \pgfplotstablegetelem{\i}{domain}\of{\fdom}\pgfmathtruncatemacro{\d}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{label}\of{\fdom}\edef\lbl{\pgfplotsretval}%
+  \node[font=\scriptsize,anchor=south west,rotate=40,inner sep=0.6pt]
+    at ({\cw*(\d-0.5)-0.8},0.6) {\lbl};
+}
+
+\pgfplotstablegetrowsof{\ffam}
+\pgfmathsetmacro{\K}{\pgfmathresult-1}
+\foreach \i in {0,...,\K}{%
+  \pgfplotstablegetelem{\i}{family}\of{\ffam}\pgfmathtruncatemacro{\f}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{label}\of{\ffam}\edef\lbl{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{range}\of{\ffam}\edef\rng{\pgfplotsretval}%
+  \node[font=\scriptsize,anchor=east,inner sep=0pt]
+    at (-1.2,{-\rh*(\f-0.5)}) {\lbl\ \textcolor{black!55}{\rng}};
+}
+
+\foreach \i in {0,...,\K}{%
+  \pgfplotstablegetelem{\i}{family}\of{\ffam}\pgfmathtruncatemacro{\f}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{verified}\of{\ffam}\pgfmathsetmacro{\va}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{abstract}\of{\ffam}\pgfmathsetmacro{\vb}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{lead}\of{\ffam}\pgfmathsetmacro{\vc}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{rejected}\of{\ffam}\pgfmathsetmacro{\vd}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{sources}\of{\ffam}\pgfmathtruncatemacro{\tot}{\pgfplotsretval}%
+  \pgfmathsetmacro{\ya}{-\rh*\f+0.9}\pgfmathsetmacro{\yb}{-\rh*(\f-1)-0.9}%
+  \pgfmathsetmacro{\xa}{\bx+\bs*\va}%
+  \pgfmathsetmacro{\xb}{\xa+\bs*\vb}%
+  \pgfmathsetmacro{\xc}{\xb+\bs*\vc}%
+  \pgfmathsetmacro{\xd}{\xc+\bs*\vd}%
+  \fill[black!80] (\bx,\ya) rectangle (\xa,\yb);
+  \fill[black!45] (\xa,\ya) rectangle (\xb,\yb);
+  \fill[black!18] (\xb,\ya) rectangle (\xc,\yb);
+  \ifdim\vd pt>0pt \fill[black!5] (\xc,\ya) rectangle (\xd,\yb);\fi
+  \foreach \xx in {\xa,\xb,\xc}{\draw[white,line width=0.5pt] (\xx,\ya) -- (\xx,\yb);}
+  \node[font=\tiny,anchor=west,inner sep=0pt,text=black!75]
+    at ({\xd+0.9},{-\rh*(\f-0.5)}) {\tot};
+}
+\draw[black!40,line width=0.3pt] (\bx,0.4) -- (\bx,{-\rh*\nf-0.4});
+\foreach \t in {0,100,200,300}{%
+  \draw[black!40,line width=0.3pt] ({\bx+\bs*\t},{-\rh*\nf-0.4}) -- ({\bx+\bs*\t},{-\rh*\nf-1.2});
+  \node[font=\tiny,anchor=north,text=black!70] at ({\bx+\bs*\t},{-\rh*\nf-1.3}) {\t};
+}
+\node[font=\scriptsize,anchor=north,text=black!70] at ({\bx+\bs*160},{-\rh*\nf-4.2}) {Sources};
+\node[font=\scriptsize,anchor=south west,inner sep=0pt,align=left] at (\bx,1.5)
+  {Citation state of all\\sources per family};
+
+\pgfmathsetmacro{\ky}{-\rh*\nf-4.5}
+\node[font=\scriptsize,anchor=east,inner sep=0pt] at (-1.2,{\ky-1.2})
+  {Share of the family's classified sources};
+\foreach \s/\k/\lbl in {0/0/0,10/1/10,20/2/20,30/3/30,40/4/40,50/5/50,60/6/{$\geq$60}}{%
+  \pgfmathsetmacro{\p}{min(95,6+89*\s/\smax)}%
+  \fill[black!\p] ({\k*6},\ky) rectangle ({\k*6+6},{\ky-2.4});
+  \node[font=\tiny,anchor=north,text=black!70] at ({\k*6+3},{\ky-2.6}) {\lbl\,\%};
+}
+\draw[black!30,line width=0.3pt] (0,\ky) rectangle (42,{\ky-2.4});
+\pgfmathsetmacro{\sy}{-\rh*\nf-9.5}
+\foreach \g/\lbl/\kx/\ky in {80/Read-verified/0/0,45/Abstract-only/1/0,18/Lead/0/1,5/Rejected/1/1}{%
+  \fill[black!\g] ({\bx+\kx*18},{\sy-\ky*3.6}) rectangle ({\bx+\kx*18+2.4},{\sy-\ky*3.6-2.4});
+  \node[font=\tiny,anchor=west,inner sep=0pt] at ({\bx+\kx*18+3.1},{\sy-\ky*3.6-1.2}) {\lbl};
+}
+\draw[black!30,line width=0.2pt] ({\bx+18},{\sy-3.6}) rectangle ({\bx+18+2.4},{\sy-6});
+\end{tikzpicture}
+\end{document}

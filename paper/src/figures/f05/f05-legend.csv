@@ -1,0 +1,17 @@
+abbrev,type,total
+Sent,SentenceNode,1954
+FPart,FormPartNode,590
+Para,ParagraphNode,572
+Item,ListItemNode,213
+Cls,ClauseNode,106
+TRow,TableRowNode,105
+AForm,AdoptedFormNode,79
+Term,TermNode,72
+Sect,SectionNode,49
+List,ListNode,39
+DForm,DiscardedFormNode,39
+Goal,GoalUnitNode,22
+Prin,PrincipleNode,5
+Doc,DocumentNode,4
+TBrk,ThematicBreakNode,2
+Tbl,TableNode,2

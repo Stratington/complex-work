@@ -1,0 +1,57 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\colorlet{cdep}{black}
+\colorlet{cimpl}{black!72}
+\colorlet{cother}{black!52}
+\colorlet{cterm}{black!34}
+\colorlet{cstruct}{black!14}
+\newcommand\lblsmall{\fontsize{7.2}{8.6}\selectfont}
+\newcommand\lbllarge{\fontsize{8.4}{10}\selectfont}
+\begin{document}
+\begin{tikzpicture}[x=1mm,y=1mm,
+    estructure/.style={draw=cstruct},
+    eterm/.style={draw=cterm},
+    eother/.style={draw=cother},
+    eimplements/.style={draw=cimpl},
+    edepends/.style={draw=cdep},
+    nsrc/.style={fill=black!55},
+    nsym/.style={fill=black!80},
+    nroot/.style={fill=black},
+    doc/.style={font=\lbllarge,text=black!80,align=center,inner sep=0.6mm,
+                 execute at begin node=\setlength{\baselineskip}{3.1mm}},
+    sub/.style={font=\lblsmall,text=black!60,align=center,inner sep=0.6mm}]
+
+\ifdefined\figmode\else\def\figmode{B}\fi
+\useasboundingbox (0,-5) rectangle (180,100);
+\input{f07-semantic-graph-anchors.tex}
+\if B\figmode\input{f07-semantic-graph-data.tex}\fi
+\if G\figmode\input{f07-semantic-graph-data.tex}\fi
+\if G\figmode\else
+
+\node[doc,anchor=north west] at (0.5,99.5)
+    {Generalized Patterns\\{\lblsmall\color{black!60}2{,}005 nodes}};
+\node[doc,anchor=south] at ($(cPSS)+(90:\rPSS+1.5)$)
+    {Normative Structural\\Specification\\{\lblsmall\color{black!60}1{,}384 nodes}};
+\node[doc,anchor=south] at ($(cGOAL)+(-1.5,\rGOAL+1.5)$)
+    {Goal Specification\\{\lblsmall\color{black!60}209 nodes}};
+\node[doc,anchor=north] at ($(cTBF)+(-1.5,-\rTBF-1.5)$)
+    {Governing Principles\\{\lblsmall\color{black!60}255 nodes}};
+\node[doc,anchor=south] at ($(colN)+(0,1.5)$)
+    {Semantic symbols\\{\lblsmall\color{black!60}151 with an edge}};
+\node[sub,anchor=north] at ($(gridSE)!0.5!(gridNW |- gridSE)+(0,-1.0)$)
+    {202 with no edge};
+
+\newcommand\sw[1]{\tikz[baseline=-0.6ex]\draw[#1,line width=0.8pt]
+    (0,0) -- (4mm,0);\hspace{1mm}}
+\node[font=\lblsmall,text=black!60,inner sep=0.6mm] at (90,-3)
+    {\sw{cdep}dependency link\hspace{5mm}%
+     \sw{cimpl}clause-to-goal link\hspace{5mm}%
+     \sw{cother}other semantic relation\hspace{5mm}%
+     \sw{cterm}terminology or entity edge\hspace{5mm}%
+     \sw{cstruct}containment or order};
+\fi
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,52 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{calc}
+\begin{document}
+\begin{tikzpicture}[x=1mm,y=1mm,
+    sbx/.style={draw=black!60,rounded corners=0.6mm,fill=white,align=center,
+                inner sep=1.1mm,font=\tiny},
+    auth/.style={draw=black!65,rounded corners=0.6mm,fill=black!6,align=center,
+                 inner sep=1.1mm,font=\tiny},
+    rel/.style={-{stealth},line width=0.4pt,black!65},
+    esc/.style={-{stealth},line width=0.4pt,black!65,dashed},
+    elab/.style={font=\tiny,text=black!60,align=center,inner sep=0.5mm},
+    zone/.style={font=\scriptsize\itshape,text=black!60}]
+
+\fill[black!5] (0,0) rectangle (86,16);
+\draw[dashed,black!50,line width=0.4pt] (0,16) -- (86,16);
+\node[zone,anchor=west] at (1,48.5) {agent may act: generate evidence,
+    perform checks};
+\node[zone,anchor=west,align=left] at (1.5,5) {human\\authority};
+
+\node[sbx] (s1) at (10,40) {1\\Draft against stated\\Acceptance Criteria};
+\node[sbx] (s2) at (33,40) {2\\Verify the draft\\against the criteria};
+\node[sbx] (s3) at (57,40) {3\\Identify specific\\defects};
+\node[sbx] (s4) at (57,27) {4\\Correct only the\\identified defects};
+\node[sbx] (s5) at (33,27) {5\\Re-verify};
+
+\draw[rel] (s1) -- (s2);
+\draw[rel] (s2) -- (s3);
+\draw[rel] (s3) -- (s4);
+\draw[rel] (s4) -- (s5);
+\draw[rel] (s5.north) -- node[elab,right,pos=0.55]{defects\\remain} (s2.south);
+
+\node[auth,text width=26mm] (accept) at (33,7)
+    {Accept \& freeze\\human for high-stability, high-stakes work; delegated
+     inside accepted bounds otherwise};
+\node[auth,text width=20mm] (crit) at (68,7)
+    {Acceptance Criteria\\revised by the human only};
+
+\draw[rel] ($(crit.north)+(-10,0)$) -- +(0,2) -| node[elab,right,pos=0.80]
+    {draft against} ($(s1.south)+(-2,0)$);
+\draw[rel] (19,13) -- (19,32) -| ($(s2.south)+(-8,0)$);
+\node[elab,anchor=north west,align=left] at (19.6,31.6) {verify\\against};
+
+\draw[rel] (s5.south) -- node[elab,right,pos=0.43]{criteria\\satisfied}
+    (accept.north);
+\draw[esc] (s4.south) -- node[elab,right,align=left,pos=0.3,xshift=3mm]{criteria flawed:\\escalate
+    to the human} (crit.north);
+\end{tikzpicture}
+\end{document}

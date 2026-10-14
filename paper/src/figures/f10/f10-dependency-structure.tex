@@ -1,0 +1,72 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfplotstable}
+\usetikzlibrary{calc}
+\begin{document}
+\begin{tikzpicture}[x=1mm,y=1mm]
+\pgfplotstableread[col sep=comma]{f10-matrix.csv}\fmat
+\pgfplotstableread[col sep=comma,columns/label/.style={string type}]{f10-sections.csv}\fsec
+
+\def\cw{4.3}
+\def\N{16}
+
+\pgfplotstablegetrowsof{\fmat}
+\pgfmathsetmacro{\LASTCELL}{\pgfmathresult-1}
+\foreach \i in {0,...,\LASTCELL}{%
+  \pgfplotstablegetelem{\i}{row}\of{\fmat}\pgfmathtruncatemacro{\r}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{col}\of{\fmat}\pgfmathtruncatemacro{\c}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{count}\of{\fmat}\pgfmathtruncatemacro{\n}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{k}\of{\fmat}\pgfmathtruncatemacro{\k}{\pgfplotsretval}%
+  \pgfmathsetmacro{\p}{12+80*\n/9}%
+  \ifdim\p pt>52pt \def\tc{white}\else\def\tc{black}\fi
+  \fill[black!\p] ({\cw*(\c-1)},{-\cw*\r}) rectangle ({\cw*\c},{-\cw*(\r-1)});
+  \ifnum\k=0
+    \draw[black!70,line width=0.35pt,dash pattern=on 0.5mm off 0.4mm]
+      ({\cw*(\c-1)},{-\cw*\r}) rectangle ({\cw*\c},{-\cw*(\r-1)});
+  \fi
+  \ifnum\k=2
+    \draw[black,line width=0.55pt]
+      ({\cw*(\c-1)+0.12},{-\cw*\r+0.12}) rectangle ({\cw*\c-0.12},{-\cw*(\r-1)-0.12});
+  \fi
+  \node[font=\tiny,inner sep=0pt,text=\tc]
+    at ({\cw*(\c-0.5)},{-\cw*(\r-0.5)}) {\n};
+}
+
+\draw[black!25,line width=0.15pt] (0,0) grid[step=\cw] ({\cw*\N},{-\cw*\N});
+\foreach \i in {1,...,\N}{%
+  \draw[black!75,line width=0.45pt]
+    ({\cw*(\i-1)},{-\cw*(\i-1)}) -- ({\cw*(\i-1)},{-\cw*\i}) -- ({\cw*\i},{-\cw*\i});
+}
+
+\pgfplotstablegetrowsof{\fsec}
+\pgfmathsetmacro{\LASTSEC}{\pgfmathresult-1}
+\foreach \i in {0,...,\LASTSEC}{%
+  \pgfplotstablegetelem{\i}{pos}\of{\fsec}\pgfmathtruncatemacro{\pp}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{section}\of{\fsec}\pgfmathtruncatemacro{\s}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{scc}\of{\fsec}\pgfmathtruncatemacro{\sc}{\pgfplotsretval}%
+  \node[font=\tiny,anchor=south,inner sep=1pt] at ({\cw*(\pp-0.5)},0.3) {\S\s};
+  \node[font=\tiny,anchor=east,inner sep=1pt] at (-1.5,{-\cw*(\pp-0.5)}) {\S\s};
+  \ifnum\sc=1
+    \fill[black] (-0.75,{-\cw*(\pp-0.5)}) circle (0.42);
+  \fi
+}
+\node[font=\scriptsize,anchor=south] at ({\cw*\N/2},3.1) {depends on};
+\node[font=\scriptsize,rotate=90,anchor=south] at (-7.4,{-\cw*\N/2}) {section that depends};
+
+\node[anchor=north west,align=left,inner sep=0pt] at (0,{-\cw*\N-2.8}) {%
+  \begin{minipage}{73.5mm}\tiny
+  \textbf{Axis order} minimizes backward weight and is computed, not the section numbering:
+  62 edges run forward, 8 run backward, and no order does better.
+  Cells left of the staircase are backward edges (heavy border);
+  cells on it are dependencies inside one section (dashed border), 33 edges in all.
+  $\bullet$ marks the 10 sections of the one strongly connected component.\par\smallskip
+  \foreach \i in {0,...,\LASTSEC}{%
+    \pgfplotstablegetelem{\i}{section}\of{\fsec}\pgfmathtruncatemacro{\s}{\pgfplotsretval}%
+    \pgfplotstablegetelem{\i}{label}\of{\fsec}\edef\lbl{\pgfplotsretval}%
+    \textbf{\S\s}~\lbl\quad
+  }\end{minipage}};
+\end{tikzpicture}
+\end{document}

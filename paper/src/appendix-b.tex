@@ -1,0 +1,241 @@
+\begin{multicols}{2}
+\section{Pattern Traceability and Derivation Ledger}
+\label{app:coverage}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+Tables~\ref{tab:forms}--\ref{tab:forms-c} map each of the 79 patterns to the clauses that name it as a ground. Table~\ref{tab:principles} gives the same coverage for the five principles. The mappings are derived from the explicit grounding links in the Specification. Pattern names follow Generalized Patterns; principle names follow Governing Principles. Every pattern and principle has at least one recorded clause link.
+
+Grounding and purpose are separate relations. Under the delegated AI review described in Appendix~\ref{app:repro}, 81 of the 106 clauses have a recorded link to a stated goal and 25 have none. The unlinked clauses are \hyperlink{nss-1.4}{\S1.4}, \hyperlink{nss-6.3}{\S6.3}, \hyperlink{nss-6.4}{\S6.4}, \hyperlink{nss-6.6}{\S6.6}, \hyperlink{nss-6.8}{\S6.8}, \hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-6.12}{\S6.12}, \hyperlink{nss-6.15}{\S6.15}, \hyperlink{nss-6.16}{\S6.16}, \hyperlink{nss-6.17}{\S6.17}, \hyperlink{nss-6.18}{\S6.18}, \hyperlink{nss-7.10}{\S7.10}, \hyperlink{nss-9.5}{\S9.5}, \hyperlink{nss-9.6}{\S9.6}, \hyperlink{nss-10.1}{\S10.1}, \hyperlink{nss-10.2}{\S10.2}, \hyperlink{nss-10.3}{\S10.3}, \hyperlink{nss-10.4}{\S10.4}, \hyperlink{nss-11.2}{\S11.2}, \hyperlink{nss-11.3}{\S11.3}, \hyperlink{nss-11.4}{\S11.4}, \hyperlink{nss-14.2}{\S14.2}, \hyperlink{nss-14.3}{\S14.3}, \hyperlink{nss-14.5}{\S14.5}, and \S14.7. Of the 22 goal units, 17 have an inbound clause link; D4, D5, DR3, P1, and S1 have none. These are gaps in the recorded relations, not proof that the clauses have no purpose.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.07\textwidth} p{0.43\textwidth} r p{0.34\textwidth}@{}}
+\caption{Pattern traceability, part 1 of 3 (\protect\hyperlink{gp-01}{GP-01} to \protect\hyperlink{gp-27}{GP-27}). Names are source headings, and each mechanism is my one-sentence summary of the pattern; clause links are generated from the graph.}
+\label{tab:forms} \\
+\toprule
+Pattern & Name and mechanism & Clauses & Realized in \\
+\midrule
+\endfirsthead%
+\multicolumn{4}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Pattern & Name and mechanism & Clauses & Realized in \\
+\midrule
+\endhead%
+\hyperlink{gp-01}{GP-01}\hypertarget{gp-01}{} & \textbf{Versioned execution plans as the system of record}\newline Plans and all other state that direct the work are kept as versioned files; an instruction outside those files has no force.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-4.1}{\S4.1}, \hyperlink{nss-4.2}{\S4.2}, \hyperlink{nss-4.6}{\S4.6}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-02}{GP-02}\hypertarget{gp-02}{} & \textbf{Verify-and-record iteration discipline}\newline Each pass reads the record, finishes one bounded unit, checks it, and writes the checked result back before the next pass starts.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-4.2}{\S4.2}, \hyperlink{nss-4.7}{\S4.7}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-03}{GP-03}\hypertarget{gp-03}{} & \textbf{The binding work-unit document}\newline One document for each work unit states both the rules to follow and the work that remains, and it overrides spoken instructions.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-4.6}{\S4.6}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-04}{GP-04}\hypertarget{gp-04}{} & \textbf{Structured work record over fragile prose}\newline Dependent work is tracked in one structured record that can be queried, because an agent loses its memory between sessions.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-4.5}{\S4.5}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-05}{GP-05}\hypertarget{gp-05}{} & \textbf{Typed dependencies and derived readiness}\newline Each dependency has a declared type, and a unit is ready to start when no blocking dependency remains.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-4.5}{\S4.5}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-06}{GP-06}\hypertarget{gp-06}{} & \textbf{Documents as the sole coordination medium}\newline Agents coordinate only through shared, durable documents and never through hidden shared state.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-4.1}{\S4.1}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-07}{GP-07}\hypertarget{gp-07}{} & \textbf{Product-anchored decomposition with a dictionary}\newline The breakdown follows what the project delivers, not who does the work, and a dictionary defines each element.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.1}{\S5.1}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-08}{GP-08}\hypertarget{gp-08}{} & \textbf{Purpose-defined units with owner and binary verification}\newline Each unit states the need it serves, and one place holds its obligations, its owner, and a pass-or-fail check.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.2}{\S5.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-09}{GP-09}\hypertarget{gp-09}{} & \textbf{System-level contracts before component detail}\newline Interactions across the system and contracts at its boundaries are fixed first; the inside of each component comes after.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.3}{\S5.3}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-10}{GP-10}\hypertarget{gp-10}{} & \textbf{Work-unit sizing}\newline Each unit fits one bounded effort by one agent; a unit that is too large is split before work starts.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.5}{\S5.5}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-11}{GP-11}\hypertarget{gp-11}{} & \textbf{The verifiable task as the unit of work}\newline A unit of work is a bounded task that ends in an outcome that can be checked, not an activity or a period of time.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.7}{\S5.7}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-12}{GP-12}\hypertarget{gp-12}{} & \textbf{Blast-radius-bounded work units}\newline Before work starts, the area that each unit can affect is estimated, and units that run in parallel must not overlap.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.6}{\S5.6}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-13}{GP-13}\hypertarget{gp-13}{} & \textbf{Nested levels of intent, each with acceptance criteria}\newline Intent is nested in levels; each level has its own acceptance criteria, and the top level holds the purpose.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-3.1}{\S3.1}, \hyperlink{nss-3.3}{\S3.3}, \hyperlink{nss-5.8}{\S5.8}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-14}{GP-14}\hypertarget{gp-14}{} & \textbf{Milestone decomposition with repair-before-progression}\newline Long work is cut into milestones; a milestone must pass its checks, with failures repaired, before the next one starts, and the specification stays frozen.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.9}{\S5.9}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-15}{GP-15}\hypertarget{gp-15}{} & \textbf{Numbered design generations}\newline Each major redesign becomes a numbered generation, identified by declared changes to a few tracked parameters.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-9.6}{\S9.6}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-16}{GP-16}\hypertarget{gp-16}{} & \textbf{Four recursive process groups}\newline Four recursive process groups, which include contract agreement and verification, are the test for a complete project structure.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-1.2}{\S1.2}, \hyperlink{nss-1.4}{\S1.4}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-17}{GP-17}\hypertarget{gp-17}{} & \textbf{Specification-first, self-contained contract before execution}\newline A complete, self-contained contract exists before work starts, and writing the contract is a separate step from doing the work.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-6.13}{\S6.13}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-18}{GP-18}\hypertarget{gp-18}{} & \textbf{Human-approved plan gate}\newline Work starts only after a human reviews, edits, and approves the plan; no change is permitted until then.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-6.13}{\S6.13}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-19}{GP-19}\hypertarget{gp-19}{} & \textbf{The specification is the durable alignment artifact}\newline Alignment and change are managed in the specification, and the realization follows from it.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-6.4}{\S6.4}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-20}{GP-20}\hypertarget{gp-20}{} & \textbf{Unique, verifiable obligation statements}\newline Done means that every statement in an approved set of commitments is met; each statement is unique, measurable, has a declared check, and traces up and down.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-6.5}{\S6.5}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-21}{GP-21}\hypertarget{gp-21}{} & \textbf{Fixed structure for obligation statements}\newline Each obligation states one commitment in a fixed sentence form, so it can be checked and has one meaning.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-6.5}{\S6.5}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-22}{GP-22}\hypertarget{gp-22}{} & \textbf{Obligation hierarchy with fixed record attributes}\newline Obligations form levels that match the decomposition, and each carries the same fixed attributes: owner, reason, and verification method.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-6.6}{\S6.6}, \hyperlink{nss-6.17}{\S6.17}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-23}{GP-23}\hypertarget{gp-23}{} & \textbf{Named owner for every obligation}\newline Each obligation names one accountable person, so someone can be asked to justify it.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-6.7}{\S6.7}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-24}{GP-24}\hypertarget{gp-24}{} & \textbf{Constraint provenance marking}\newline Each constraint is marked as imposed from outside or set by the project; the mark tells whether it can be challenged.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-6.8}{\S6.8}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-25}{GP-25}\hypertarget{gp-25}{} & \textbf{Verification method assigned at authoring}\newline An obligation enters the baseline only when its verification method is declared.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-6.9}{\S6.9}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-26}{GP-26}\hypertarget{gp-26}{} & \textbf{One fixed lens for every interface}\newline Every interface is described in the same fixed form: what crosses it, in which terms, and who can change it.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-6.10}{\S6.10}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-27}{GP-27}\hypertarget{gp-27}{} & \textbf{Public contract, private design, co-updated realization}\newline Each component shows a public contract and hides its design; an agent sees only its own contract and its neighbors' contracts; specification and realization change together; and approval authority grows with the reach and irreversibility of a change. & 6 & \hyperlink{nss-6.3}{\S6.3}, \hyperlink{nss-6.15}{\S6.15}, \hyperlink{nss-6.16}{\S6.16}, \hyperlink{nss-7.19}{\S7.19}, \hyperlink{nss-9.2}{\S9.2}, \hyperlink{nss-15.3}{\S15.3} \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.07\textwidth} p{0.43\textwidth} r p{0.34\textwidth}@{}}
+\caption{Pattern traceability, part 2 of 3 (\protect\hyperlink{gp-28}{GP-28} to \protect\hyperlink{gp-54}{GP-54}). Names are source headings, and each mechanism is my one-sentence summary of the pattern; clause links are generated from the graph.}
+\label{tab:forms-b} \\
+\toprule
+Pattern & Name and mechanism & Clauses & Realized in \\
+\midrule
+\endfirsthead%
+\multicolumn{4}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Pattern & Name and mechanism & Clauses & Realized in \\
+\midrule
+\endhead%
+\hyperlink{gp-28}{GP-28}\hypertarget{gp-28}{} & \textbf{Adversarial expansion of the contract}\newline Before acceptance, adversarial cases are generated against the contract, and the contract is approved in its expanded form.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-6.14}{\S6.14}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-29}{GP-29}\hypertarget{gp-29}{} & \textbf{Named key design parameters, no added coordination roles}\newline A few named design parameters are tracked down to component level, and the agent doing the work keeps structural authority instead of new coordination roles.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-6.18}{\S6.18}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-30}{GP-30}\hypertarget{gp-30}{} & \textbf{Artifact-gated phase sequence}\newline Work moves through fixed phases; each phase produces one durable artifact, and the next phase starts only when that artifact passes verification.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-8.1}{\S8.1}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-31}{GP-31}\hypertarget{gp-31}{} & \textbf{Done is a checkable criterion, never self-assessment}\newline A human writes the done criterion, a party other than the executor checks it, and the strength of the gate follows the risk.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-7.1}{\S7.1}, \hyperlink{nss-7.19}{\S7.19}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-32}{GP-32}\hypertarget{gp-32}{} & \textbf{Verifiability governs what may be delegated}\newline Work may be delegated only when its verification can be reset, repeated at low cost, and gives a clear verdict.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.3}{\S7.3}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-33}{GP-33}\hypertarget{gp-33}{} & \textbf{Acceptance check authored before work begins}\newline The acceptance check is written first and fails first; the work is done when it passes, and the check then stays to catch regressions.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.4}{\S7.4}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-34}{GP-34}\hypertarget{gp-34}{} & \textbf{Establish the verification baseline before changing anything}\newline The existing checks run before any change, and failures that already exist are recorded before new work starts.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.5}{\S7.5}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-35}{GP-35}\hypertarget{gp-35}{} & \textbf{Durable verification corpus}\newline Expected behavior is kept as a growing set of named scenarios, each with a checkable assertion, stored with the system description.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.6}{\S7.6}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-36}{GP-36}\hypertarget{gp-36}{} & \textbf{Layered verification mirroring decomposition}\newline Verification has layers for component, interface, and system, and the checks at each layer also document the expected behavior.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.7}{\S7.7}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-37}{GP-37}\hypertarget{gp-37}{} & \textbf{Verification correspondence for every decomposition level}\newline Each level of the decomposition has a matching level of verification, and the match is explicit.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.8}{\S7.8}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-38}{GP-38}\hypertarget{gp-38}{} & \textbf{Governing verification plan}\newline One plan sets the scope, responsibilities, and completion criteria of all verification before it starts, with rigor set by the declared integrity level.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.9}{\S7.9}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-39}{GP-39}\hypertarget{gp-39}{} & \textbf{Recorded criticality class determines rigor}\newline A human assigns a risk class from several declared dimensions, and that class sets how much obligation and verification rigor applies.\rule[-\normalbaselineskip]{0pt}{0pt} & 5 & \hyperlink{nss-1.6}{\S1.6}, \hyperlink{nss-6.6}{\S6.6}, \hyperlink{nss-7.10}{\S7.10}, \hyperlink{nss-7.19}{\S7.19}, \hyperlink{nss-9.2}{\S9.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-40}{GP-40}\hypertarget{gp-40}{} & \textbf{Generator and verifier are independent}\newline The party that makes a work product does not verify it; an independent party verifies it, and a human accepts it.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-7.11}{\S7.11}, \hyperlink{nss-12.2}{\S12.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-41}{GP-41}\hypertarget{gp-41}{} & \textbf{Acceptance artifacts are inviolable}\newline Nobody may weaken the acceptance criteria without authorization; doing so is a named contract violation that supervision looks for.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.12}{\S7.12}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-42}{GP-42}\hypertarget{gp-42}{} & \textbf{Every contract clause linked to its check}\newline Each contract clause has a unique identifier that links it to the executable checks for it.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-7.13}{\S7.13}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-43}{GP-43}\hypertarget{gp-43}{} & \textbf{Structure outputs for verification}\newline When a result is hard to check, its structure is changed into checkable units with provenance, not only the check.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.14}{\S7.14}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-44}{GP-44}\hypertarget{gp-44}{} & \textbf{Evidence before, verification after, every phase}\newline Each phase starts with a read-only survey of the current state and ends with validation of what it produced.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-8.2}{\S8.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-45}{GP-45}\hypertarget{gp-45}{} & \textbf{Linked stage checks across production}\newline Checks at consecutive production stages form one linked chain with human-set control limits, and their measurements are recorded and compared.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.15}{\S7.15}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-46}{GP-46}\hypertarget{gp-46}{} & \textbf{Model-based verification before costly realization}\newline When physical tests are costly, slow, or cannot be undone, behavior is first verified against a validated model.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-7.16}{\S7.16}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-47}{GP-47}\hypertarget{gp-47}{} & \textbf{Reference realization with drift detection}\newline A maintained reference example shows the current reading of the contract; the system is compared with it, and a human screens any drift before correction.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-7.17}{\S7.17}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-48}{GP-48}\hypertarget{gp-48}{} & \textbf{Durable execution records}\newline Execution leaves durable records that let an independent party diagnose what happened.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-7.18}{\S7.18}, \hyperlink{nss-16.3}{\S16.3}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-49}{GP-49}\hypertarget{gp-49}{} & \textbf{Event-based gates with recorded closure}\newline Each phase transition has written entry criteria, and it closes only with a recorded human decision on every open discrepancy.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-8.3}{\S8.3}, \hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-50}{GP-50}\hypertarget{gp-50}{} & \textbf{Approved baselines at defined levels}\newline The system description is frozen at defined levels by human review at a gate; after that, only controlled change is allowed.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-3.2}{\S3.2}, \hyperlink{nss-9.1}{\S9.1}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-51}{GP-51}\hypertarget{gp-51}{} & \textbf{One controlled change gate}\newline A change to a baselined contract passes one controlled gate with recorded human approval; changes are classified by impact, and exceptions are recorded.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-3.2}{\S3.2}, \hyperlink{nss-9.2}{\S9.2}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-52}{GP-52}\hypertarget{gp-52}{} & \textbf{One configuration status ledger}\newline One ledger holds the status and history of every change, deviation, waiver, and audit result.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-9.3}{\S9.3}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-53}{GP-53}\hypertarget{gp-53}{} & \textbf{Explicit deviation matrix}\newline Each departure from the standard process is stated explicitly in one matrix attached to the governing plan.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-1.5}{\S1.5}, \hyperlink{nss-9.4}{\S9.4}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-54}{GP-54}\hypertarget{gp-54}{} & \textbf{Separate structural and behavioral change}\newline A change either restructures without changing behavior or changes behavior, never both. & 2 & \hyperlink{nss-9.5}{\S9.5}, \hyperlink{nss-16.2}{\S16.2} \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.07\textwidth} p{0.43\textwidth} r p{0.34\textwidth}@{}}
+\caption{Pattern traceability, part 3 of 3 (\protect\hyperlink{gp-55}{GP-55} to \protect\hyperlink{gp-79}{GP-79}). Names are source headings, and each mechanism is my one-sentence summary of the pattern; clause links are generated from the graph.}
+\label{tab:forms-c} \\
+\toprule
+Pattern & Name and mechanism & Clauses & Realized in \\
+\midrule
+\endfirsthead%
+\multicolumn{4}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Pattern & Name and mechanism & Clauses & Realized in \\
+\midrule
+\endhead%
+\hyperlink{gp-55}{GP-55}\hypertarget{gp-55}{} & \textbf{Traceability as a structural property}\newline Identifiers, names, and placement in the system description carry the traceability, so no separate trace file can drift.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-10.1}{\S10.1}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-56}{GP-56}\hypertarget{gp-56}{} & \textbf{Bidirectional traceability, verification and validation separate}\newline Traces run up to parent obligations and down to realization and checks, and verification and validation are traced apart.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-10.2}{\S10.2}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-57}{GP-57}\hypertarget{gp-57}{} & \textbf{Versioned input lineage for reproducible results}\newline Every input to a result is versioned, and the result names the exact versions it used.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-10.3}{\S10.3}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-58}{GP-58}\hypertarget{gp-58}{} & \textbf{The realization system is traced like the product}\newline The processes, supply chain, and support that produce the product are described with the same rigor as the product, and changes on each side trace to the other.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-10.4}{\S10.4}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-59}{GP-59}\hypertarget{gp-59}{} & \textbf{One canonical source of truth per concern}\newline Each concern has exactly one authoritative artifact, and every agent is pointed at the same declaration of what governs what.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-4.3}{\S4.3}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-60}{GP-60}\hypertarget{gp-60}{} & \textbf{Numbered, immutable decision records}\newline Binding decisions are numbered, unchangeable records kept beside what they govern; they state context, options, rationale, status, and a compliance check, and only a new record can reverse one.\rule[-\normalbaselineskip]{0pt}{0pt} & 6 & \hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-11.1}{\S11.1}, \hyperlink{nss-11.2}{\S11.2}, \hyperlink{nss-11.3}{\S11.3}, \hyperlink{nss-11.4}{\S11.4}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-61}{GP-61}\hypertarget{gp-61}{} & \textbf{Continuous risk register with documented human acceptance}\newline One register tracks risks continuously, and each risk has an owner, a mitigation plan, and a recorded human acceptance.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-12.1}{\S12.1}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-62}{GP-62}\hypertarget{gp-62}{} & \textbf{Failure closure by numbered corrective actions}\newline A failure report links root causes to numbered corrective actions, and work does not pass the failure until a human accepts each verified action.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-12.2}{\S12.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-63}{GP-63}\hypertarget{gp-63}{} & \textbf{Invariants as mechanically checkable constraints}\newline Invariants are written as constraints that a machine checks continuously, and each failed check tells the agent how to fix it.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-13.2}{\S13.2}, \hyperlink{nss-16.1}{\S16.1}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-64}{GP-64}\hypertarget{gp-64}{} & \textbf{Declared executor scope}\newline Each agent works inside a declared scope of permitted actions, permitted access, and forbidden boundaries, and the structure enforces that scope.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-13.1}{\S13.1}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-65}{GP-65}\hypertarget{gp-65}{} & \textbf{Disposable executors, durable work, structural boundaries}\newline Agent instances can be replaced; the work, the append-only decision record, a single merge point for concurrent work, and enforced boundaries remain.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-4.2}{\S4.2}, \hyperlink{nss-4.8}{\S4.8}, \hyperlink{nss-13.2}{\S13.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-66}{GP-66}\hypertarget{gp-66}{} & \textbf{Directives as controlled artifacts}\newline Standing instructions to agents are versioned, reviewable artifacts that humans edit directly, not settings hidden in tools.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-4.9}{\S4.9}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-67}{GP-67}\hypertarget{gp-67}{} & \textbf{Delegated work stays isolated behind a summary interface}\newline Delegated work runs in isolation and returns only a short result through a declared interface.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-13.3}{\S13.3}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-68}{GP-68}\hypertarget{gp-68}{} & \textbf{One governing-principles document}\newline A human writes one principles document first, and it is the acceptance background for all later work.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-3.1}{\S3.1}, \hyperlink{nss-14.1}{\S14.1}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-69}{GP-69}\hypertarget{gp-69}{} & \textbf{Governance content discipline}\newline Governance documents hold only what agents cannot find in the system, stay short, refer instead of copy, and mark specifications of work not yet built.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-14.2}{\S14.2}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-70}{GP-70}\hypertarget{gp-70}{} & \textbf{Short entry point into a versioned documentation tree}\newline A short entry document acts as a map into a versioned documentation tree, which mechanical checks keep current.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-14.3}{\S14.3}, \hyperlink{nss-14.8}{\S14.8}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-71}{GP-71}\hypertarget{gp-71}{} & \textbf{Governance bound to component boundaries}\newline Each component carries its own governance document, and the nearest document applies inside it.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-14.4}{\S14.4}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-72}{GP-72}\hypertarget{gp-72}{} & \textbf{Placement and naming are declared structure}\newline Where an artifact is placed and what it is called have a declared meaning, so both are part of the contract.\rule[-\normalbaselineskip]{0pt}{0pt} & 2 & \hyperlink{nss-14.5}{\S14.5}, \hyperlink{nss-14.8}{\S14.8}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-73}{GP-73}\hypertarget{gp-73}{} & \textbf{Documentation lives on the artifact it governs}\newline Documentation and constraints sit on the artifact they govern, because documentation kept apart drifts.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-14.6}{\S14.6}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-74}{GP-74}\hypertarget{gp-74}{} & \textbf{One named owner plus a standing flaw-checker}\newline Each project or component has one accountable owner and a standing independent function that looks for flaws in its work.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-15.1}{\S15.1}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-75}{GP-75}\hypertarget{gp-75}{} & \textbf{Durable human breakpoints in the control flow}\newline Long-running work has durable stop points between decision and action, where a human can review.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-8.5}{\S8.5}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-76}{GP-76}\hypertarget{gp-76}{} & \textbf{Human-owned contract, machine-readable surfaces}\newline The human owns the contract and top-level decomposition, agents build below it, and every surface an agent acts on is machine-readable and checkable.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-4.4}{\S4.4}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-77}{GP-77}\hypertarget{gp-77}{} & \textbf{Reusable task definitions with postconditions and prohibitions}\newline Each recurring kind of task is written once with its procedure, postconditions, prohibitions, required human input, and a summary that shows when it applies.\rule[-\normalbaselineskip]{0pt}{0pt} & 1 & \hyperlink{nss-5.10}{\S5.10}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-78}{GP-78}\hypertarget{gp-78}{} & \textbf{One registry; unregistered does not exist}\newline One machine-readable index lists every component and content item; an item that is not registered does not exist.\rule[-\normalbaselineskip]{0pt}{0pt} & 3 & \hyperlink{nss-14.7}{\S14.7}, \hyperlink{nss-14.8}{\S14.8}, \hyperlink{nss-16.2}{\S16.2}\rule[-\normalbaselineskip]{0pt}{0pt} \\
+\hyperlink{gp-79}{GP-79}\hypertarget{gp-79}{} & \textbf{Why--What--How document skeleton}\newline Each design document separates purpose, method, and realization, and states success criteria, human decision points, committed resources, and rejected alternatives. & 2 & \hyperlink{nss-6.19}{\S6.19}, \hyperlink{nss-11.4}{\S11.4} \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.32\textwidth} r p{0.55\textwidth}@{}}
+\caption{Principle coverage, generated from the same graph export.}
+\label{tab:principles} \\
+\toprule
+Principle & Clauses & Realized in \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Principle & Clauses & Realized in \\
+\midrule
+\endhead%
+Component-Oriented Decomposition (COD) & 7 & \hyperlink{nss-5.1}{\S5.1}, \hyperlink{nss-5.2}{\S5.2}, \hyperlink{nss-5.3}{\S5.3}, \hyperlink{nss-6.1}{\S6.1}, \hyperlink{nss-6.2}{\S6.2}, \hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-16.2}{\S16.2} \\
+Layered System Architecture (LSA) & 6 & \hyperlink{nss-1.7}{\S1.7}, \hyperlink{nss-1.8}{\S1.8}, \hyperlink{nss-3.1}{\S3.1}, \hyperlink{nss-3.2}{\S3.2}, \hyperlink{nss-6.12}{\S6.12}, \hyperlink{nss-16.2}{\S16.2} \\
+Integrated Modularity First (IMF) & 1 & \hyperlink{nss-5.4}{\S5.4} \\
+Verification-First Engineering (VFE) & 16 & \hyperlink{nss-1.3}{\S1.3}, \hyperlink{nss-1.6}{\S1.6}, \hyperlink{nss-4.7}{\S4.7}, \hyperlink{nss-5.7}{\S5.7}, \hyperlink{nss-5.9}{\S5.9}, \hyperlink{nss-6.2}{\S6.2}, \hyperlink{nss-6.9}{\S6.9}, \hyperlink{nss-7.1}{\S7.1}, \hyperlink{nss-7.2}{\S7.2}, \hyperlink{nss-7.4}{\S7.4}, \hyperlink{nss-7.11}{\S7.11}, \hyperlink{nss-7.19}{\S7.19}, \hyperlink{nss-15.2}{\S15.2}, \hyperlink{nss-15.3}{\S15.3}, \hyperlink{nss-16.2}{\S16.2}, \hyperlink{nss-16.3}{\S16.3} \\
+Specifications as Contracts (SaC) & 11 & \hyperlink{nss-1.1}{\S1.1}, \hyperlink{nss-1.3}{\S1.3}, \hyperlink{nss-1.5}{\S1.5}, \hyperlink{nss-1.7}{\S1.7}, \hyperlink{nss-6.1}{\S6.1}, \hyperlink{nss-6.2}{\S6.2}, \hyperlink{nss-6.4}{\S6.4}, \hyperlink{nss-6.13}{\S6.13}, \hyperlink{nss-7.12}{\S7.12}, \hyperlink{nss-15.2}{\S15.2}, \hyperlink{nss-16.2}{\S16.2} \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+\subsection{Derivation ledger}
+
+The 79 forms in Tables~\ref{tab:forms}--\ref{tab:forms-c} are the output of a screen and a generalization pass over 219 statements collected from recorded practice, and the arithmetic of that funnel closes exactly. The screen read each of the 219 in isolation against four gates and returned 113 Keep and 106 Reject. Generalization processed the 113, plus five Rejects promoted back with written justification, for 118 inputs. Of those 118, 79 were adopted as domain-general forms and 39 were discarded into a named adopted form. The 101 Rejects that were never promoted did not enter generalization and produced no form. The screening and generalization records assign exactly one terminal disposition to each of the 219 statements: 101 remain rejected, 79 become patterns, and 39 are merged into named patterns.
+
+A promotion required both conditions, not either one: the recorded reject reason had to name domain-generality as the primary failure, and the candidate had to carry a transferable mechanism that strengthens decomposition, contracts, or verification. Four of the five promotions were adopted and one was discarded on the same subsumption rule as any other candidate. The four adopted are the blast-radius bound on a work unit (\hyperlink{gp-12}{GP-12}), the rule that establishes the verification baseline before anything changes (\hyperlink{gp-34}{GP-34}), the acceptance check authored before work begins (\hyperlink{gp-33}{GP-33}), and the reference realization with drift detection (\hyperlink{gp-47}{GP-47}). The fifth, an enforced write-fail-fix cycle, became D-39 and is carried by \hyperlink{gp-33}{GP-33}.
+
+Each of the 39 candidates merged during generalization names the adopted form or forms that carry its mechanism. This accounts for all 118 generalization inputs; the 101 screening rejects remained outside that set. Table~\ref{tab:merges} lists all 39, each with the adopted forms that carry its mechanism, and the count of subsumers is a property of the merge and not a measure of the candidate: a candidate that bundled three separable mechanisms resolves into three forms. This is the ledger behind the claim that generalization reduced mechanisms rather than renaming them.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}l p{0.44\textwidth} p{0.34\textwidth}@{}}
+\caption{The 39 merged candidates and the adopted forms that carry each one. Derived from the screening and generalization records; every entry resolves to at least one adopted form.}
+\label{tab:merges} \\
+\toprule
+Code & Candidate & Carried by \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Code & Candidate & Carried by \\
+\midrule
+\endhead%
+D-01 & Multisession Development Memory Pattern & \hyperlink{gp-01}{GP-01}, \hyperlink{gp-02}{GP-02}, \hyperlink{gp-31}{GP-31} \\
+D-02 & Deep Agents Subagent Context Isolation & \hyperlink{gp-67}{GP-67} \\
+D-03 & Spec Kit Command Sequence With Quality Gates & \hyperlink{gp-30}{GP-30}, \hyperlink{gp-68}{GP-68}, \hyperlink{gp-44}{GP-44} \\
+D-04 & Spec Plan Todo Documentation Trilogy & \hyperlink{gp-30}{GP-30}, \hyperlink{gp-01}{GP-01} \\
+D-05 & Todo Md Session Tracker & \hyperlink{gp-01}{GP-01} \\
+D-06 & Deep Agents Planning File System Subagents Chase & \hyperlink{gp-01}{GP-01}, \hyperlink{gp-67}{GP-67} \\
+D-07 & Kiro Spec Requirements Design Tasks Triad & \hyperlink{gp-30}{GP-30}, \hyperlink{gp-17}{GP-17}, \hyperlink{gp-22}{GP-22} \\
+D-08 & Isolated Sessions Per Task Unit & \hyperlink{gp-11}{GP-11} \\
+D-09 & Evaluation Datasets As Verification Artifacts & \hyperlink{gp-35}{GP-35} \\
+D-10 & Folder Based Testing & \hyperlink{gp-35}{GP-35} \\
+D-11 & Spec First Workflow Prescription Grove & \hyperlink{gp-17}{GP-17}, \hyperlink{gp-31}{GP-31}, \hyperlink{gp-32}{GP-32} \\
+D-12 & Requirements Traceability Via Doors Lockheed & \hyperlink{gp-22}{GP-22}, \hyperlink{gp-56}{GP-56} \\
+D-13 & Baseline Gated Configuration Management Aerospace & \hyperlink{gp-50}{GP-50}, \hyperlink{gp-49}{GP-49} \\
+D-14 & Iv V Portfolio Based Risk Assessment & \hyperlink{gp-39}{GP-39} \\
+D-15 & Jpl Design Principles Document & \hyperlink{gp-68}{GP-68} \\
+D-16 & Product Breakdown Structure Specification Tree & \hyperlink{gp-07}{GP-07} \\
+D-17 & Incose Handbook Formality Scaling & \hyperlink{gp-39}{GP-39} \\
+D-18 & Specs Directory Formal Documentation Layer & \hyperlink{gp-70}{GP-70} \\
+D-19 & Agents Md Contributor Contract With Disclaimer & \hyperlink{gp-69}{GP-69}, \hyperlink{gp-70}{GP-70} \\
+D-20 & Agents Md Module Interface Adr Conventions & \hyperlink{gp-60}{GP-60}, \hyperlink{gp-37}{GP-37}, \hyperlink{gp-27}{GP-27} \\
+D-21 & Evaluation Embedded At Every Stage & \hyperlink{gp-37}{GP-37}, \hyperlink{gp-36}{GP-36}, \hyperlink{gp-48}{GP-48} \\
+D-22 & Why What How Three Document System & \hyperlink{gp-79}{GP-79}, \hyperlink{gp-62}{GP-62} \\
+D-23 & Model Factory Versioned Dag Pipeline Kant & \hyperlink{gp-05}{GP-05}, \hyperlink{gp-01}{GP-01} \\
+D-24 & Named Root Instruction Files & \hyperlink{gp-69}{GP-69}, \hyperlink{gp-70}{GP-70} \\
+D-25 & Rule File Hygiene & \hyperlink{gp-69}{GP-69} \\
+D-26 & Deep Agents Skills Directory & \hyperlink{gp-77}{GP-77} \\
+D-27 & Pointer Style Shared Instructions File & \hyperlink{gp-59}{GP-59}, \hyperlink{gp-71}{GP-71} \\
+D-28 & Adr Status Lifecycle And Superseding & \hyperlink{gp-60}{GP-60} \\
+D-29 & Adr Decision Log As Reconstructable History & \hyperlink{gp-60}{GP-60} \\
+D-30 & Lightweight Adr Technique & \hyperlink{gp-60}{GP-60} \\
+D-31 & Architectural Decision Knowledge Management & \hyperlink{gp-60}{GP-60} \\
+D-32 & Madr Template & \hyperlink{gp-60}{GP-60} \\
+D-33 & Y Statement Decision Format & \hyperlink{gp-60}{GP-60} \\
+D-34 & Locally Visible Permission Checks & \hyperlink{gp-73}{GP-73} \\
+D-35 & Wafer Acceptance Test Process Control Monitor Tsmc & \hyperlink{gp-45}{GP-45} \\
+D-36 & Model As Single Source Of Truth Airbus & \hyperlink{gp-59}{GP-59} \\
+D-37 & Software 3 State In Indexed Objects Garg & \hyperlink{gp-01}{GP-01} \\
+D-38 & Subagent Declaration Contract & \hyperlink{gp-64}{GP-64} \\
+D-39 & Tdd Red Green Refactor Enforced Cycle Beck & \hyperlink{gp-33}{GP-33} \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+Claude Opus~5 checked the 79 adopted forms against their source pages for fidelity, domain-generality, human authority, mechanism reduction, terminology, and subsumption. The same model performed the correction pass recorded in the verification log. All 101 distinct source pages were reopened for that check. It returned 58 Pass, 21 Needs Revision, and no Fail, a defect rate of 26.6 percent on a pass whose output was already treated as final. Two mechanical scans supported the reading: one for domain-specific vocabulary surviving in a restatement, and one for load-bearing terms used but never defined. The vocabulary scan found two residual software idioms across all 79 restatements. This result concerns wording. The assessment of domain assumptions came from the substantive review and the corrections described below.
+
+The 21 defects clustered into five recurring causes: undefined load-bearing vocabulary, unconditional statements that break in capital-intensive domains, mechanism facets lost when one candidate subsumed another, four conflicts between forms, and one leak of a domain-specific assumption. All 21 were correctable by rewording and none required reopening the screen or rerunning generalization. The correction pass edited only the restatement, the test, and where the defect lived there the abstract mechanism; it extended the shared terminology block from 13 to 21 terms, and it touched exactly one passing form to resolve a conflict from the side that left the more heavily depended-upon clause unchanged. Each of the four conflicts was resolved by narrowing one side only.
+
+GPT-6 Astra then checked the revised text against each of the 21 recorded defects. This was a separate review by a model of another family. All 21 corrections were present, matched their logged description, and closed the defect they were written to close. No correction reintroduced domain-specific vocabulary, weakened human authority, or created a new conflict between forms. Two lesser mechanisms were deferred rather than restored, each with a written reason and each covered by another adopted form or by a principle; a deferral recorded as a deferral is the reason this appendix can state that nothing was silently dropped.
+\end{multicols}

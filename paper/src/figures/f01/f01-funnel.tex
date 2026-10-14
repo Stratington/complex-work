@@ -1,0 +1,60 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfplotstable}
+\begin{document}
+\begin{tikzpicture}
+\pgfplotstableread[col sep=comma]{f01-funnel.csv}\fdata
+\begin{axis}[
+    xbar stacked,
+    bar width=7mm,
+    scale only axis,
+    width=64mm,
+    height=52mm,
+    xmin=0, xmax=250,
+    ymin=-0.5, ymax=3.6,
+    ytick={0,1,2,3},
+    yticklabels={Clauses,Generalized,Admitted,Screened},
+    yticklabel style={font=\footnotesize},
+    axis x line=bottom,
+    axis y line=left,
+    y axis line style={draw=none},
+    xtick={0,50,100,150,200,250},
+    xlabel={statements, candidates, or clauses},
+    xlabel style={font=\scriptsize},
+    x tick style={draw=none},
+    y tick style={draw=none},
+    tick label style={font=\scriptsize},
+    x axis line style={black!40,-},
+    every axis plot/.append style={draw=none},
+    clip=false,
+    after end axis/.code={
+      \draw[white] (axis cs:113,2.72) -- (axis cs:113,3.28);
+      \draw[white] (axis cs:113,1.72) -- (axis cs:113,2.28);
+      \draw[white] (axis cs:79,0.72)  -- (axis cs:79,1.28);
+      \node[font=\footnotesize,text=white]   at (axis cs:56.5,3) {113 kept};
+      \node[font=\footnotesize,text=black!85] at (axis cs:166,3) {106 rejected};
+      \node[font=\footnotesize,text=white]   at (axis cs:56.5,2) {113};
+      \node[font=\footnotesize,text=white]   at (axis cs:39.5,1) {79 adopted};
+      \node[font=\footnotesize,text=white]   at (axis cs:53,0)   {clauses};
+      \node[font=\scriptsize,text=black!75,anchor=west] at (axis cs:253,3) {219};
+      \node[font=\scriptsize,text=black!75,anchor=west] at (axis cs:253,2) {118};
+      \node[font=\scriptsize,text=black!75,anchor=west] at (axis cs:253,1) {118};
+      \node[font=\scriptsize,text=black!75,anchor=west] at (axis cs:253,0) {106};
+      \draw[black!55] (axis cs:130,2.72) -- (axis cs:130,2.55);
+      \node[font=\scriptsize,text=black!80,anchor=west]
+          at (axis cs:124,2.42) {{\bfseries 101} leave at the screen};
+      \node[font=\scriptsize,text=black!80,anchor=west]
+          at (axis cs:124,2) {{\bfseries +5} re-enter with justification};
+      \node[font=\scriptsize,text=black!80,anchor=west]
+          at (axis cs:124,1) {{\bfseries 39} leave as subsumed};
+    },
+]
+\addplot[fill=black!78] table[x=main,y=y] {\fdata};
+\addplot[fill=black!45] table[x=reentry,y=y] {\fdata};
+\addplot[fill=black!18] table[x=exit,y=y] {\fdata};
+\end{axis}
+\end{tikzpicture}
+\end{document}

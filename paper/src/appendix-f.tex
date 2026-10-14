@@ -1,0 +1,1642 @@
+\section{The Framework and Its Core Documents}
+\label{app:framework}
+
+\begin{multicols}{2}
+The Framework for Keeping Complex Work Coherent Across Time is a system of principles, normative requirements, domain bindings, guidance, and checks for complex engineering work. The current release has five parts.
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+\item \textbf{Governing Principles}: the principles that define the governing model. Appendix~\ref{app:principles} reproduces them.
+\item \textbf{Normative Structural Specification}: the mandatory project architecture that puts the Governing Principles into practice. Appendix~\ref{app:spec} reproduces it.
+\item \textbf{Domain Profiles}: bindings of the abstract information model to concrete artifacts, locations, formats, and tools. The current reference bindings are the software profile and a hardware profile for physical systems. Appendix~\ref{app:entities} gives the software reference layout and the hardware differences.
+\item \textbf{Guides}: explanatory and adoption material that helps people apply the framework. A guide adds no normative requirement and overrides none.
+\item \textbf{Normative Checks}: deterministic checks that enforce the mechanically verifiable requirements of the Specification. The Specification states them in its \hyperlink{nss-16}{\S16}, and Appendix~\ref{app:checks} lists the minimum set.
+\end{itemize}
+
+The Governing Principles and the Specification are the domain-general core. The Domain Profiles, the Guides, and the Normative Checks support the use of that core. They do not override it.
+\end{multicols}
+
+The two core documents follow as issued, at version~1.0. The SHA-256 digest of each source file identifies the exact text reproduced here:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+\item Governing Principles: {\footnotesize\texttt{76d4f0ed447fe1f4025446b66af0b662ef13b851b266162197ad06427fed9fa7}}
+\item Normative Structural Specification: {\footnotesize\texttt{35345a1e802b127e64740b2a15dcd873fb315b5cada882b4dacef0fc709a9f59}}
+\end{itemize}
+
+\subsection{Governing Principles}
+\label{app:principles}
+
+\begin{multicols}{2}
+
+\noindent{\large\bfseries Governing Principles for Complex Engineering Projects}\par\medskip
+
+Author: Franz Bruckhoff
+
+\hypertarget{gp-COD}{}
+
+\subsubsection*{Component-Oriented Decomposition}
+
+AI Agents working on complex long-horizon projects require stable, bounded units of work with explicit Contracts. They get that through Hierarchical Component Specifications, and not through flat lists of features or a monolithic requirements document.
+
+This holds for software Systems, physical megastructures such as floating cities, energy Systems, transportation networks, or any other engineered System of high complexity.
+
+Large Systems that stay coherent over time are decomposed into pieces with clear responsibilities, interfaces, and ownership boundaries. Those pieces are Components, such as modules, services, Subsystems, libraries, AI Agents, and layers. Without that decomposition the System becomes a monolith that no human team and no set of AI Agents can reason about, divide into parallel work, or change without constant global coordination.
+
+It's therefore essential to prefer Components that can be replaced, upgraded, or removed with limited disruption to the rest of the System. Clean interfaces and explicit Contracts make this practical. Both humans and AI Agents benefit when a Component can be swapped without forcing redesign of high-stability elements.
+
+Feature-centric thinking works only while the System is still small and mostly user-facing. Once the majority of the work is internal infrastructure, coordination logic, reliability mechanisms, or performance-critical paths, "features" become a forced and misleading frame. In software Systems that have end users, there are obviously user-facing Capabilities. In a floating city there are residential modules, power generation, desalination, docking systems, emergency response, governance interfaces, and so on. Some of those Capabilities are commonly called "features".
+
+But the word "feature" has certain implications as a unit of work and specification:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item It carries the assumption that the primary consumer is an end user and that the right framing is a user story.
+
+\item Thinking in terms of "features" works cleanly only while the System is still small and mostly surface-level.
+
+\item Once the majority of the effort is internal (coordination, reliability, interfaces between Subsystems, performance under load, safety Constraints, long-term maintainability, etc), forcing everything into "features" becomes artificial and misleading.
+
+\end{itemize}
+
+A floating city’s power distribution network, structural integrity monitoring, or waste-processing loops are not usefully described as features with user stories. They are Components with required behaviors, interfaces, Constraints, and Acceptance Criteria. The same is true for the majority of the work inside any ambitious software System after the first few user-visible slices.
+
+So how do we go about features then?
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item A user-facing Capability is either its own Component or a required behavior of a larger Component.
+
+\item When it's truly end-user facing, you may include one or a few short "user story" statements inside the Rationale section of the Component's Specification, which helps explain why the Component exists from the user's perspective.
+
+\end{itemize}
+
+In some rare edge cases like pure dataflow Systems the primary mental model starts with flows or roles rather than static Components. But even then those Systems end up being implemented as Components with defined interfaces.
+
+There are some scenarios where the Component lens becomes secondary and impractical:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item If you work on pure open-ended scientific exploration with no engineering deliverable or target artifact.
+
+\item Certain forms of pure mathematical or theoretical work producing a single unified proof or insight rather than a constructed System.
+
+\item Small-scale artistic or expressive works where modularity would actively harm the intended holistic quality.
+
+\item Extremely short-lived, single-person prototypes where the overhead of formal decomposition exceeds any benefit (you already know that those days are counted).
+
+\end{itemize}
+
+But even in those scenarios, some form of decomposition emerges once the work grows beyond a certain size.
+
+Therefore it is correct to treat Component-oriented decomposition as the default mental model.
+
+\hypertarget{gp-LSA}{}
+
+\subsubsection*{Layered System Architecture}
+
+AI Agents working on complex long-horizon projects need a stable source of truth. They operate by reading Specifications, code, and Designs, then proposing or making changes. When essential purpose and critical Constraints are entangled with volatile implementation details, AI Agents must continually re-infer what must remain true. This increases inconsistency and error.
+
+Stable, high-value parts of the System must not depend on volatile implementation details.
+
+The essential purpose, Invariants (conditions or properties that must always remain true for the System, regardless of its state), and critical behaviors are treated as high-stability elements. These define what the System is and what it must guarantee.
+
+The particular ways those guarantees are achieved (choice of technologies, materials, vendors, control systems, construction methods, interfaces, delivery mechanisms, configuration values, operating parameters, etc.) are treated as lower-stability elements.
+
+Configuration values and parameters that belong to lower-stability elements should be kept explicit and external rather than buried inside high-stability design or logic.
+
+Dependencies must flow from lower-stability elements toward higher-stability elements. High-stability elements must never depend on lower-stability elements.
+
+Consequences:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item AI Agents and humans can reason about, verify, and evolve the essential purpose and Invariants without being entangled in particular implementation choices.
+
+\item Changes to materials, vendors, software frameworks, sensors, or construction techniques do not force redesign of what the System must guarantee.
+
+\item The Blast Radius of AI Agent actions is limited: AI Agents may freely modify lower-stability elements without silently breaking the high-stability core.
+
+\item High-stability elements can carry strong, relatively unchanging Acceptance Criteria that AI Agents or verification processes can check independently of current Realization details.
+
+\item Multiple AI Agents can work on different lower-stability parts in parallel while sharing a common, stable Contract.
+
+\item Over long-horizon projects, the core remains authoritative even as implementation technologies and methods are replaced repeatedly.
+
+\end{itemize}
+
+This principle applies equally to software Systems and to physical Systems like floating cities.
+
+In software, high-stability elements include core domain rules, business Invariants, and critical System behaviors. Lower-stability elements include particular databases, web frameworks, UI libraries, cloud providers, or third-party services.
+
+In a floating city, high-stability elements include structural integrity under marine conditions, life-support balance, safety Invariants, and long-term habitability. Lower-stability elements include specific hull materials, power-generation hardware, sensor models, or construction sequences.
+
+\hypertarget{gp-IMF}{}
+
+\subsubsection*{Integrated Modularity First}
+
+For complex, long-horizon Systems, prefer a coherent design with strong internal Component boundaries over early hard separation.
+
+A coherent design means the System has a clear overall purpose and fits together logically. Its parts work toward the same goals without conflicting or creating unnecessary complexity.
+
+Establish clear Components and interfaces from the beginning. Keep the System as integrated as practical so that humans and AI Agents can reason about it, verify it, and evolve it with manageable coordination cost. Introduce hard separation only when the benefits clearly outweigh the added coordination and interface costs. Hard separation includes independent ownership, strong operational or physical isolation, independent fabrication, or independent evolution.
+
+Valid reasons for hard separation include:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Different parts must evolve, be fabricated, or be operated at significantly different rates or under different constraints
+
+\item Failure isolation is required so that problems in one part cannot cascade
+
+\item Regulatory, safety, security, or ownership boundaries demand isolation
+
+\item Geographic, environmental, or latency constraints force physical separation
+
+\end{itemize}
+
+Premature hard separation increases interface complexity, coordination overhead, and verification difficulty. Start with strong modularity inside a coherent System. Separate only when the need is concrete and the trade-offs are understood.
+
+In software, this means starting with a modular monolith (one coherent codebase with clear internal Components) rather than jumping early to microservices. Split into separate services only when independent scaling, deployment, or failure isolation becomes a real requirement.
+
+For a floating city, this means designing the overall structure, power, life support, and modules as an integrated System with clear interfaces, rather than treating every major Subsystem as fully independent from the start. Some strong physical separations (such as watertight compartments and fire zones) are required early for safety. Beyond those necessary isolations, introduce further hard separation only when safety, environmental, or functional constraints demand it.
+
+\hypertarget{gp-VFE}{}
+
+\subsubsection*{Verification-First Engineering}
+
+No unit of work is done until it has been verified against explicit Acceptance Criteria and corrected until those criteria are met. Every meaningful artifact must have checkable criteria before it is accepted.
+
+The required loop is:
+
+\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Draft against a stated set of Acceptance Criteria or Constraints.
+
+\item Verify the draft against those criteria.
+
+\item Identify specific defects (not vague dissatisfaction).
+
+\item Correct only the identified defects. If the criteria themselves are incomplete or incorrect, the human must revise them; AI Agents may not alter Acceptance Criteria.
+
+\item Re-verify. Accept and freeze the result only when the criteria are satisfied.
+
+\end{enumerate}
+
+Human acceptance is mandatory for high-stability, high-blast-radius, or high-stakes artifacts (core Invariants, major Component Specifications, safety-critical Designs, significant architectural decisions, and anything that defines System-level "done"). Lower-level work that sits inside already-accepted Contracts and criteria may be accepted by automated checks or by AI Agents operating strictly within those pre-approved bounds. The depth of verification must match the Blast Radius and stability of the artifact.
+
+AI Agents may generate verification evidence and perform checks. They may not change the Acceptance Criteria.
+
+Consequences:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Drift and silent quality loss are reduced because every change is checked against a fixed reference.
+
+\item AI Agents receive clear, local signals about what is wrong instead of global or ambiguous feedback.
+
+\item Rework stays bounded; corrections target concrete failures rather than restarting from scratch.
+
+\item Long-horizon coherence is protected because accepted artifacts remain stable until a new, justified change is required.
+
+\item Human attention stays on the decisions that only a human may make.
+
+\end{itemize}
+
+The principle is domain-general. In software it governs code, tests, and specifications. In a floating city it governs design documents, calculations, safety cases, and fabrication specifications. The form of the evidence differs between domains, but in every domain work is incomplete until it is verified.
+
+An artifact that has not passed this loop is not done.
+
+\hypertarget{gp-SaC}{}
+
+\subsubsection*{Specifications as Contracts}
+
+Specifications that define required behaviors, interfaces, or Acceptance Criteria are Contracts, not suggestions.
+
+These Contracts state what must be true and what "done" means. Humans and AI Agents implement against them. They do not reinterpret, expand, or weaken them without explicit human authority.
+
+Changing a Contract requires human decision. AI Agents may propose revisions; they may not enact them. Once accepted, a Contract remains the authoritative reference until the human revises it.
+
+Consequences:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Work has a fixed target instead of open-ended interpretation.
+
+\item Implementation drift is constrained.
+
+\item Verification has a stable reference.
+
+\item Humans keep control of purpose, scope, and the definition of "done".
+
+\end{itemize}
+
+This applies to any engineered System. The documents may be Component Specifications, interface definitions, design specifications, or safety requirements. In each case, the document is a Contract.
+
+A Specification treated as optional guidance is not a Contract and does not satisfy this principle.
+
+\subsubsection*{Normative Structural Specification}
+
+The Normative Structural Specification is written in full in Normative Structural Specification. That file is the authoritative structural document of the Framework for Keeping Complex Work Coherent Across Time.
+
+The Specification defines the required project artifacts (VISION, Governing Principles, the Component Specification Graph, Interface Declarations, Decision Records, Verification Artifacts, Baselines, Registers, and the Work Record) together with their layout, their content rules, and the deterministic checks that enforce them. It operationalizes the five principles above: every clause is traceable to one or more of the 79 Adopted structural forms in research/project-structure-patterns/Generalized Patterns.md or to a frozen principle.
+
+In any conflict over project structure, the Normative Structural Specification governs.
+
+\end{multicols}
+
+\clearpage
+\subsection{Normative Structural Specification}
+\label{app:spec}
+
+\begin{multicols}{2}
+
+\noindent{\large\bfseries Normative Structural Specification for Complex Engineering Projects}\par\medskip
+
+Author: Franz Bruckhoff
+
+This is the structural document of the Framework for Keeping Complex Work Coherent Across Time. It states what an adopting Project must contain, how the elements relate, and which rules bind them. Where each element lives is declared by each Project's Path Map, not by this Specification (\hyperlink{nss-1.8}{\S1.8}, \hyperlink{nss-14.8}{\S14.8}). It operationalizes the five core principles of Governing Principles: Component-Oriented Decomposition (\hyperlink{gp-COD}{COD}), Layered System Architecture (\hyperlink{gp-LSA}{LSA}), Integrated Modularity First (\hyperlink{gp-IMF}{IMF}), Verification-First Engineering (\hyperlink{gp-VFE}{VFE}), and Specifications as Contracts (\hyperlink{gp-SaC}{SaC}).
+
+Every normative clause is traceable to one or more of the 79 Adopted structural forms (\hyperlink{gp-01}{GP-01} to \hyperlink{gp-79}{GP-79}) in Generalized Patterns or to a frozen principle. Each clause ends with a traceability bracket naming its grounds. \hyperlink{nss-appB}{Appendix B} gives the complete mapping. Where this Specification and any other framework document conflict on structure, this Specification governs.
+
+\textbf{Scope of application}
+
+This Specification defines the structural foundation for Projects that adopt the Framework for Keeping Complex Work Coherent Across Time. Its clauses bind an adopting Project, and a deviation is allowed only as recorded in the Deviation Matrix (\hyperlink{nss-1.5}{\S1.5}, \hyperlink{nss-9.4}{\S9.4}). Not every clause is equally relevant to every Project. The core sections apply to all adopting Projects. The depth and formality with which each required artifact is produced scale with the Criticality Class of the Component or Capability it governs and with the overall risk and complexity of the Project, as defined in \hyperlink{nss-1.6}{\S1.6} and \hyperlink{nss-7.10}{\S7.10}.
+
+\hypertarget{nss-1}{}
+
+\subsubsection*{1 Purpose, Scope, and Compliance}
+
+\hypertarget{nss-1.1}{}
+
+\par\smallskip\noindent\textbf{1.1 Authority}\par\nopagebreak
+
+This Specification defines the required structure of every Project built under the Framework for Keeping Complex Work Coherent Across Time: the required artifacts, their content rules, their directional relationships, and the Normative Checks that enforce them. It is the structural reference for humans and AI Agents alike. Concrete storage of the artifacts is declared by each Project's Path Map (\hyperlink{nss-1.8}{\S1.8}, \hyperlink{nss-14.8}{\S14.8}). [Goal \hyperlink{nss-6.2}{\S6.2}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-1.2}{}
+
+\par\smallskip\noindent\textbf{1.2 Domain of application}\par\nopagebreak
+
+This Specification is intended to support engineered Systems of high complexity across domains, including software platforms, robotic Systems, and floating cities. Its core clauses avoid domain-specific assumptions. Domain practice adds the methods and controls required by each field, with any structural deviation recorded under \hyperlink{nss-1.5}{\S1.5}. [Goal P3; \hyperlink{gp-16}{GP-16}]
+
+\hypertarget{nss-1.3}{}
+
+\par\smallskip\noindent\textbf{1.3 Human authority}\par\nopagebreak
+
+Purpose, Invariants, risk acceptance, and the definition of done belong to the human owner. AI Agents may draft, propose, and implement; they may not enact changes to purpose, Contracts, Acceptance Criteria, or risk acceptance. Every clause of this Specification preserves this division. [Goal P4; Goal \hyperlink{nss-5}{\S5}; \hyperlink{gp-VFE}{VFE}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-1.4}{}
+
+\par\smallskip\noindent\textbf{1.4 Completeness of structure}\par\nopagebreak
+
+The Project structure must cover four recursive process groups at every level of the System:
+
+\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item \textbf{Agreement}: formal commitments with external parties (customers, users, partners, regulators, vendors, contractors, etc.).
+
+\item \textbf{Project-enabling}: the supporting work that makes the Project possible (tooling, configuration, quality infrastructure, shared services, etc.).
+
+\item \textbf{Technical management}: planning, monitoring, decision-making, risk handling, control of the work, etc.
+
+\item \textbf{Technical}: the actual engineering work (defining, designing, realizing, verifying, etc.) of the System.
+
+\end{enumerate}
+
+These groups classify required coverage. They do not prescribe any particular life-cycle model. No level of the System may omit the agreement processes or the verification processes. [\hyperlink{gp-16}{GP-16}]
+
+\hypertarget{nss-1.5}{}
+
+\par\smallskip\noindent\textbf{1.5 Compliance and deviation}\par\nopagebreak
+
+Every clause of this Specification is binding. A deviation is allowed only when it is recorded as an explicit entry in the Deviation Matrix (\hyperlink{nss-9.4}{\S9.4}). Each entry must name:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item what is being waived,
+
+\item why the waiver is needed, and
+
+\item which named human accepted the risk.
+
+\end{itemize}
+
+The matrix starts empty. Most Projects will have few or no entries. Implicit or unspoken deviation is prohibited. The purpose of this rule is transparency and human accountability, not bureaucracy. [\hyperlink{gp-53}{GP-53}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-1.6}{}
+
+\par\smallskip\noindent\textbf{1.6 Formality scales with risk; every required Entity must exist}\par\nopagebreak
+
+No Entity required by this Specification may be omitted; only the depth of its instances may be adjusted.
+
+The amount of detail, documentation, and review applied to each artifact scales with two factors:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item the Criticality Class of the Component or Capability it governs (see \hyperlink{nss-7.10}{\S7.10}), and
+
+\item the overall risk and complexity of the Project.
+
+\end{itemize}
+
+Low-criticality work may use lightweight versions of the required artifacts. High-criticality or safety-relevant work must use fuller, more rigorous versions. The decision to use a lighter or fuller version must be recorded with a short rationale in the Criticality Record (\hyperlink{nss-7.10}{\S7.10}).
+
+This clause governs the depth of a required artifact only; it does not override \hyperlink{nss-1.5}{\S1.5}. Omission of a required Entity remains possible solely as an entry in the Deviation Matrix (\hyperlink{nss-9.4}{\S9.4}). [\hyperlink{gp-39}{GP-39}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-1.7}{}
+
+\par\smallskip\noindent\textbf{1.7 This Specification is high-stability}\par\nopagebreak
+
+Individual Projects must not create their own versions of this Specification. If a Project needs to deviate from any clause, it must do so explicitly using the deviation process in \hyperlink{nss-1.5}{\S1.5}.
+
+The Specification may be changed only by a human decision recorded as a Decision Record (\hyperlink{nss-11}{\S11}) that states the reason for the change and its consequences. [\hyperlink{gp-LSA}{LSA}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-1.8}{}
+
+\par\smallskip\noindent\textbf{1.8 Abstract information model, concrete storage}\par\nopagebreak
+
+This Specification defines an abstract information architecture: the required Entities, their required content, their directional relationships, and the Gates that bind them. It does not prescribe concrete storage. Filesystem paths, directory trees, file names, and serialization formats (Markdown, YAML, JSON, domain-native model formats, etc.) are declared by each Project in its Path Map (\hyperlink{nss-14.8}{\S14.8}).
+
+This separation is deliberate, for four reasons:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item \textbf{No ontological mismatch.} A standard defines requirements and an information model. Hardcoded storage paths would conflate the meta-model of the architecture with one storage implementation of it.
+
+\item \textbf{Domain-native tooling.} Domains work in different native formats: declarative interface schemas, structured data files, parametric models, tabular mass-property data, etc. Forcing one serialization on every domain creates friction between the System description and the tools that produce and check it.
+
+\item \textbf{Checkable serialization.} Human-readable prose formats are fragile for the automated parsing of relational data (dependency graphs, ledger entries, Obligation matrices, etc.). The serialization format of each Entity is therefore a declared Project choice, so that Normative Checks can parse each Entity in a format suited to mechanical verification.
+
+\item \textbf{Composability.} A concrete layout that serves one domain well can be reused by other Projects in that domain. Ready-made layout guides for particular domains may exist outside this Specification. They are not part of it and bind nothing: a Project's Path Map governs, whatever its bindings were modelled on.
+
+\end{itemize}
+
+[Goal DR1; Goal P3; \hyperlink{gp-LSA}{LSA}]
+
+\hypertarget{nss-2}{}
+
+\subsubsection*{2 Terminology}
+
+The terms below are defined once and used consistently throughout this Specification.
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item \textbf{Acceptance Criteria}: the checkable statements that define "done" for a unit.
+
+\item \textbf{AI Agent}: an Executor that is an AI system rather than a human.
+
+\item \textbf{Baseline}: an approved, frozen snapshot of the description of the System or of its Realization, at a defined level.
+
+\item \textbf{Baseline Ledger}: the register that records every approved Baseline: the artifacts it governs, its snapshot identifier, its status, and the named human who accepted the lock (\hyperlink{nss-9.1}{\S9.1}).
+
+\item \textbf{Blast Radius}: the set of System elements that a given change or failure can affect.
+
+\item \textbf{Capability}: a function the System delivers to its users or operators. A Capability may span several Components.
+
+\item \textbf{Component}: a bounded unit of responsibility with explicit interfaces, Contracts, and Acceptance Criteria.
+
+\item \textbf{Component Specification}: the normative document that defines one Component (Rationale, Required Behaviors, Acceptance Criteria, Constraints, Dependencies \& Interfaces, plus its private Design).
+
+\item \textbf{Constraint}: an Obligation that limits how a need may be met rather than stating what must be achieved.
+
+\item \textbf{Contract}: the human-approved part of a Specification that other Components may rely on. It primarily contains the Obligations, interfaces, Invariants, and Acceptance Criteria.
+
+\item \textbf{Criticality Class}: the recorded class assigned to a Component or a Capability that determines the Obligations and the verification rigor applying to it.
+
+\item \textbf{Criticality Record}: the register that holds the Criticality Class assigned to each Component and Capability, together with the tailoring decisions and rationales that other clauses direct into it (\hyperlink{nss-7.10}{\S7.10}).
+
+\item \textbf{Decision Record}: a numbered, immutable record of one binding decision.
+
+\item \textbf{Design}: how a Component satisfies its Contract. Visible only to the Component’s implementer; binds no other Component.
+
+\item \textbf{Deviation Matrix}: the register that records every deviation from this Specification, naming what is waived, why, and which named human accepted the risk (\hyperlink{nss-9.4}{\S9.4}).
+
+\item \textbf{Entity}: a class of element required by this Specification, of which a Project holds one or more instances. \hyperlink{nss-appA}{Appendix A} lists every required Entity; the Path Map (\hyperlink{nss-14.8}{\S14.8}) binds each Entity to concrete storage.
+
+\item \textbf{Entry Point}: the single short document that serves as the starting map of the Project Record. Every Executor begins here and is directed from it to the deeper artifacts relevant to their work. It declares the Path Map that binds every required Entity to its concrete location (\hyperlink{nss-14.3}{\S14.3}, \hyperlink{nss-14.8}{\S14.8}).
+
+\item \textbf{Exploratory Work Unit}: a bounded, time- or resource-capped Work Unit executed in an isolated workspace to investigate candidate questions (feasibility, empirical models, candidate Specifications, etc.). Its completion is defined by meeting declared stopping criteria and producing structured findings recorded in the Project Record, not by modifying the canonical Realization or System description.
+
+\item \textbf{Executor}: a human or an AI system performing work under a bounded mandate.
+
+\item \textbf{Gate}: a controlled passage between Phases, closed only by a human decision recorded as a Decision Record (\hyperlink{nss-11}{\S11}).
+
+\item \textbf{Governance Document}: a human-authored standing directive (principles, rules, instructions, etc.) addressed to Executors.
+
+\item \textbf{Invariant}: a property that must always hold and that no Executor may weaken without human authorization.
+
+\item \textbf{Key Design Parameter}: one of a small named set of parameters that govern System success.
+
+\item \textbf{Normative Check}: a mechanically executable rule that verifies whether Project artifacts comply with a structural requirement of this Specification.
+
+\item \textbf{Obligation}: one verifiable requirement statement.
+
+\item \textbf{Operational Concept}: the statement of how the System will be operated and sustained.
+
+\item \textbf{Path Map}: the deterministic declaration, held in the Entry Point, that binds every required Entity of this Specification to a concrete location pattern and a serialization format (\hyperlink{nss-14.8}{\S14.8}).
+
+\item \textbf{Phase}: a bounded stage of work that produces at least one durable artifact and is entered and left through a Gate.
+
+\item \textbf{Plan Document}: the binding document that governs one Work Unit, stating its scope, its Acceptance Criteria, its progress, and the decisions taken under it. It is the artifact an Executor follows in preference to any conversational instruction.
+
+\item \textbf{Production Work Unit}: a Work Unit that modifies the canonical Realization or System description under an approved Specification and an approved Plan Document.
+
+\item \textbf{Project}: the bounded endeavor that produces and sustains one System, governed by one Project Record.
+
+\item \textbf{Project Record}: the versioned set of durable artifacts that constitutes the system of record for the Project.
+
+\item \textbf{Realization}: the actual built System or Component, as distinct from its description.
+
+\item \textbf{Reference Realization}: a maintained instance that embodies the current interpretation of a Contract, against which the governed element is compared to detect drift (\hyperlink{nss-7.17}{\S7.17}). Distinct from a Verification Reference State.
+
+\item \textbf{Registry}: the machine-readable index of every Component and content item in the System.
+
+\item \textbf{Risk Register}: the register that records every identified risk with its owner, analysis, mitigation plan, tracking method, and closure (\hyperlink{nss-12.1}{\S12.1}).
+
+\item \textbf{Specification}: the normative description of a Component or an effort. It consists of the Contract plus the Design.
+
+\item \textbf{Stability Class}: the classification of an element by expected rate of change. Dependencies must point only toward elements of equal or higher Stability Class.
+
+\item \textbf{Status Ledger}: the register that records the status and history of every change, deviation, waiver, and audit outcome (\hyperlink{nss-9.3}{\S9.3}).
+
+\item \textbf{Subsystem}: a Component that is also a System at a lower level of decomposition. It contains interacting Components and must satisfy the Contract of its containing System.
+
+\item \textbf{System}: the engineered artifact under construction, in any domain.
+
+\item \textbf{Verification Artifact}: the durable record that an Acceptance Criterion was checked, including the outcome.
+
+\item \textbf{Verification Plan}: the governing document that fixes the scope, responsibilities, resources, and completion criteria of verification for the Project.
+
+\item \textbf{Verification Procedure}: a concrete procedure that can be executed to determine whether one or more Acceptance Criteria are satisfied. The durable record of running a Verification Procedure is a Verification Artifact.
+
+\item \textbf{Verification Reference State}: the recorded outcome of executing whatever verification exists immediately before a change begins, used as the comparison point for that change. Distinct from a Baseline (\hyperlink{nss-9.1}{\S9.1}).
+
+\item \textbf{Vision Document}: the human-authored statement of the System's purpose, problem, desired future state, and long-term goals.
+
+\item \textbf{Work Record}: the single structured, queryable artifact that records every Work Unit, any typed relations between Work Units, and the discoveries made during their execution.
+
+\item \textbf{Work Unit}: a bounded unit of work with declared scope, an assigned Executor, and Acceptance Criteria.
+
+\end{itemize}
+
+\hypertarget{nss-3}{}
+
+\subsubsection*{3 Purpose}
+
+\hypertarget{nss-3.1}{}
+
+\par\smallskip\noindent\textbf{3.1 One Vision Document}\par\nopagebreak
+
+Every Project must have exactly one Vision Document. It states the essential problem being solved, the concrete desired future state, and the long-term goals that define success. It is short, stable, free of implementation detail, and written so that the gap between current reality and the desired outcome is clear, credible, and memorable after a single reading. It is the first artifact created and is human-authored. [\hyperlink{gp-13}{GP-13}; \hyperlink{gp-68}{GP-68}; \hyperlink{gp-LSA}{LSA}]
+
+\hypertarget{nss-3.2}{}
+
+\par\smallskip\noindent\textbf{3.2 Highest stability}\par\nopagebreak
+
+The Vision Document is the highest-stability artifact of the Project. It must change only rarely, and only through the controlled change Gate (\hyperlink{nss-9.2}{\S9.2}) and a Decision Record (\hyperlink{nss-11}{\S11}).
+
+No implementation choices, technology selections, material choices, vendor names, or detailed design decisions, etc. may appear in the Vision Document. Those details belong in lower-stability documents. [\hyperlink{gp-50}{GP-50}; \hyperlink{gp-51}{GP-51}; \hyperlink{gp-LSA}{LSA}]
+
+\hypertarget{nss-3.3}{}
+
+\par\smallskip\noindent\textbf{3.3 Hierarchy of intent}\par\nopagebreak
+
+The Vision Document sits at the top of the hierarchy. Every lower-level document that states or plans work (Component Specifications, Plan Documents, design documents, etc.) must explain how it serves the goals stated in the Vision Document. No lower-level document may change, contradict, or redefine the problem, desired future state, or long-term goals that the Vision Document has already accepted. [\hyperlink{gp-13}{GP-13}]
+
+\hypertarget{nss-4}{}
+
+\subsubsection*{4 The Project Record}
+
+\hypertarget{nss-4.1}{}
+
+\par\smallskip\noindent\textbf{4.1 Sole system of record}\par\nopagebreak
+
+All state that governs work must exist as durable, versioned, human-readable artifacts inside the Project Record. This includes Plan Documents, progress, decisions, open issues, and verification outcomes. Agreements held only outside the Project Record (in conversation, message channels, Executor memory, etc.) have no governing force and must be written into the Project Record before they become binding. Completed Plan Documents must remain in the record as history. The depth and formality of these artifacts may scale with Project criticality, but their existence is required. [\hyperlink{gp-01}{GP-01}; \hyperlink{gp-06}{GP-06}]
+
+\hypertarget{nss-4.2}{}
+
+\par\smallskip\noindent\textbf{4.2 Durable work, disposable Executor instances}\par\nopagebreak
+
+Executor instances are disposable; the work product is durable. All meaningful work product must exist as versioned artifacts in the Project Record. Shared decisions must be recorded append-only and must be read by every Executor before work where relevant. Progress must accumulate only in the Project Record, never solely in the memory or private context of an Executor. [\hyperlink{gp-65}{GP-65}; \hyperlink{gp-01}{GP-01}; \hyperlink{gp-02}{GP-02}]
+
+\hypertarget{nss-4.3}{}
+
+\par\smallskip\noindent\textbf{4.3 One canonical source per concern}\par\nopagebreak
+
+For every concern, exactly one artifact is the canonical source of truth. The Project must declare, in a single place readable by every Executor, which artifact governs each concern and how those artifacts relate to one another. Any derived artifact (indexes, ledgers, summaries, compliance records, etc.) must be generated from its canonical source and must never be maintained in parallel with it. Conflicting sources for one concern are a defect and must be resolved by designating one source and demoting the others. [\hyperlink{gp-59}{GP-59}]
+
+\hypertarget{nss-4.4}{}
+
+\par\smallskip\noindent\textbf{4.4 Machine-readable, checkable surfaces}\par\nopagebreak
+
+Every surface of the System on which an Executor is expected to act (documents, interfaces, structured records, declared instructions, etc.) must be machine-readable and checkable. The human owner must own the Contract and the top-level decomposition; Executors implement beneath. [\hyperlink{gp-76}{GP-76}]
+
+\hypertarget{nss-4.5}{}
+
+\par\smallskip\noindent\textbf{4.5 Work Record}\par\nopagebreak
+
+Every Project must maintain one Work Record: a structured, queryable artifact kept under the same version control as the System description, capturing every Work Unit and the discoveries made during execution. Unstructured prose lists must not serve as the system of record. Where Work Units carry dependencies, those dependencies must be recorded as typed relations (at minimum: blocks, part-of, supersedes, etc.); a Work Unit is then eligible for execution only when every relation that blocks it is resolved, and completing a unit must release its dependents. [\hyperlink{gp-04}{GP-04}; \hyperlink{gp-05}{GP-05}]
+
+\hypertarget{nss-4.6}{}
+
+\par\smallskip\noindent\textbf{4.6 One binding Plan Document per Work Unit}\par\nopagebreak
+
+Each Work Unit must be governed by one binding Plan Document, which the Executor follows in preference to any conversational instruction. The unchecked Acceptance Criteria in the document constitute the queue of remaining work. A conflict between the Plan Document and an instruction must be resolved in favor of the Plan Document or escalated to the human owner. The Plan Document itself must record its current progress and the decisions taken under it. [\hyperlink{gp-03}{GP-03}; \hyperlink{gp-01}{GP-01}]
+
+\hypertarget{nss-4.7}{}
+
+\par\smallskip\noindent\textbf{4.7 Iteration discipline}\par\nopagebreak
+
+Each work iteration must proceed as follows:
+
+\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Read the current state from the Project Record.
+
+\item Complete exactly one Work Unit.
+
+\item Verify that unit against its Acceptance Criteria.
+
+\item Record the new state and the verification outcome before the next iteration begins.
+
+\end{enumerate}
+
+The size of the Work Unit is governed by the sizing and Blast Radius rules in \hyperlink{nss-5.5}{\S5.5} and \hyperlink{nss-5.6}{\S5.6}. [\hyperlink{gp-02}{GP-02}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-4.8}{}
+
+\par\smallskip\noindent\textbf{4.8 Concurrent contributions merge through one role}\par\nopagebreak
+
+Where more than one Executor contributes to the same shared artifact at the same time, their contributions must be prepared separately and merged into the canonical artifact by one named role. No Executor may write directly to a canonical artifact while a merge is pending. The named role may be a human or a declared process, and it must be recorded in the Project Record for the duration of the concurrent work. [\hyperlink{gp-65}{GP-65}]
+
+\hypertarget{nss-4.9}{}
+
+\par\smallskip\noindent\textbf{4.9 Governance Documents are controlled artifacts}\par\nopagebreak
+
+Governance Documents (including reusable instructions given to AI Agents) must be versioned, reviewable, and checkable artifacts in the Project Record under direct human editing. Governance Document content hidden inside tools or frameworks is prohibited. [\hyperlink{gp-66}{GP-66}]
+
+\hypertarget{nss-5}{}
+
+\subsubsection*{5 Decomposition and Work Units}
+
+\hypertarget{nss-5.1}{}
+
+\par\smallskip\noindent\textbf{5.1 Deliverable-anchored decomposition}\par\nopagebreak
+
+Project decomposition must be organized around the deliverables the Project produces, not around the Executors doing the work or around organizational structure. Every decomposition element must carry a short definition stating what the element is and what it delivers. The identity of an element must not depend on which Executor performs the work. Work that yields no deliverable (management, integration, etc.) must appear as explicit elements. [\hyperlink{gp-07}{GP-07}; \hyperlink{gp-COD}{COD}]
+
+\hypertarget{nss-5.2}{}
+
+\par\smallskip\noindent\textbf{5.2 Purpose-defined Components}\par\nopagebreak
+
+The System must be decomposed into Components defined by the purpose they serve, not by physical form, packaging, or implementation technology, etc. Each Component must carry its own Obligations and design criteria, one named human owner, and a Verification Procedure that yields a binary pass/fail status readable by anyone. Obligations, ownership, and pass/fail status of any Component must be retrievable on demand. [\hyperlink{gp-08}{GP-08}; \hyperlink{gp-COD}{COD}]
+
+\hypertarget{nss-5.3}{}
+
+\par\smallskip\noindent\textbf{5.3 System level before Component detail}\par\nopagebreak
+
+System-level interactions and cross-boundary Contracts must be defined before Component internals. Each Component must be designed against declared System behavior and the interfaces it declares with other Components. Where local and System-level optimization conflict, the System-level optimum governs. The local cost accepted for that System gain must be recorded as a Decision Record (\hyperlink{nss-11}{\S11}). A change that crosses a boundary must be agreed at System level before it is made inside a Component. [\hyperlink{gp-09}{GP-09}; \hyperlink{gp-COD}{COD}]
+
+\hypertarget{nss-5.4}{}
+
+\par\smallskip\noindent\textbf{5.4 Integrated modularity first}\par\nopagebreak
+
+The default structure is one coherent System with strong internal Component boundaries. Hard separation (independent ownership, strong operational or physical isolation, independent fabrication, independent evolution, etc.) is introduced only when a concrete need exists (significantly different rates or constraints of evolution, required failure isolation, regulatory or safety boundaries, physical constraints, etc.) and its benefits clearly outweigh the added coordination and interface costs. Premature hard separation is a defect. [\hyperlink{gp-IMF}{IMF}]
+
+\hypertarget{nss-5.5}{}
+
+\par\smallskip\noindent\textbf{5.5 Sizing}\par\nopagebreak
+
+Significant work that is assigned to an Executor must be decomposed into Work Units that one Executor can complete in one bounded effort while meeting the Work Unit’s Acceptance Criteria. An oversized Work Unit must be split before execution begins. AI Agents may propose the decomposition and the sizing. The human owner remains the final authority on any sizing decision that could affect higher-level Contracts, Invariants, or the definition of done. Work Units that stay strictly inside already-accepted higher-level Contracts and Acceptance Criteria may be sized by AI Agents. [\hyperlink{gp-10}{GP-10}]
+
+\hypertarget{nss-5.6}{}
+
+\par\smallskip\noindent\textbf{5.6 Work Units bounded by Blast Radius}\par\nopagebreak
+
+Before a Work Unit starts, its Blast Radius must be estimated and bounded. Parallel Work Units must have non-overlapping Blast Radii. A change whose Blast Radius cannot be bounded must be decomposed further before execution. [\hyperlink{gp-12}{GP-12}]
+
+\hypertarget{nss-5.7}{}
+
+\par\smallskip\noindent\textbf{5.7 Work Units must be verifiable}\par\nopagebreak
+
+Significant work assigned to an Executor must be packaged as a Work Unit: a bounded scope with checkable Acceptance Criteria. Work Units belong to one of two classes:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item \textbf{Production Work Units}: modify the canonical Realization or System description. Each unit must execute in isolation, governed by a pre-existing Specification and a human-approved Plan Document (\hyperlink{nss-6.13}{\S6.13}). A Production Work Unit is complete only when its Verification Procedures pass.
+
+\item \textbf{Exploratory Work Units}: investigate feasibility, test empirical models, optimize parameters, or discover candidate Specifications. Governed by explicit research questions, resource ceilings (time, token, compute budgets, etc.), and stopping criteria. An Executor operating under a human-approved exploratory mandate may spawn and iterate internal exploratory loops autonomously within declared resource boundaries.
+
+\end{itemize}
+
+Large efforts must be decomposed into bounded Work Units before execution begins. [\hyperlink{gp-11}{GP-11}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-5.8}{}
+
+\par\smallskip\noindent\textbf{5.8 Nested levels of intent}\par\nopagebreak
+
+Decomposition must form nested levels of intent: each level states why the work below it exists and is governed by Acceptance Criteria at its own level. Purpose belongs to the outermost level (the Vision Document, \hyperlink{nss-3.3}{\S3.3}). No inner level may redefine the Acceptance Criteria of a level above it. [\hyperlink{gp-13}{GP-13}]
+
+\hypertarget{nss-5.9}{}
+
+\par\smallskip\noindent\textbf{5.9 Work Units for long-horizon work}\par\nopagebreak
+
+Long-horizon work must be decomposed into Work Units, each small enough for one Executor to complete and verify in one bounded effort. Each Work Unit must carry its own Acceptance Criteria and the Verification Procedures that confirm them. The Verification Procedures must run at the end of every Work Unit. Failures must be repaired before the next Work Unit starts. The governing Specification is frozen against drift; a change to it requires a Decision Record (\hyperlink{nss-11}{\S11}). [\hyperlink{gp-14}{GP-14}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-5.10}{}
+
+\par\smallskip\noindent\textbf{5.10 Reusable task definitions}\par\nopagebreak
+
+Recurring kinds of work must be defined once as reusable task-definition documents. In AI coding environments these are commonly called skills. In complex engineering and simulation environments they are more often called procedures or templates. Each document must contain:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item an imperative sequence of steps
+
+\item the Acceptance Criteria that must be satisfied when the work is done
+
+\item the actions the Executor must not take
+
+\item any required inputs (and their expected source)
+
+\end{itemize}
+
+Each document must also carry a short summary of when it applies, so an Executor can select the applicable task definition. Each task-definition document is a Governance Document (\hyperlink{nss-4.9}{\S4.9}). The name and terminology used may follow the conventions of the tools and domain in use; the binding to concrete storage is declared in the Path Map (\hyperlink{nss-14.8}{\S14.8}). [\hyperlink{gp-77}{GP-77}]
+
+\hypertarget{nss-6}{}
+
+\subsubsection*{6 Component Specifications and Contracts}
+
+\hypertarget{nss-6.1}{}
+
+\par\smallskip\noindent\textbf{6.1 Component Specifications}\par\nopagebreak
+
+The Project must maintain a set of atomic Component Specifications: one Component Specification per Component, each a discrete, separately addressable artifact of the Project Record. Each Component Specification defines one coherent unit of responsibility. These are the primary documents that humans and AI Agents implement against. If a Component grows too large to keep its Required Behaviors and Acceptance Criteria consistent, it must be decomposed further. Component Specifications are written in System terms. User-story language is never the primary framing; it may appear only as optional context inside the Rationale section of a truly end-user-facing Component. [\hyperlink{gp-COD}{COD}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-6.2}{}
+
+\par\smallskip\noindent\textbf{6.2 Required sections, linted}\par\nopagebreak
+
+Every Component Specification must contain these sections, checked by Normative Checks (\hyperlink{nss-16}{\S16}):
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item \textbf{Rationale}: why this Component must exist. May contain one to a few short user-story statements if the Component is end-user facing.
+
+\item \textbf{Required Behaviors}: precise description of what the Component must do, in System terms.
+
+\item \textbf{Acceptance Criteria}: testable conditions that define "done".
+
+\item \textbf{Constraints}: hard limits (performance, safety, resources, etc.).
+
+\item \textbf{Dependencies \& Interfaces}: explicit declaration of relationships: the Components or interfaces this one requires; the interfaces or Contracts this one provides; and any containment ("part of") relationship.
+
+\end{itemize}
+
+[\hyperlink{gp-COD}{COD}; \hyperlink{gp-SaC}{SaC}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-6.3}{}
+
+\par\smallskip\noindent\textbf{6.3 Public Contract, private Design}\par\nopagebreak
+
+Each Component Specification splits into a public Contract and a private Design. The Contract comprises the five required sections listed in \hyperlink{nss-6.2}{\S6.2} and is visible to the Executors of every Component that has a declared interface or dependency relationship with it. The Design is visible only to the Executor(s) implementing that Component. Every other Component must rely on the Contract alone. An Executor working on a Component must receive that Component's full Specification and the Contracts of the Components with which it has declared interface or dependency relationships, not the whole System description. [\hyperlink{gp-27}{GP-27}]
+
+\hypertarget{nss-6.4}{}
+
+\par\smallskip\noindent\textbf{6.4 The Specification is the durable alignment artifact}\par\nopagebreak
+
+The Realization is derived from and governed by the Specification. Where a Realization can be regenerated, it must be regenerated from the Specification rather than edited independently; where it cannot, the Specification remains the governing description and any divergence between the two is a defect in the Realization. Alignment, discussion, and versioning must occur at the Specification level. Specifications must be human-readable, versioned, maintained with a changelog, and open to contribution from any relevant discipline. [\hyperlink{gp-19}{GP-19}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-6.5}{}
+
+\par\smallskip\noindent\textbf{6.5 Obligation statements}\par\nopagebreak
+
+Obligations in Required Behaviors and Constraints must be expressed as unique, quantitative, verifiable statements. Each statement must name exactly one commitment in a fixed structure: the condition under which it holds, the subject that must act, the action, the object, and the constraint on the action. Ambiguous or compound statements must be rewritten until each statement is independently checkable. [\hyperlink{gp-20}{GP-20}; \hyperlink{gp-21}{GP-21}]
+
+\hypertarget{nss-6.6}{}
+
+\par\smallskip\noindent\textbf{6.6 Obligation attributes}\par\nopagebreak
+
+Every Obligation must carry fixed attributes: identifier, owner, type, priority, source, rationale, status, and verification method. Obligations are organized in levels that mirror the decomposition: from the expectations of the parties the System serves (customers, users, regulators, etc.), through the Operational Concept (\hyperlink{nss-6.17}{\S6.17}), down to Component Obligations. The type of an Obligation (what it constrains) governs which verification method is admissible for it. Attribute rigor scales with Criticality Class (\hyperlink{nss-7.10}{\S7.10}). [\hyperlink{gp-22}{GP-22}; \hyperlink{gp-39}{GP-39}]
+
+\hypertarget{nss-6.7}{}
+
+\par\smallskip\noindent\textbf{6.7 Named owner for every Obligation}\par\nopagebreak
+
+Every Obligation must be owned by one named human, never by a department or a role. The owner is the person who can be asked why the Obligation exists. An Obligation without a named human owner is not valid. [\hyperlink{gp-23}{GP-23}]
+
+\hypertarget{nss-6.8}{}
+
+\par\smallskip\noindent\textbf{6.8 Constraint provenance}\par\nopagebreak
+
+Every Constraint must be marked as externally imposed (contract, regulation, physics, etc.) or internally owned. Externally imposed Constraints are fixed for the Project. Internally owned Constraints may be questioned and renegotiated through their named owner. [\hyperlink{gp-24}{GP-24}]
+
+\hypertarget{nss-6.9}{}
+
+\par\smallskip\noindent\textbf{6.9 Verification method assigned at authoring}\par\nopagebreak
+
+The verification method for an Obligation must be assigned when the Obligation is authored, not after design is underway. An Obligation without a verification method must not enter a Baseline (\hyperlink{nss-9.1}{\S9.1}). Verification Procedures must run continuously as the design develops, not only at a late Gate. [\hyperlink{gp-25}{GP-25}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-6.10}{}
+
+\par\smallskip\noindent\textbf{6.10 Interface declarations}\par\nopagebreak
+
+Every interface between Components must be captured through one fixed lens that contains four elements: description, responsibility and change authority, reference frames with units and tolerances, and a checklist of the interaction categories and environments that apply. An interface is not declared until change authority over it is named. An interface declaration lives in the Dependencies \& Interfaces section of the Specifications it connects; an interface that spans several Components lives in one declared interface document, referenced from those Specifications. [\hyperlink{gp-26}{GP-26}]
+
+\hypertarget{nss-6.11}{}
+
+\par\smallskip\noindent\textbf{6.11 The graph is the single source of truth}\par\nopagebreak
+
+Relationships between Components form a graph. The Dependencies \& Interfaces section of each Component Specification is the source of truth for all links: the Components or interfaces this one requires, the interfaces or Contracts this one provides, and any containment ("part of") relationship. Any grouping imposed by the concrete layout is organizational only and carries no authority; the graph remains the authority. The graph must be acyclic; a dependency cycle is a defect. [\hyperlink{gp-COD}{COD}; \hyperlink{gp-55}{GP-55}]
+
+\hypertarget{nss-6.12}{}
+
+\par\smallskip\noindent\textbf{6.12 Stability rules}\par\nopagebreak
+
+Every Component Specification must declare the Stability Class of the Component it defines. The set of Stability Classes and their order must be declared once in the Entry Point (\hyperlink{nss-14.3}{\S14.3}). A Component may depend only on Components of equal or higher Stability Class. Configuration values and parameters that belong to Components of lower Stability Class must be kept explicit and external, never buried in the design or logic of Components of higher Stability Class. [\hyperlink{gp-LSA}{LSA}]
+
+\hypertarget{nss-6.13}{}
+
+\par\smallskip\noindent\textbf{6.13 Specification-first Gate}\par\nopagebreak
+
+Before any significant change is made to the canonical Realization or System description, a durable, self-contained Contract must exist. It must name the Components and interfaces affected, state what is out of scope, and define the end-to-end Verification Procedures that prove completion. Authoring the Contract and executing the corresponding Production Work Unit must remain separate efforts.
+
+Execution of a Production Work Unit must be gated on a human-approved Plan Document. Until that approval is recorded, Executors may examine the System but must not modify it. The human owner must be able to edit the Plan Document before approval.
+
+When the necessary Contract or design parameters are unknown, an Executor may operate inside an Exploratory Work Unit (\hyperlink{nss-5.7}{\S5.7}). Exploratory execution must:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item run in an isolated environment with read-only access to the Project Record;
+
+\item log all runs, parameter sweeps, and empirical results into the location bound to Records of Exploratory Work Units in the Path Map (\hyperlink{nss-14.8}{\S14.8});
+
+\item conclude with a structured experimental record that summarizes findings against the research objective.
+
+\end{itemize}
+
+Artifacts produced during exploratory execution have no governing force and must not be incorporated directly into the canonical Realization or System description. Once the resulting Contract and Verification Procedures receive human approval, validated exploratory assets may be ingested and hardened under a standard Production Work Unit. [\hyperlink{gp-17}{GP-17}; \hyperlink{gp-18}{GP-18}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-6.14}{}
+
+\par\smallskip\noindent\textbf{6.14 Adversarial expansion before acceptance}\par\nopagebreak
+
+A Contract must be treated as incomplete by default. Before acceptance, cases intended to expose gaps or weaknesses in the Contract (corner cases, misuse, hostile conditions, etc.) must be deliberately generated, and the Contract must be expanded to cover them. The expanded Contract becomes binding only after human approval. [\hyperlink{gp-28}{GP-28}]
+
+\hypertarget{nss-6.15}{}
+
+\par\smallskip\noindent\textbf{6.15 Co-update of Specification and Realization}\par\nopagebreak
+
+A change to a Component must update its Specification and its Realization together, or the change must not be accepted. [\hyperlink{gp-27}{GP-27}]
+
+\hypertarget{nss-6.16}{}
+
+\par\smallskip\noindent\textbf{6.16 Protection of other Contracts}\par\nopagebreak
+
+An internal change must not alter the Contract of any other Component. This bounds the Blast Radius of change. [\hyperlink{gp-27}{GP-27}]
+
+\hypertarget{nss-6.17}{}
+
+\par\smallskip\noindent\textbf{6.17 Operational Concept}\par\nopagebreak
+
+The top-level System Specification must state the Operational Concept: how the System will be operated and sustained. The Operational Concept sits as an Obligation level between the expectations of the parties the System serves (customers, users, regulators, etc.) and the Component Obligations. [\hyperlink{gp-22}{GP-22}]
+
+\hypertarget{nss-6.18}{}
+
+\par\smallskip\noindent\textbf{6.18 Key Design Parameters}\par\nopagebreak
+
+A small set of Key Design Parameters that govern System success must be named, owned, and tracked down to Component level in a dedicated register of the Project Record. A trade-off that moves a Key Design Parameter requires a Decision Record (\hyperlink{nss-11}{\S11}). The tracked Key Design Parameters replace coordination machinery whose only function is routing information or re-approving what a named human owner already owns. The structure must not grow coordination roles or boards whose only purpose is that kind of routing or re-approval. This rule does not displace the controlled change Gate (\hyperlink{nss-9.2}{\S9.2}) or any review body required by regulation or contract. [\hyperlink{gp-29}{GP-29}]
+
+\hypertarget{nss-6.19}{}
+
+\par\smallskip\noindent\textbf{6.19 Design and planning documents use one skeleton}\par\nopagebreak
+
+Every design document, and every document that describes work spanning more than one Work Unit, must use one skeleton: Why (motivation, success criteria, requirements, scope); What/How (method, framing, validation strategy, and the points at which human judgment is required); How (realization, integration, cost and resource commitment, and risks); plus an Alternatives section. The Alternatives section identifies the options rejected and points to the Decision Records that hold their trade-offs and rationale, rather than restating them. [\hyperlink{gp-79}{GP-79}]
+
+\hypertarget{nss-7}{}
+
+\subsubsection*{7 Verification and Acceptance}
+
+\hypertarget{nss-7.1}{}
+
+\par\smallskip\noindent\textbf{7.1 Done is a checkable criterion}\par\nopagebreak
+
+A Work Unit is done only when a durable, checkable Acceptance Criterion, authored or approved by the human owner, passes. Self-assessment by the Executor never constitutes verification. Verification may be gated at a strength scaled to risk, from an independent check of the result up to a mechanical Gate that blocks completion until the check passes. [\hyperlink{gp-31}{GP-31}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-7.2}{}
+
+\par\smallskip\noindent\textbf{7.2 The verification loop}\par\nopagebreak
+
+The required loop is:
+
+\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Draft against the stated Acceptance Criteria or Constraints.
+
+\item Verify against them.
+
+\item Identify specific defects (not vague dissatisfaction).
+
+\item Correct only the identified defects.
+
+\item Re-verify.
+
+\item Accept and freeze only when the criteria are satisfied.
+
+\end{enumerate}
+
+If the criteria themselves are incomplete or incorrect, the human must revise them. AI Agents may not alter Acceptance Criteria. [\hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-7.3}{}
+
+\par\smallskip\noindent\textbf{7.3 Verifiability governs delegation}\par\nopagebreak
+
+Acceptance Criteria are meaningful only if their Verification Procedures are resettable (a new attempt can start), cheap (attempts can be repeated), and verdict-yielding (each attempt receives a clear pass/fail outcome). Significant work that is assigned to an Executor must be structured so that its Verification Procedures have these three properties; where they do not, the work structure must change before autonomy is granted. [\hyperlink{gp-32}{GP-32}]
+
+\hypertarget{nss-7.4}{}
+
+\par\smallskip\noindent\textbf{7.4 Verification Procedures are authored before the Work Unit}\par\nopagebreak
+
+The Verification Procedures for a Work Unit must be authored before work on that Work Unit begins, and they must fail before the Work Unit is complete. The Work Unit is complete only when its Verification Procedures pass. Those Verification Procedures remain in the verification corpus as a permanent guard against regression. [\hyperlink{gp-33}{GP-33}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-7.5}{}
+
+\par\smallskip\noindent\textbf{7.5 Verification Reference State before change}\par\nopagebreak
+
+Before any change to an existing System, the current verification state must be established and recorded as the Verification Reference State. Whatever verification exists must be executed, and its outcome (including every pre-existing failure) must be recorded. Where no verification exists, that absence must itself be recorded as the Verification Reference State, and closing the gap must be treated as a Work Unit. Work must never proceed on the assumption that the prior state was verified. [\hyperlink{gp-34}{GP-34}]
+
+\hypertarget{nss-7.6}{}
+
+\par\smallskip\noindent\textbf{7.6 Durable corpus of Verification Procedures}\par\nopagebreak
+
+Expected behavior must be encoded as a durable corpus of Verification Procedures. Each Verification Procedure must pair its input with the expected result that determines whether the relevant Acceptance Criteria are satisfied. The corpus is stored with the System description and is owned by the human owner. Verification Procedures that pass must be promoted into the standing corpus rather than discarded. [\hyperlink{gp-35}{GP-35}]
+
+\hypertarget{nss-7.7}{}
+
+\par\smallskip\noindent\textbf{7.7 Layered verification}\par\nopagebreak
+
+Verification must be organized in layers that correspond to the decomposition: Component-level Verification Procedures, interface-level Verification Procedures that verify Components honor their declared Contracts, and System-level Verification Procedures. Verification Artifacts at each layer are durable specifications of behavior, not disposable byproducts. [\hyperlink{gp-36}{GP-36}]
+
+\hypertarget{nss-7.8}{}
+
+\par\smallskip\noindent\textbf{7.8 Verification correspondence}\par\nopagebreak
+
+Each level of decomposition must have a corresponding level of verification that checks it. The correspondence must be explicit: every decomposition decision must be reachable from the verification that confirms it, and every verification must point back to the decision it confirms. [\hyperlink{gp-37}{GP-37}]
+
+\hypertarget{nss-7.9}{}
+
+\par\smallskip\noindent\textbf{7.9 Governing Verification Plan}\par\nopagebreak
+
+Before verification work begins, one governing Verification Plan must fix the scope, responsibilities, resources, and explicit completion criteria of verification, and must distinguish verification (the System is built right) from validation (the right System is built). Verification rigor must scale with the Criticality Class of the Components being verified. [\hyperlink{gp-38}{GP-38}]
+
+\hypertarget{nss-7.10}{}
+
+\par\smallskip\noindent\textbf{7.10 Criticality Classes}\par\nopagebreak
+
+Each Component, and each Capability that spans Components, must be assigned a Criticality Class recorded in the Criticality Record. The class must be scored on the consequence of its failure, its complexity, the degree to which humans depend on it, how soon it becomes critical, and the economic exposure it carries. The class determines the Obligations and the verification rigor that apply. The classification and any tailoring of it must be recorded with rationale.
+
+The Criticality Record additionally holds: the rationale for using a lighter or fuller version of a required artifact (\hyperlink{nss-1.6}{\S1.6}); the artifacts that fall under direct human acceptance (\hyperlink{nss-7.19}{\S7.19}); and the rationale for any Baseline level recorded as not applicable (\hyperlink{nss-9.1}{\S9.1}). [\hyperlink{gp-39}{GP-39}]
+
+\hypertarget{nss-7.11}{}
+
+\par\smallskip\noindent\textbf{7.11 Independent verification}\par\nopagebreak
+
+The Executor that produces a work product must not verify it. Verification must be performed by an independent Executor or context that has not participated in producing the work. Acceptance of the verified result remains with the human owner. [\hyperlink{gp-40}{GP-40}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-7.12}{}
+
+\par\smallskip\noindent\textbf{7.12 Acceptance Criteria must not be weakened}\par\nopagebreak
+
+An Executor that disables, deletes, or silently weakens an Acceptance Criterion instead of satisfying it commits a Contract violation. Intermediate outputs must be supervised for any attempt to disable, delete, or weaken Acceptance Criteria, and any change to Acceptance Criteria requires human authorization. [\hyperlink{gp-41}{GP-41}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-7.13}{}
+
+\par\smallskip\noindent\textbf{7.13 Every Contract clause is linked to its Verification Procedures}\par\nopagebreak
+
+Each clause of a Contract must carry a unique identifier. Each identifier must be linked to one or more Verification Procedures that confirm whether the clause is satisfied. The durable records produced by running those Verification Procedures are Verification Artifacts. The Contract is thereby both the source of Acceptance Criteria and the index of the verification corpus. [\hyperlink{gp-42}{GP-42}]
+
+\hypertarget{nss-7.14}{}
+
+\par\smallskip\noindent\textbf{7.14 Structured outputs for verification}\par\nopagebreak
+
+When a System output is hard to verify, the structure of the output must change, not only the Verification Procedures. Outputs must be decomposed into units that can be separately accepted or rejected, must carry provenance, and must be comparable against a trusted reference. Contradictions and open questions must be surfaced, not buried in a monolithic output. [\hyperlink{gp-43}{GP-43}]
+
+\hypertarget{nss-7.15}{}
+
+\par\smallskip\noindent\textbf{7.15 Linked stage Verification Procedures across production}\par\nopagebreak
+
+Verification Procedures at successive production stages must be linked into a single chain rather than being isolated per stage. Control limits and Acceptance Criteria at each stage are human-defined. An anomaly must be detected and classified at the stage where it arises, and its Verification Artifact must be linked to the Verification Artifacts of the stages before and after, with correlated measurements kept in one quality record chain. [\hyperlink{gp-45}{GP-45}]
+
+\hypertarget{nss-7.16}{}
+
+\par\smallskip\noindent\textbf{7.16 Model-based verification before costly Realization}\par\nopagebreak
+
+Where physical Verification Procedures are expensive, slow, or irreversible, behavior must be verified against a validated model of the System before physical Realization. The model used for verification must itself be verified against reality, and the substitution of a model-based Verification Procedure for a physical Verification Procedure must be human-approved and recorded as a Decision Record (\hyperlink{nss-11}{\S11}). [\hyperlink{gp-46}{GP-46}]
+
+\hypertarget{nss-7.17}{}
+
+\par\smallskip\noindent\textbf{7.17 Reference Realization and drift detection}\par\nopagebreak
+
+A Reference Realization is a maintained instance that embodies the current interpretation of a Contract. It may be a second instance of the System or Component, a validated model, a dedicated physical unit built for testing, a reference Subsystem, etc.
+
+The Verification Plan (\hyperlink{nss-7.9}{\S7.9}) must state which Contracts, if any, are governed by a Reference Realization, with rationale, and must declare the interval at which each comparison is made. A statement that no Contract is so governed, recorded with rationale, satisfies this requirement. The designation must be made before drift is observed.
+
+At each declared interval, the element governed by the Contract must be compared against its Reference Realization. The comparison must examine whether that element still behaves according to the current interpretation of the Contract, and must produce a drift report that records any differences found. A human must filter the drift report before any correction is made. [\hyperlink{gp-47}{GP-47}]
+
+\hypertarget{nss-7.18}{}
+
+\par\smallskip\noindent\textbf{7.18 Durable execution records}\par\nopagebreak
+
+Execution must produce durable, inspectable records sufficient for independent diagnosis (what was done, what was measured, what resulted, etc.). Records must persist beyond the activity that produced them. Transient output that exists only while a process is running and is not saved (unsaved terminal output, temporary in-memory logs, unrecorded instrument readings, etc.) is not a Verification Artifact. [\hyperlink{gp-48}{GP-48}]
+
+\hypertarget{nss-7.19}{}
+
+\par\smallskip\noindent\textbf{7.19 Human acceptance by class}\par\nopagebreak
+
+Human acceptance is mandatory for high-stability, high Blast Radius, or high-stakes artifacts: core Invariants, major Component Specifications, safety-critical Designs, significant architectural decisions, and anything that defines System-level done, etc. The Project must record which of its artifacts fall under direct human acceptance in the Criticality Record (\hyperlink{nss-7.10}{\S7.10}), so that the requirement is resolvable at the point of change without judgement. Lower-level work inside already-accepted Contracts and Acceptance Criteria may be accepted by automated Verification Procedures or by AI Agents operating strictly within those already-accepted Contracts and Acceptance Criteria. The depth of verification must match the Blast Radius and stability of the artifact. [\hyperlink{gp-VFE}{VFE}; \hyperlink{gp-31}{GP-31}; \hyperlink{gp-27}{GP-27}; \hyperlink{gp-39}{GP-39}]
+
+\hypertarget{nss-8}{}
+
+\subsubsection*{8 Phases and Gates}
+
+\hypertarget{nss-8.1}{}
+
+\par\smallskip\noindent\textbf{8.1 Artifact-gated Phase sequence}\par\nopagebreak
+
+Work must proceed through a fixed sequence of Phases declared for the Project. Each Phase must produce at least one durable artifact that becomes part of the Project Record. A Phase satisfies this requirement by producing a description of the System or a description of its Realization; a Phase whose output is Realization rather than description satisfies it by producing the description of that Realization. Progression to the next Phase requires a Verification Artifact confirming that the durable artifacts produced by the Phase are complete. No Phase may be skipped or merged in a way that removes a durable artifact produced by the Phase or the Verification Artifact that confirms it. The sequence is one pipeline, not a collection of independent activities. [\hyperlink{gp-30}{GP-30}]
+
+\hypertarget{nss-8.2}{}
+
+\par\smallskip\noindent\textbf{8.2 Evidence before, verification after}\par\nopagebreak
+
+Each Phase must be preceded by a read-only evidence-gathering activity that establishes the current state of the System and must be followed by a Verification Procedure that confirms the produced artifact is internally consistent and fits with the System. Cross-artifact consistency must be verified before implementation begins. [\hyperlink{gp-44}{GP-44}]
+
+\hypertarget{nss-8.3}{}
+
+\par\smallskip\noindent\textbf{8.3 Event-based Gates}\par\nopagebreak
+
+Progression between Phases must be gated by documented entrance criteria, not by calendar dates. Every Gate must carry two distinct documented criteria sets: entrance criteria, which state when the Gate may be held, and success criteria, which state what passing it means. A Gate opens when its entrance criteria are satisfied and closes only with a Decision Record that confirms its success criteria are met and that every open discrepancy is disposed of. A Gate must not be held before its inputs are mature, and must not be delayed once they are ready. [\hyperlink{gp-49}{GP-49}]
+
+\hypertarget{nss-8.4}{}
+
+\par\smallskip\noindent\textbf{8.4 Gate closure is recorded}\par\nopagebreak
+
+The closure of a Gate must be recorded in the Project Record as a Decision Record (\hyperlink{nss-11}{\S11}) naming the success criteria met and the disposition of every open discrepancy. A Gate that closed without this record is not closed. [\hyperlink{gp-49}{GP-49}; \hyperlink{gp-60}{GP-60}]
+
+\hypertarget{nss-8.5}{}
+
+\par\smallskip\noindent\textbf{8.5 Durable human breakpoints}\par\nopagebreak
+
+The control flow of long-running work must be explicit and must contain durable breakpoints at which work can be interrupted and resumed. Breakpoints must sit between decision and action, so that human review can occur before consequential action. Breakpoints are first-class structural points, not afterthoughts. [\hyperlink{gp-75}{GP-75}]
+
+\hypertarget{nss-9}{}
+
+\subsubsection*{9 Baselines and Change Control}
+
+\hypertarget{nss-9.1}{}
+
+\par\smallskip\noindent\textbf{9.1 Approved Baselines at declared levels}\par\nopagebreak
+
+The description of the System, and the description of its Realization, must be frozen as approved Baselines recorded in the Baseline Ledger. What is frozen is always a description held in the Project Record, never the Realization itself.
+
+The Baseline levels in use and the Gate (\hyperlink{nss-8.3}{\S8.3}) at which each is locked must be declared in the Entry Point (\hyperlink{nss-14.3}{\S14.3}). The declaration must cover, at minimum, what the System must do (functional) and what each Component must do (allocated). Where the Realization is separately fabricated, configured, or deployed, as-built and as-deployed levels must additionally be declared. Any level that does not apply must be recorded as not applicable, with a short rationale, in the Criticality Record (\hyperlink{nss-7.10}{\S7.10}).
+
+Each Baseline entry must record:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item the artifacts it governs,
+
+\item a snapshot identifier that resolves within the version-controlled Project Record,
+
+\item its status, drawn from one fixed vocabulary: draft, locked, superseded, retired, and
+
+\item the named human who accepted the lock.
+
+\end{itemize}
+
+Snapshot identifiers must be derived from the version control system of the Project Record, never maintained by hand (\hyperlink{nss-4.3}{\S4.3}, \hyperlink{nss-10.1}{\S10.1}).
+
+A Baseline is locked by human review at its declared Gate, and its closure is recorded as a Decision Record (\hyperlink{nss-8.4}{\S8.4}). After lock, change is possible only through the controlled change Gate (\hyperlink{nss-9.2}{\S9.2}). The human named on a locked entry is a record of who accepted that lock; authority over subsequent change belongs to the current named human owner (\hyperlink{nss-15.1}{\S15.1}). [\hyperlink{gp-50}{GP-50}]
+
+\hypertarget{nss-9.2}{}
+
+\par\smallskip\noindent\textbf{9.2 One controlled change Gate}\par\nopagebreak
+
+Change to any locked Baseline (\hyperlink{nss-9.1}{\S9.1}), or to any artifact it governs, must pass through one controlled change Gate.
+
+Each proposed change must be classified against the set of dimensions declared in the Entry Point (\hyperlink{nss-14.3}{\S14.3}), which must include, at minimum: its impact on the Baseline, its cost, its safety consequence, and its compatibility with existing Contracts.
+
+Every change must re-issue the affected Baseline entry and must be recorded in the Status Ledger (\hyperlink{nss-9.3}{\S9.3}). To re-issue an entry is to record a new snapshot identifier against it; the entry retains its locked status and its original Gate-closure Decision Record, and no new Gate is held. An unrecorded change to a locked Baseline is a defect.
+
+Authority to pass the Gate scales with the Blast Radius of the change (\hyperlink{nss-15.3}{\S15.3}):
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Changes that alter a Contract, an Invariant, an Acceptance Criterion, or an artifact placed under direct human acceptance (\hyperlink{nss-7.19}{\S7.19}) require human authorization recorded in a Decision Record (\hyperlink{nss-11}{\S11}).
+
+\item Changes confined strictly within already-accepted Contracts, Invariants, and Acceptance Criteria require the approval of the named human owner (\hyperlink{nss-15.1}{\S15.1}) recorded in the Status Ledger, which may be given directly or through human-approved automated Verification Procedures (\hyperlink{nss-7.19}{\S7.19}).
+
+\end{itemize}
+
+The Vision Document passes through this Gate and requires a Decision Record in all cases (\hyperlink{nss-3.2}{\S3.2}).
+
+Exceptions must be recorded as explicit waivers and never absorbed silently. [\hyperlink{gp-51}{GP-51}; \hyperlink{gp-27}{GP-27}; \hyperlink{gp-39}{GP-39}]
+
+\hypertarget{nss-9.3}{}
+
+\par\smallskip\noindent\textbf{9.3 One Status Ledger}\par\nopagebreak
+
+One Status Ledger must record the status and history of every change, deviation, waiver, and audit outcome.
+
+Each entry recording a change to a locked Baseline must record:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item the affected and re-issued Baseline snapshot,
+
+\item the approving named human owner (\hyperlink{nss-15.1}{\S15.1}),
+
+\item the change class, drawn from one fixed vocabulary: Contract, Invariant, Acceptance Criterion, human-acceptance artifact (\hyperlink{nss-7.19}{\S7.19}), or contained (the change altered none of the preceding),
+
+\item whether the change is structural or behavioral (\hyperlink{nss-9.5}{\S9.5}), and
+
+\item the governing Decision Record, which is required for every class except contained (\hyperlink{nss-9.2}{\S9.2}).
+
+\end{itemize}
+
+Where approval was given through a human-approved automated Verification Procedure, the entry must additionally name the owner whose standing approval governs it and the procedure that executed it (\hyperlink{nss-9.2}{\S9.2}). [\hyperlink{gp-52}{GP-52}]
+
+\hypertarget{nss-9.4}{}
+
+\par\smallskip\noindent\textbf{9.4 Explicit Deviation Matrix}\par\nopagebreak
+
+Every deviation from this Specification must be explicit, and consolidated into a single auditable Deviation Matrix. Implicit deviation is prohibited. Each deviation must name what is waived, why, and which named human accepted the risk. [\hyperlink{gp-53}{GP-53}]
+
+\hypertarget{nss-9.5}{}
+
+\par\smallskip\noindent\textbf{9.5 Separate structural and behavioral change}\par\nopagebreak
+
+Every change must be classified as structural (rearrangement without changed behavior) or behavioral (changed behavior). A single change must never mix the two. The classification must be recorded with the change: in the Status Ledger (\hyperlink{nss-9.3}{\S9.3}) where the change is to a locked Baseline, and otherwise in the Plan Document governing the Work Unit that makes it (\hyperlink{nss-4.6}{\S4.6}). The classification keeps every change legible for human review and bounds the review's scope. [\hyperlink{gp-54}{GP-54}]
+
+\hypertarget{nss-9.6}{}
+
+\par\smallskip\noindent\textbf{9.6 Numbered generations}\par\nopagebreak
+
+Major redesigns of a Component must be bounded as numbered generations. Each generation must be defined by a step-change in a small declared set of tracked Key Design Parameters (\hyperlink{nss-6.18}{\S6.18}). Changes within a generation must remain minor and must not redefine the generation's identity. [\hyperlink{gp-15}{GP-15}]
+
+\hypertarget{nss-10}{}
+
+\subsubsection*{10 Traceability and Lineage}
+
+\hypertarget{nss-10.1}{}
+
+\par\smallskip\noindent\textbf{10.1 Traceability is structural}\par\nopagebreak
+
+Traceability of Obligations must be embedded in the structure of the System description itself, through identifiers, naming, and placement. Any index, matrix, or ledger used for traceability must be derived from those embedded links rather than maintained alongside them. A mapping artifact maintained by hand, which can drift from the structure it describes, is prohibited. [\hyperlink{gp-55}{GP-55}]
+
+\hypertarget{nss-10.2}{}
+
+\par\smallskip\noindent\textbf{10.2 Bidirectional traceability}\par\nopagebreak
+
+Traceability must be bidirectional: from any Obligation up to its parent Obligations and down to the Realization elements and Verification Procedures that satisfy it. Verification and validation must be traced separately. Completeness of traceability is itself a checkable property (\hyperlink{nss-16}{\S16}). [\hyperlink{gp-56}{GP-56}]
+
+\hypertarget{nss-10.3}{}
+
+\par\smallskip\noindent\textbf{10.3 Versioned input lineage}\par\nopagebreak
+
+Every input artifact that influences a result must be versioned, and the result must reference the exact versions of the inputs used. The conditions that produced any result must be reconstructable from the Project Record alone, and the result must be reproducible wherever the Verification Procedure that produced it is itself repeatable. [\hyperlink{gp-57}{GP-57}]
+
+\hypertarget{nss-10.4}{}
+
+\par\smallskip\noindent\textbf{10.4 The realization system is traced like the System}\par\nopagebreak
+
+The realization system (the processes, supply chain, support, etc. that produce and support the Realization) must be described with the same rigor as the System. A change in the System description and a change in the description of the realization system must be traceable against each other in one connected record. [\hyperlink{gp-58}{GP-58}]
+
+\hypertarget{nss-11}{}
+
+\subsubsection*{11 Decision Records}
+
+\hypertarget{nss-11.1}{}
+
+\par\smallskip\noindent\textbf{11.1 Format and storage}\par\nopagebreak
+
+Binding decisions must be recorded as numbered, immutable Decision Records in the same Project Record as the artifacts they govern, each Decision Record a discrete, separately addressable artifact. Each record must state the context; the options considered, with the trade-offs of each; the decision; its rationale and the trade-offs accepted; its consequences; and its confirmation: how compliance with the decision will be verified. [\hyperlink{gp-60}{GP-60}]
+
+\hypertarget{nss-11.2}{}
+
+\par\smallskip\noindent\textbf{11.2 Fixed status vocabulary}\par\nopagebreak
+
+Each Decision Record must carry a status drawn from one fixed vocabulary: proposed, accepted, deprecated, superseded. A reversed decision is never deleted or rewritten; a new record supersedes it with a pointer to the old. [\hyperlink{gp-60}{GP-60}]
+
+\hypertarget{nss-11.3}{}
+
+\par\smallskip\noindent\textbf{11.3 Significance test}\par\nopagebreak
+
+Only decisions that pass a declared significance test warrant a Decision Record. The test must be stated in the Entry Point (\hyperlink{nss-14.3}{\S14.3}). [\hyperlink{gp-60}{GP-60}]
+
+\hypertarget{nss-11.4}{}
+
+\par\smallskip\noindent\textbf{11.4 Consultation and single home}\par\nopagebreak
+
+Before any architecture-affecting change, the Executor must consult the relevant Decision Records. Decision Records are the single home for the options considered and the rationale of a binding decision; every other document points to them instead of restating them. [\hyperlink{gp-60}{GP-60}; \hyperlink{gp-79}{GP-79}]
+
+\hypertarget{nss-12}{}
+
+\subsubsection*{12 Risk and Failure}
+
+\hypertarget{nss-12.1}{}
+
+\par\smallskip\noindent\textbf{12.1 Continuous Risk Register}\par\nopagebreak
+
+Risk handling must be continuous, not a one-time assessment. One Risk Register must record every identified risk with an owner, an analysis, a mitigation plan, and a tracking method. A risk may be closed in exactly two ways: by mitigation, recorded with the evidence that the exposure is gone; or by acceptance, which requires the documented acceptance rationale of a named human. The two closures must never be recorded as one. Risks must be revisited at Gates (\hyperlink{nss-8.3}{\S8.3}). [\hyperlink{gp-61}{GP-61}]
+
+\hypertarget{nss-12.2}{}
+
+\par\smallskip\noindent\textbf{12.2 Failure closure by numbered corrective actions}\par\nopagebreak
+
+A failure must produce a formal report, at a formality scaled to the Criticality Class of what failed. The report must name the root cause or causes and a numbered list of corrective actions. The failure is closed only when every corrective action is verified and accepted by a human authority; where the failure is safety-significant, that authority must be independent of the Executor whose work produced the failure. Until closure, progression past the failed state is blocked. [\hyperlink{gp-62}{GP-62}; \hyperlink{gp-40}{GP-40}]
+
+\hypertarget{nss-13}{}
+
+\subsubsection*{13 Executor Boundaries}
+
+\hypertarget{nss-13.1}{}
+
+\par\smallskip\noindent\textbf{13.1 Declared Executor scope}\par\nopagebreak
+
+The autonomy of each Executor must be bounded by a declared scope: the actions it may take, the data and artifacts it may access, and the boundaries it must not cross. The scope must be declared once as a durable artifact bound in the Path Map (\hyperlink{nss-14.8}{\S14.8}) and enforced structurally. Freedom inside the boundary is preserved; containment at the boundary is absolute.
+
+Executors assigned to Exploratory Work Units must be further restricted to write access only within designated experimental workspaces. Write access to the canonical Realization or System description must be prohibited. [\hyperlink{gp-64}{GP-64}]
+
+\hypertarget{nss-13.2}{}
+
+\par\smallskip\noindent\textbf{13.2 Boundaries are structural, not prose}\par\nopagebreak
+
+Invariants that must not be broken must be encoded as mechanically checkable Constraints, not as prose. Mechanical checks must run continuously, and their failure messages must tell the Executor how to remediate. Prose rules remain for judgment; enforcement belongs to the checks. A boundary that exists only as an instruction is a request, not a boundary. [\hyperlink{gp-63}{GP-63}; \hyperlink{gp-65}{GP-65}]
+
+\hypertarget{nss-13.3}{}
+
+\par\smallskip\noindent\textbf{13.3 Delegated work stays isolated}\par\nopagebreak
+
+Delegated work must run in isolation from the delegating Work Unit's Plan Document. A delegated unit receives a bounded scope and returns a condensed result through a declared interface; the intermediate detail of the delegated work must not enter the delegating context. The delegator retains its Plan Document. The delegate's detail must be recorded in the Project Record under the delegate's own Work Unit (\hyperlink{nss-4.2}{\S4.2}), not held in Executor context alone. [\hyperlink{gp-67}{GP-67}]
+
+\hypertarget{nss-14}{}
+
+\subsubsection*{14 Governance Documents and Layout}
+
+\hypertarget{nss-14.1}{}
+
+\par\smallskip\noindent\textbf{14.1 One governing-principles document}\par\nopagebreak
+
+One human-authored Governance Document must state the Project's durable principles, quality bars, and Invariants. It must be bound in the Path Map (\hyperlink{nss-14.8}{\S14.8}), versioned, and created before detailed work begins. Every later artifact and every Executor, in-house or external, is checked against it. [\hyperlink{gp-68}{GP-68}]
+
+\hypertarget{nss-14.2}{}
+
+\par\smallskip\noindent\textbf{14.2 Governance content discipline}\par\nopagebreak
+
+Governance Documents must contain only what an Executor cannot discover from the System itself: hard Invariants, safety and security boundaries, non-obvious Constraints, and non-obvious procedures, etc. Overviews, standard conventions, and restatements of discoverable content are prohibited. Each Governance Document must stay under a declared size ceiling, must reference other artifacts instead of copying their content, must separate concerns into purpose-named documents, and must mark which Specifications describe not-yet-realized work. [\hyperlink{gp-69}{GP-69}]
+
+\hypertarget{nss-14.3}{}
+
+\par\smallskip\noindent\textbf{14.3 One Entry Point into a versioned tree}\par\nopagebreak
+
+The Project must expose one short Entry Point document that serves as the root descriptor of the Project Record: a map, not an encyclopedia. The full knowledge base must live in a structured, versioned documentation tree that the Entry Point indexes. Executors start at the Entry Point and are directed to deeper sources as needed. The tree must be checkable for currency, cross-linking, and structure (\hyperlink{nss-16}{\S16}).
+
+Exactly one Entry Point exists per Project. Because the Path Map it carries (\hyperlink{nss-14.8}{\S14.8}) binds every other Entity, the Entry Point is the one Entity whose own location this Specification fixes: it must be named \texttt{INDEX} and reside at the root of the Project Record, with the extension determined by its serialization format. No other Entity location is fixed by this Specification.
+
+The Entry Point must declare all of the following, and nothing else is required of it:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item the Path Map (\hyperlink{nss-14.8}{\S14.8}): every required Entity bound to its concrete location pattern and serialization format, including the internal layout of the Realization;
+
+\item the set of Stability Classes in use and their order (\hyperlink{nss-6.12}{\S6.12});
+
+\item the significance test for Decision Records (\hyperlink{nss-11.3}{\S11.3});
+
+\item the Baseline levels in use and the Gate at which each is locked (\hyperlink{nss-9.1}{\S9.1});
+
+\item the set of dimensions against which a proposed change is classified (\hyperlink{nss-9.2}{\S9.2}).
+
+\end{itemize}
+
+[\hyperlink{gp-70}{GP-70}]
+
+\hypertarget{nss-14.4}{}
+
+\par\smallskip\noindent\textbf{14.4 Governance binds to Component boundaries}\par\nopagebreak
+
+Governance Documents must bind to Component boundaries: a Component may carry its own Governance Document, and within that Component the nearest document governs. Global governance applies wherever no local document overrides it. Humans must author and control all Governance Documents at every level. [\hyperlink{gp-71}{GP-71}]
+
+\hypertarget{nss-14.5}{}
+
+\par\smallskip\noindent\textbf{14.5 Placement and naming are declared structure}\par\nopagebreak
+
+Placement and naming of artifacts are part of the declared structure and carry meaning for every Executor. The location of an artifact must declare its role. The meaning assigned to placement and naming must be declared in the Governance Documents wherever that meaning cannot be derived by inspecting the System. The Path Map (\hyperlink{nss-14.8}{\S14.8}) must not be restated in a Governance Document. [\hyperlink{gp-72}{GP-72}]
+
+\hypertarget{nss-14.6}{}
+
+\par\smallskip\noindent\textbf{14.6 Documentation lives on the artifact it governs}\par\nopagebreak
+
+Documentation must live on the artifact it documents, as close to the governed element as possible. Critical Constraints must be visible at the point where the governed action happens. Documentation that governs one element lives on that element; documentation that spans elements (Specifications, Decision Records, Plan Documents, design documents, etc.) lives in the documentation tree and is reached from the Entry Point. Documentation separated from the artifact it governs drifts and must be treated as suspect. [\hyperlink{gp-73}{GP-73}]
+
+\hypertarget{nss-14.7}{}
+
+\par\smallskip\noindent\textbf{14.7 One Registry; unregistered does not exist}\par\nopagebreak
+
+One machine-readable Registry must register every Component and content item of the System with its identity. Each entry's location must be derived from the Project Record, never authored in parallel with it (\hyperlink{nss-4.3}{\S4.3}, \hyperlink{nss-10.1}{\S10.1}), and must resolve within the pattern the Path Map (\hyperlink{nss-14.8}{\S14.8}) binds for that Entity. An item that is not registered does not exist in the System. Adding or removing an item must update its Registry identity in the same change; relocating an item requires no Registry edit, since location is derived. [\hyperlink{gp-78}{GP-78}]
+
+\hypertarget{nss-14.8}{}
+
+\par\smallskip\noindent\textbf{14.8 Required entities and the Path Map}\par\nopagebreak
+
+A Project must hold every Entity listed in \hyperlink{nss-appA}{Appendix A}, at the multiplicity stated there. Every Entity except the Realization resides in the Project Record; the Realization resides wherever the Path Map binds it. This Specification defines the Entities, their required content, and their relationships; it does not fix their storage.
+
+Storage is fixed by the Project's Path Map (\hyperlink{nss-2}{\S2}), which must be stated in full in the Entry Point (\hyperlink{nss-14.3}{\S14.3}). The Path Map must not resolve by reference to any document outside the Project Record (\hyperlink{nss-4.1}{\S4.1}).
+
+A location pattern is a path, a directory, or a glob pattern that covers every instance of its Entity. A serialization format is any format the Project's tooling can parse: Markdown, YAML, JSON, a domain-native model format, etc.
+
+The Path Map must satisfy the following rules:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Every required Entity carries exactly one binding rule. That rule may bind more than one pattern where \hyperlink{nss-appA}{Appendix A} states more than one placement for the Entity.
+
+\item The binding is deterministic: for any artifact in the Project Record, the Entity it instantiates must be unambiguously resolvable from the Path Map.
+
+\item Singleton Entities must resolve to exactly one artifact. Multi-instance Entities must resolve through a pattern that covers every instance.
+
+\item An Entity whose multiplicity permits zero instances is bound by a pattern that currently matches nothing; the binding is still required.
+
+\item The Path Map must declare the internal layout of the Realization, which this Specification does not prescribe.
+
+\item Normative Checks resolve Entity locations through the Path Map alone (\hyperlink{nss-16.1}{\S16.1}).
+
+\end{itemize}
+
+The required Entity set is the minimum: a Project may bind additional artifacts and extend its layout, but it must not leave a required Entity unbound except through \hyperlink{nss-1.5}{\S1.5}. [\hyperlink{gp-70}{GP-70}; \hyperlink{gp-72}{GP-72}; \hyperlink{gp-78}{GP-78}; Goal DR1]
+
+\hypertarget{nss-15}{}
+
+\subsubsection*{15 Roles and Human Authority}
+
+\hypertarget{nss-15.1}{}
+
+\par\smallskip\noindent\textbf{15.1 Named owner and standing flaw-checker}\par\nopagebreak
+
+Every Project and every Component must have one named human owner who answers for its success or failure. In addition, a standing independent flaw-checking function (a second person or an independent Executor pass) must be charged with finding critical flaws and blindspots. The flaw-checker does not own the work and does not dilute the owner's authority. [\hyperlink{gp-74}{GP-74}]
+
+\hypertarget{nss-15.2}{}
+
+\par\smallskip\noindent\textbf{15.2 Non-delegable human authorities}\par\nopagebreak
+
+The following authorities are human-owned and non-delegable: problem selection and purpose; Invariants and safety boundaries; Acceptance Criteria and the definition of done; risk acceptance; resource and capital allocation; escalation decisions; and any commitment with external consequences (regulatory, financial, contractual, etc.). AI Agents may draft and propose in all of these areas; they may not enact. [\hyperlink{gp-VFE}{VFE}; \hyperlink{gp-SaC}{SaC}]
+
+\hypertarget{nss-15.3}{}
+
+\par\smallskip\noindent\textbf{15.3 Authority scales with Blast Radius}\par\nopagebreak
+
+The authority required to approve a change scales with its Blast Radius and with how hard it is to reverse. The wider the Blast Radius and the less reversible the change, the higher the human authority required. Acceptance of high-stability or high Blast Radius artifacts requires the human owner directly (\hyperlink{nss-7.19}{\S7.19}). [\hyperlink{gp-27}{GP-27}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-16}{}
+
+\subsubsection*{16 Normative Checks}
+
+\hypertarget{nss-16.1}{}
+
+\par\smallskip\noindent\textbf{16.1 Encode Invariants as Normative Checks}\par\nopagebreak
+
+Every Invariant and structural rule of this Specification that can be checked mechanically must be encoded as a Normative Check and run continuously. Failure messages must tell the Executor how to remediate. Rules that require judgment remain as prose and are enforced by review. [\hyperlink{gp-63}{GP-63}]
+
+\hypertarget{nss-16.2}{}
+
+\par\smallskip\noindent\textbf{16.2 Minimum Normative Check set}\par\nopagebreak
+
+The following Normative Checks are mandatory at minimum. A Project may add Normative Checks; it may not remove these except through \hyperlink{nss-1.5}{\S1.5}.
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item Every Component Specification contains the five required sections (\hyperlink{nss-6.2}{\S6.2}).
+
+\item Every Component is registered in the Registry, and every Registry entry resolves to an artifact in the Project Record (\hyperlink{nss-14.7}{\S14.7}).
+
+\item Every Obligation carries an identifier, a named human owner, and a verification method; and every Constraint additionally carries a provenance marking (\hyperlink{nss-6.5}{\S6.5} to \hyperlink{nss-6.9}{\S6.9}).
+
+\item The Component dependency graph is acyclic, and every dependency points toward an element of equal or higher Stability Class (\hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-6.12}{\S6.12}).
+
+\item Every Acceptance Criterion is linked to at least one Verification Procedure, and every Verification Procedure is linked to a Contract clause (\hyperlink{nss-7.13}{\S7.13}).
+
+\item Traceability is complete in both directions: no Obligation lacks a parent path to the Vision Document or a child path to Realization elements and Verification Procedures (\hyperlink{nss-10.2}{\S10.2}).
+
+\item Every Decision Record carries a valid status, and every supersession pointer resolves (\hyperlink{nss-11.2}{\S11.2}).
+
+\item Every Gate closure has a Decision Record with discrepancy disposition (\hyperlink{nss-8.4}{\S8.4}).
+
+\item The Verification Plan records a Reference Realization designation, with rationale, and a comparison interval for every designated Contract (\hyperlink{nss-7.17}{\S7.17}).
+
+\item Every Baseline level declared in the Entry Point has a corresponding entry in the Baseline Ledger, and every entry carries a status from the fixed vocabulary (\hyperlink{nss-9.1}{\S9.1}, \hyperlink{nss-14.3}{\S14.3}).
+
+\item Every snapshot identifier in the Baseline Ledger resolves within the Project Record (\hyperlink{nss-9.1}{\S9.1}).
+
+\item Every Baseline whose status is locked has a Gate-closure Decision Record (\hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-9.1}{\S9.1}).
+
+\item Every Status Ledger entry recording a change to a locked Baseline names the re-issued Baseline snapshot, an approving named human owner, a change class from the fixed vocabulary, and a structural-or-behavioral classification; and every entry whose class is not "contained" carries a Decision Record reference that resolves (\hyperlink{nss-9.2}{\S9.2}, \hyperlink{nss-9.3}{\S9.3}, \hyperlink{nss-9.5}{\S9.5}).
+
+\item The Entry Point is named \texttt{INDEX} and resides at the root of the Project Record (\hyperlink{nss-14.3}{\S14.3}).
+
+\item Every required Entity of \hyperlink{nss-appA}{Appendix A} is bound exactly once in the Path Map, every binding resolves to artifacts in the declared format, and the Entity of every artifact in the Project Record is unambiguously resolvable (\hyperlink{nss-14.8}{\S14.8}).
+
+\item Governance Documents are under their size ceiling, and all Entry Point links resolve (\hyperlink{nss-14.2}{\S14.2}, \hyperlink{nss-14.3}{\S14.3}).
+
+\end{itemize}
+
+[\hyperlink{gp-20}{GP-20}; \hyperlink{gp-21}{GP-21}; \hyperlink{gp-22}{GP-22}; \hyperlink{gp-23}{GP-23}; \hyperlink{gp-24}{GP-24}; \hyperlink{gp-25}{GP-25}; \hyperlink{gp-42}{GP-42}; \hyperlink{gp-47}{GP-47}; \hyperlink{gp-49}{GP-49}; \hyperlink{gp-50}{GP-50}; \hyperlink{gp-51}{GP-51}; \hyperlink{gp-52}{GP-52}; \hyperlink{gp-54}{GP-54}; \hyperlink{gp-55}{GP-55}; \hyperlink{gp-56}{GP-56}; \hyperlink{gp-60}{GP-60}; \hyperlink{gp-63}{GP-63}; \hyperlink{gp-69}{GP-69}; \hyperlink{gp-70}{GP-70}; \hyperlink{gp-78}{GP-78}; \hyperlink{gp-COD}{COD}; \hyperlink{gp-LSA}{LSA}; \hyperlink{gp-SaC}{SaC}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-16.3}{}
+
+\par\smallskip\noindent\textbf{16.3 Normative Check outcomes must be recorded}\par\nopagebreak
+
+The outcome of every Normative Check run must be recorded as a durable artifact in the Project Record. A Normative Check whose outcome is not recorded has not run. [\hyperlink{gp-48}{GP-48}; \hyperlink{gp-VFE}{VFE}]
+
+\hypertarget{nss-appA}{}
+
+\subsubsection*{Appendix A: Required Entity Set}
+
+The Entity and Multiplicity columns are normative: \hyperlink{nss-14.8}{\S14.8} requires every Entity below, at the multiplicity stated, and \hyperlink{nss-16.2}{\S16.2} checks that each is bound in the Path Map. The Clause column is a non-normative index to the clauses that impose each Entity. The binding of each Entity to a concrete location and serialization format is declared by the Project's Path Map (\hyperlink{nss-14.8}{\S14.8}).
+
+\end{multicols}
+
+\begingroup\footnotesize
+
+\begin{longtable}{@{}p{0.383\textwidth} p{0.415\textwidth} p{0.102\textwidth}@{}}
+
+\toprule
+
+\textbf{Entity} & \textbf{Multiplicity} & \textbf{Clause} \\
+
+\midrule
+
+\endhead
+
+Vision Document & one & \hyperlink{nss-3}{\S3} \\
+
+Governing Principles & one & \hyperlink{nss-14.1}{\S14.1} \\
+
+Entry Point & one & \hyperlink{nss-14.3}{\S14.3} \\
+
+Registry & one & \hyperlink{nss-14.7}{\S14.7} \\
+
+Component Specification & one per Component & \hyperlink{nss-6.1}{\S6.1} \\
+
+Top-level System Specification & one & \hyperlink{nss-6.17}{\S6.17} \\
+
+Interface declarations & one per interface; those internal to a Component Specification are bound with it, those spanning Components are separately bound & \hyperlink{nss-6.10}{\S6.10} \\
+
+Decision Records & one per binding decision & \hyperlink{nss-11}{\S11} \\
+
+Records of Exploratory Work Units & one per Exploratory Work Unit; none where no Exploratory Work Unit is run & \hyperlink{nss-5.7}{\S5.7}, \hyperlink{nss-6.13}{\S6.13} \\
+
+Work Record & one & \hyperlink{nss-4.5}{\S4.5} \\
+
+Plan Documents & one per Work Unit & \hyperlink{nss-4.6}{\S4.6}, \hyperlink{nss-5.9}{\S5.9} \\
+
+Phase artifacts & at least one per Phase & \hyperlink{nss-8.1}{\S8.1} \\
+
+Design and planning documents & one per effort spanning more than one Work Unit; none where no such effort exists & \hyperlink{nss-6.19}{\S6.19} \\
+
+Verification Plan & one & \hyperlink{nss-7.9}{\S7.9} \\
+
+Verification Artifacts (Gate records, drift reports, quality record chain, Verification Reference State records, etc.) & one per verification event; element-local Verification Procedures live on the governed artifact & \hyperlink{nss-7}{\S7}, \hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-14.6}{\S14.6} \\
+
+Baseline Ledger & one & \hyperlink{nss-9.1}{\S9.1} \\
+
+Risk Register & one & \hyperlink{nss-12.1}{\S12.1} \\
+
+Status Ledger & one & \hyperlink{nss-9.3}{\S9.3} \\
+
+Deviation Matrix & one & \hyperlink{nss-9.4}{\S9.4} \\
+
+Key Design Parameter register & one & \hyperlink{nss-6.18}{\S6.18} \\
+
+Criticality Record & one & \hyperlink{nss-7.10}{\S7.10} \\
+
+Executor scope declarations & one per Executor & \hyperlink{nss-13.1}{\S13.1} \\
+
+Reusable task definitions & one per recurring kind of work & \hyperlink{nss-5.10}{\S5.10} \\
+
+Realization and its local documentation & one Realization; internal layout declared in the Path Map & \hyperlink{nss-14.8}{\S14.8} \\
+
+\bottomrule
+
+\end{longtable}
+
+\endgroup
+
+\begin{multicols}{2}
+
+\hypertarget{nss-appB}{}
+
+\subsubsection*{Appendix B: Traceability of the 79 Adopted Forms}
+
+Non-normative mapping. It shows where each Adopted form of Generalized Patterns is realized in this Specification. Clauses cited by number refer to sections of this document.
+
+The Form column is the join key to Generalized Patterns and carries the provenance of each form. The Mechanism column states what this Specification requires, in the terminology defined in \hyperlink{nss-2}{\S2}; it does not restate the source form's own wording. Where a source form's vocabulary differs from \hyperlink{nss-2}{\S2}, \hyperlink{nss-2}{\S2} governs here.
+
+\end{multicols}
+
+\begingroup\footnotesize
+
+\begin{longtable}{@{}p{0.101\textwidth} p{0.497\textwidth} p{0.303\textwidth}@{}}
+
+\toprule
+
+\textbf{Form} & \textbf{Mechanism} & \textbf{Realized in} \\
+
+\midrule
+
+\endhead
+
+\hyperlink{gp-01}{GP-01} & All governing state as versioned artifacts in the Project Record & \hyperlink{nss-4.1}{\S4.1}, \hyperlink{nss-4.2}{\S4.2}, \hyperlink{nss-4.6}{\S4.6} \\
+
+\hyperlink{gp-02}{GP-02} & Verify-and-record iteration & \hyperlink{nss-4.2}{\S4.2}, \hyperlink{nss-4.7}{\S4.7} \\
+
+\hyperlink{gp-03}{GP-03} & One binding Plan Document per Work Unit & \hyperlink{nss-4.6}{\S4.6} \\
+
+\hyperlink{gp-04}{GP-04} & Work Record & \hyperlink{nss-4.5}{\S4.5} \\
+
+\hyperlink{gp-05}{GP-05} & Typed dependencies, derived eligibility for execution & \hyperlink{nss-4.5}{\S4.5} \\
+
+\hyperlink{gp-06}{GP-06} & Documents as sole coordination medium & \hyperlink{nss-4.1}{\S4.1} \\
+
+\hyperlink{gp-07}{GP-07} & Deliverable-anchored decomposition & \hyperlink{nss-5.1}{\S5.1} \\
+
+\hyperlink{gp-08}{GP-08} & Purpose-defined Components, named owner, binary verification & \hyperlink{nss-5.2}{\S5.2} \\
+
+\hyperlink{gp-09}{GP-09} & System-level Contracts first & \hyperlink{nss-5.3}{\S5.3} \\
+
+\hyperlink{gp-10}{GP-10} & Work Unit sizing & \hyperlink{nss-5.5}{\S5.5} \\
+
+\hyperlink{gp-11}{GP-11} & The verifiable Work Unit as the unit of decomposition & \hyperlink{nss-5.7}{\S5.7} \\
+
+\hyperlink{gp-12}{GP-12} & Work Units bounded by Blast Radius & \hyperlink{nss-5.6}{\S5.6} \\
+
+\hyperlink{gp-13}{GP-13} & Nested levels of intent & \hyperlink{nss-3.1}{\S3.1}, \hyperlink{nss-3.3}{\S3.3}, \hyperlink{nss-5.8}{\S5.8} \\
+
+\hyperlink{gp-14}{GP-14} & Work Units with repair before progression & \hyperlink{nss-5.9}{\S5.9} \\
+
+\hyperlink{gp-15}{GP-15} & Numbered generations & \hyperlink{nss-9.6}{\S9.6} \\
+
+\hyperlink{gp-16}{GP-16} & Four recursive process groups & \hyperlink{nss-1.2}{\S1.2}, \hyperlink{nss-1.4}{\S1.4} \\
+
+\hyperlink{gp-17}{GP-17} & Specification-first Contract before execution & \hyperlink{nss-6.13}{\S6.13} \\
+
+\hyperlink{gp-18}{GP-18} & Execution gated on an approved Plan Document & \hyperlink{nss-6.13}{\S6.13} \\
+
+\hyperlink{gp-19}{GP-19} & Specification as durable alignment artifact & \hyperlink{nss-6.4}{\S6.4} \\
+
+\hyperlink{gp-20}{GP-20} & Unique verifiable Obligation statements & \hyperlink{nss-6.5}{\S6.5}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-21}{GP-21} & Fixed structure for Obligation statements & \hyperlink{nss-6.5}{\S6.5}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-22}{GP-22} & Obligation hierarchy with fixed attributes & \hyperlink{nss-6.6}{\S6.6}, \hyperlink{nss-6.17}{\S6.17}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-23}{GP-23} & Named owner for every Obligation & \hyperlink{nss-6.7}{\S6.7}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-24}{GP-24} & Constraint provenance marking & \hyperlink{nss-6.8}{\S6.8}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-25}{GP-25} & Verification method at authoring & \hyperlink{nss-6.9}{\S6.9}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-26}{GP-26} & One fixed lens for every interface & \hyperlink{nss-6.10}{\S6.10} \\
+
+\hyperlink{gp-27}{GP-27} & Public Contract, private Design, co-update, Contract protection & \hyperlink{nss-6.3}{\S6.3}, \hyperlink{nss-6.15}{\S6.15}, \hyperlink{nss-6.16}{\S6.16}, \hyperlink{nss-7.19}{\S7.19}, \hyperlink{nss-9.2}{\S9.2}, \hyperlink{nss-15.3}{\S15.3} \\
+
+\hyperlink{gp-28}{GP-28} & Adversarial expansion of the Contract & \hyperlink{nss-6.14}{\S6.14} \\
+
+\hyperlink{gp-29}{GP-29} & Named Key Design Parameters & \hyperlink{nss-6.18}{\S6.18} \\
+
+\hyperlink{gp-30}{GP-30} & Artifact-gated Phase sequence & \hyperlink{nss-8.1}{\S8.1} \\
+
+\hyperlink{gp-31}{GP-31} & Done is a checkable criterion & \hyperlink{nss-7.1}{\S7.1}, \hyperlink{nss-7.19}{\S7.19} \\
+
+\hyperlink{gp-32}{GP-32} & Verifiability governs delegation & \hyperlink{nss-7.3}{\S7.3} \\
+
+\hyperlink{gp-33}{GP-33} & Verification Procedures authored before the Work Unit & \hyperlink{nss-7.4}{\S7.4} \\
+
+\hyperlink{gp-34}{GP-34} & Verification Reference State before change & \hyperlink{nss-7.5}{\S7.5} \\
+
+\hyperlink{gp-35}{GP-35} & Durable corpus of Verification Procedures & \hyperlink{nss-7.6}{\S7.6} \\
+
+\hyperlink{gp-36}{GP-36} & Layered verification & \hyperlink{nss-7.7}{\S7.7} \\
+
+\hyperlink{gp-37}{GP-37} & Verification correspondence & \hyperlink{nss-7.8}{\S7.8} \\
+
+\hyperlink{gp-38}{GP-38} & Governing Verification Plan & \hyperlink{nss-7.9}{\S7.9} \\
+
+\hyperlink{gp-39}{GP-39} & Recorded Criticality Class determines rigor & \hyperlink{nss-1.6}{\S1.6}, \hyperlink{nss-6.6}{\S6.6}, \hyperlink{nss-7.10}{\S7.10}, \hyperlink{nss-7.19}{\S7.19}, \hyperlink{nss-9.2}{\S9.2} \\
+
+\hyperlink{gp-40}{GP-40} & Producing Executor and verifying Executor are independent & \hyperlink{nss-7.11}{\S7.11}, \hyperlink{nss-12.2}{\S12.2} \\
+
+\hyperlink{gp-41}{GP-41} & Acceptance Criteria must not be weakened & \hyperlink{nss-7.12}{\S7.12} \\
+
+\hyperlink{gp-42}{GP-42} & Contract clause linked to its Verification Procedures & \hyperlink{nss-7.13}{\S7.13}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-43}{GP-43} & Structured outputs for verification & \hyperlink{nss-7.14}{\S7.14} \\
+
+\hyperlink{gp-44}{GP-44} & Evidence before, verification after & \hyperlink{nss-8.2}{\S8.2} \\
+
+\hyperlink{gp-45}{GP-45} & Linked stage Verification Procedures & \hyperlink{nss-7.15}{\S7.15} \\
+
+\hyperlink{gp-46}{GP-46} & Model-based verification & \hyperlink{nss-7.16}{\S7.16} \\
+
+\hyperlink{gp-47}{GP-47} & Reference Realization, drift detection & \hyperlink{nss-7.17}{\S7.17}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-48}{GP-48} & Durable execution records & \hyperlink{nss-7.18}{\S7.18}, \hyperlink{nss-16.3}{\S16.3} \\
+
+\hyperlink{gp-49}{GP-49} & Event-based Gates & \hyperlink{nss-8.3}{\S8.3}, \hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-50}{GP-50} & Approved Baselines & \hyperlink{nss-3.2}{\S3.2}, \hyperlink{nss-9.1}{\S9.1}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-51}{GP-51} & One controlled change Gate & \hyperlink{nss-3.2}{\S3.2}, \hyperlink{nss-9.2}{\S9.2}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-52}{GP-52} & One Status Ledger & \hyperlink{nss-9.3}{\S9.3}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-53}{GP-53} & Explicit Deviation Matrix & \hyperlink{nss-1.5}{\S1.5}, \hyperlink{nss-9.4}{\S9.4} \\
+
+\hyperlink{gp-54}{GP-54} & Separate structural and behavioral change & \hyperlink{nss-9.5}{\S9.5}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-55}{GP-55} & Traceability as structural property & \hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-10.1}{\S10.1}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-56}{GP-56} & Bidirectional traceability & \hyperlink{nss-10.2}{\S10.2}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-57}{GP-57} & Versioned input lineage & \hyperlink{nss-10.3}{\S10.3} \\
+
+\hyperlink{gp-58}{GP-58} & Realization system traced like the System & \hyperlink{nss-10.4}{\S10.4} \\
+
+\hyperlink{gp-59}{GP-59} & One canonical source of truth per concern & \hyperlink{nss-4.3}{\S4.3} \\
+
+\hyperlink{gp-60}{GP-60} & Numbered immutable Decision Records & \hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-11.1}{\S11.1}, \hyperlink{nss-11.2}{\S11.2}, \hyperlink{nss-11.3}{\S11.3}, \hyperlink{nss-11.4}{\S11.4}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-61}{GP-61} & Continuous Risk Register & \hyperlink{nss-12.1}{\S12.1} \\
+
+\hyperlink{gp-62}{GP-62} & Failure closure by numbered corrective actions & \hyperlink{nss-12.2}{\S12.2} \\
+
+\hyperlink{gp-63}{GP-63} & Invariants as mechanically checkable Constraints & \hyperlink{nss-13.2}{\S13.2}, \hyperlink{nss-16.1}{\S16.1}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-64}{GP-64} & Declared Executor scope & \hyperlink{nss-13.1}{\S13.1} \\
+
+\hyperlink{gp-65}{GP-65} & Disposable Executors, durable work & \hyperlink{nss-4.2}{\S4.2}, \hyperlink{nss-4.8}{\S4.8}, \hyperlink{nss-13.2}{\S13.2} \\
+
+\hyperlink{gp-66}{GP-66} & Governance Documents as controlled artifacts & \hyperlink{nss-4.9}{\S4.9} \\
+
+\hyperlink{gp-67}{GP-67} & Isolated delegation behind a summary interface & \hyperlink{nss-13.3}{\S13.3} \\
+
+\hyperlink{gp-68}{GP-68} & One Governing-Principles Document & \hyperlink{nss-3.1}{\S3.1}, \hyperlink{nss-14.1}{\S14.1} \\
+
+\hyperlink{gp-69}{GP-69} & Governance content discipline & \hyperlink{nss-14.2}{\S14.2}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-70}{GP-70} & Short Entry Point into versioned tree & \hyperlink{nss-14.3}{\S14.3}, \hyperlink{nss-14.8}{\S14.8}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-71}{GP-71} & Governance bound to Component boundaries & \hyperlink{nss-14.4}{\S14.4} \\
+
+\hyperlink{gp-72}{GP-72} & Placement and naming are declared structure & \hyperlink{nss-14.5}{\S14.5}, \hyperlink{nss-14.8}{\S14.8} \\
+
+\hyperlink{gp-73}{GP-73} & Documentation lives on the artifact & \hyperlink{nss-14.6}{\S14.6} \\
+
+\hyperlink{gp-74}{GP-74} & Named owner plus standing flaw-checker & \hyperlink{nss-15.1}{\S15.1} \\
+
+\hyperlink{gp-75}{GP-75} & Durable human breakpoints & \hyperlink{nss-8.5}{\S8.5} \\
+
+\hyperlink{gp-76}{GP-76} & Human-owned Contract, machine-readable surfaces & \hyperlink{nss-4.4}{\S4.4} \\
+
+\hyperlink{gp-77}{GP-77} & Reusable task definitions & \hyperlink{nss-5.10}{\S5.10} \\
+
+\hyperlink{gp-78}{GP-78} & One Registry; unregistered does not exist & \hyperlink{nss-14.7}{\S14.7}, \hyperlink{nss-14.8}{\S14.8}, \hyperlink{nss-16.2}{\S16.2} \\
+
+\hyperlink{gp-79}{GP-79} & Why-What-How skeleton & \hyperlink{nss-6.19}{\S6.19}, \hyperlink{nss-11.4}{\S11.4} \\
+
+\bottomrule
+
+\end{longtable}
+
+\endgroup
+
+\begin{multicols}{2}
+
+Frozen-principle coverage:
+
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\item \textbf{Component-Oriented Decomposition (\hyperlink{gp-COD}{COD})}: \hyperlink{nss-5.1}{\S5.1}, \hyperlink{nss-5.2}{\S5.2}, \hyperlink{nss-5.3}{\S5.3}, \hyperlink{nss-6.1}{\S6.1}, \hyperlink{nss-6.2}{\S6.2}, \hyperlink{nss-6.11}{\S6.11}, \hyperlink{nss-16.2}{\S16.2}.
+
+\item \textbf{Layered System Architecture (\hyperlink{gp-LSA}{LSA})}: \hyperlink{nss-1.7}{\S1.7}, \hyperlink{nss-1.8}{\S1.8}, \hyperlink{nss-3.1}{\S3.1}, \hyperlink{nss-3.2}{\S3.2}, \hyperlink{nss-6.12}{\S6.12}, \hyperlink{nss-16.2}{\S16.2}.
+
+\item \textbf{Integrated Modularity First (\hyperlink{gp-IMF}{IMF})}: \hyperlink{nss-5.4}{\S5.4}.
+
+\item \textbf{Verification-First Engineering (\hyperlink{gp-VFE}{VFE})}: \hyperlink{nss-1.3}{\S1.3}, \hyperlink{nss-1.6}{\S1.6}, \hyperlink{nss-4.7}{\S4.7}, \hyperlink{nss-5.7}{\S5.7}, \hyperlink{nss-5.9}{\S5.9}, \hyperlink{nss-6.2}{\S6.2}, \hyperlink{nss-6.9}{\S6.9}, \hyperlink{nss-7.1}{\S7.1}, \hyperlink{nss-7.2}{\S7.2}, \hyperlink{nss-7.4}{\S7.4}, \hyperlink{nss-7.11}{\S7.11}, \hyperlink{nss-7.19}{\S7.19}, \hyperlink{nss-15.2}{\S15.2}, \hyperlink{nss-15.3}{\S15.3}, \hyperlink{nss-16.2}{\S16.2}, \hyperlink{nss-16.3}{\S16.3}.
+
+\item \textbf{Specifications as Contracts (\hyperlink{gp-SaC}{SaC})}: \hyperlink{nss-1.1}{\S1.1}, \hyperlink{nss-1.3}{\S1.3}, \hyperlink{nss-1.5}{\S1.5}, \hyperlink{nss-1.7}{\S1.7}, \hyperlink{nss-6.1}{\S6.1}, \hyperlink{nss-6.2}{\S6.2}, \hyperlink{nss-6.4}{\S6.4}, \hyperlink{nss-6.13}{\S6.13}, \hyperlink{nss-7.12}{\S7.12}, \hyperlink{nss-15.2}{\S15.2}, \hyperlink{nss-16.2}{\S16.2}.
+
+\end{itemize}
+
+Meta-clauses \hyperlink{nss-1.1}{\S1.1} to \hyperlink{nss-1.3}{\S1.3} additionally derive from Goal \hyperlink{nss-2}{\S2} and Goal \hyperlink{nss-5}{\S5} to Goal \hyperlink{nss-6}{\S6}, which define the framework's premises, objective, and contents.
+
+\end{multicols}

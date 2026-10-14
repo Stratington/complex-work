@@ -1,0 +1,51 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{pgfplotstable}
+\usetikzlibrary{calc}
+\begin{document}
+\begin{tikzpicture}[x=1mm,y=1mm]
+\pgfplotstableread[col sep=comma]{f03-matrix.csv}\fmat
+\pgfplotstableread[col sep=comma]{f03-families.csv}\ffam
+
+\def\cw{4.3}
+\pgfplotstablegetrowsof{\fmat}
+\pgfmathsetmacro{\N}{\pgfmathresult-1}
+\foreach \i in {0,...,\N}{%
+  \pgfplotstablegetelem{\i}{family}\of{\fmat}\pgfmathtruncatemacro{\f}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{section}\of{\fmat}\pgfmathtruncatemacro{\s}{\pgfplotsretval}%
+  \pgfplotstablegetelem{\i}{brackets}\of{\fmat}\pgfmathtruncatemacro{\b}{\pgfplotsretval}%
+  \pgfmathsetmacro{\p}{\b>0 ? 10+85*\b/19 : 0}%
+  \ifnum\b>0
+    \ifdim\p pt>52pt \def\tc{white}\else\def\tc{black}\fi
+    \fill[black!\p] ({\cw*(\s-1)},{-\cw*\f}) rectangle ({\cw*\s},{-\cw*(\f-1)});
+    \node[font=\tiny,inner sep=0pt,text=\tc]
+      at ({\cw*(\s-0.5)},{-\cw*(\f-0.5)}) {\b};
+  \fi
+}
+\draw[black!25,line width=0.15pt] (0,0) grid[step=\cw] ({\cw*16},{-\cw*12});
+
+\foreach \s in {1,...,16}{%
+  \node[font=\tiny,anchor=south] at ({\cw*(\s-0.5)},0.4) {\S\s};
+}
+\node[font=\scriptsize,anchor=south] at ({\cw*8},2.8) {Specification section};
+\foreach \f in {1,...,12}{%
+  \node[font=\tiny,anchor=east] at (-0.8,{-\cw*(\f-0.5)}) {F\f};
+}
+\node[font=\scriptsize,rotate=90,anchor=south] at (-5.5,{-\cw*6}) {mechanism family};
+
+\pgfplotstablegetrowsof{\ffam}
+\pgfmathsetmacro{\M}{\pgfmathresult-1}
+\pgfmathsetlengthmacro{\legendwidth}{\cw*16mm}
+\node[anchor=north west,align=left,inner sep=0pt] at (0,{-\cw*12-2.6}) {%
+  \begin{minipage}{\legendwidth}\tiny
+  \foreach \i in {0,...,\M}{%
+    \pgfplotstablegetelem{\i}{family}\of{\ffam}\pgfmathtruncatemacro{\f}{\pgfplotsretval}%
+    \pgfplotstablegetelem{\i}{label}\of{\ffam}\edef\lbl{\pgfplotsretval}%
+    \pgfplotstablegetelem{\i}{forms}\of{\ffam}\pgfmathtruncatemacro{\fo}{\pgfplotsretval}%
+    \textbf{F\f}~\lbl\ (\fo~form\ifnum\fo>1 s\fi)\quad
+  }\end{minipage}};
+\end{tikzpicture}
+\end{document}

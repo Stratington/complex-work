@@ -1,0 +1,196 @@
+\begin{multicols}{2}
+\section[Required Entity Set, Glossary, and Reference Layout]{Required Entity Set, Glossary, and\\Reference Layout}
+\label{app:entities}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+\subsection{Required records}
+
+Table~\ref{tab:entities} lists the required records and their multiplicities from version~1.0 of the Specification \citep[\hyperlink{nss-appA}{Appendix~A}]{pss2026}. Their authority comes from that document. The clause references are a lookup aid, and the groups follow Figure~\ref{fig:entities}.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.28\textwidth} p{0.54\textwidth} p{0.12\textwidth}@{}}
+\caption{The 24 required Entities of the Specification's \protect\hyperlink{nss-appA}{Appendix~A}, grouped by the concern each Entity serves.}
+\label{tab:entities} \\
+\toprule
+Entity & Multiplicity & Clause \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Entity & Multiplicity & Clause \\
+\midrule
+\endhead%
+\multicolumn{3}{@{}l}{\emph{Intent}}\\
+Vision Document & one & \hyperlink{nss-3}{\S3} \\
+Governing Principles & one & \hyperlink{nss-14.1}{\S14.1} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Specification and contract}}\\
+Component Specification & one per Component & \hyperlink{nss-6.1}{\S6.1} \\
+Top-level System Specification & one & \hyperlink{nss-6.17}{\S6.17} \\
+Interface declarations & one per interface; those internal to a Component Specification are bound with it, those spanning Components are separately bound & \hyperlink{nss-6.10}{\S6.10} \\
+Key Design Parameter register & one & \hyperlink{nss-6.18}{\S6.18} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Decomposition and planning}}\\
+Plan Documents & one per Work Unit & \hyperlink{nss-4.6}{\S4.6}, \hyperlink{nss-5.9}{\S5.9} \\
+Design and planning documents & one per effort spanning more than one Work Unit; none where no such effort exists & \hyperlink{nss-6.19}{\S6.19} \\
+Records of Exploratory Work Units & one per Exploratory Work Unit; none where no Exploratory Work Unit is run & \hyperlink{nss-5.7}{\S5.7}, \hyperlink{nss-6.13}{\S6.13} \\
+Reusable task definitions & one per recurring kind of work & \hyperlink{nss-5.10}{\S5.10} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Verification and rigor}}\\
+Verification Plan & one & \hyperlink{nss-7.9}{\S7.9} \\
+Verification Artifacts (Gate records, drift reports, quality record chain, Verification Reference State records, etc.) & one per verification event; element-local Verification Procedures live on the governed artifact & \hyperlink{nss-7}{\S7}, \hyperlink{nss-8.4}{\S8.4}, \hyperlink{nss-14.6}{\S14.6} \\
+Criticality Record & one & \hyperlink{nss-7.10}{\S7.10} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Execution and record}}\\
+Work Record & one & \hyperlink{nss-4.5}{\S4.5} \\
+Phase artifacts & at least one per Phase & \hyperlink{nss-8.1}{\S8.1} \\
+Executor scope declarations & one per Executor & \hyperlink{nss-13.1}{\S13.1} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Baselines and change}}\\
+Baseline Ledger & one & \hyperlink{nss-9.1}{\S9.1} \\
+Status Ledger & one & \hyperlink{nss-9.3}{\S9.3} \\
+Deviation Matrix & one & \hyperlink{nss-9.4}{\S9.4} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Realization}}\\
+Realization and its local documentation & one Realization; internal layout declared in the Path Map & \hyperlink{nss-14.8}{\S14.8} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Accountability and risk}}\\
+Decision Records & one per binding decision & \hyperlink{nss-11}{\S11} \\
+Risk Register & one & \hyperlink{nss-12.1}{\S12.1} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Governance substrate}}\\
+Entry Point & one & \hyperlink{nss-14.3}{\S14.3} \\
+Registry & one & \hyperlink{nss-14.7}{\S14.7} \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+\subsection{Terms used in the analysis}
+
+Table~\ref{tab:glossary} defines the terms used to describe the derivation and the machine representation. Record names defined by the Specification retain their meanings.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.25\textwidth} p{0.69\textwidth}@{}}
+\caption{Terms used in the derivation, information model, and graph analysis.}
+\label{tab:glossary} \\
+\toprule
+Term & Meaning \\
+\midrule
+\endfirsthead%
+\multicolumn{2}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Term & Meaning \\
+\midrule
+\endhead%
+Pattern (\hyperlink{gp-01}{GP-01} to \hyperlink{gp-79}{GP-79}) & A mechanism taken from recorded practice and restated in domain-general form. \\
+Merged candidate (D-01 to D-39) & A candidate whose mechanism is carried by one or more named patterns. \\
+Requirement unit & A source sentence submitted for representation as one or more machine-readable propositions. \\
+Information model & The required record types and their relations, defined independently of storage. \\
+Path Map & The project's declaration of the location and format of each required record type. \\
+Reference file layout & An illustrative arrangement of record locations and formats, adapted into a project's complete local Path Map. \\
+Machine representation & A graph linking source text, extracted propositions, vocabulary, and recorded relations. \\
+Grounding link & An explicit link from a clause to a pattern, principle, or goal that it names as its basis. \\
+Clause-to-goal link & A reviewed relation stating that a clause serves a unit of the goal document. \\
+Recorded dependency & A reviewed relation stating that one unit cannot be read or applied without another. \\
+Flagged conflict between obligations & A pair of represented propositions that require and prohibit the same action for the same actor and target under compatible conditions. \\
+Criticality Record & The register that assigns a criticality class to each component and capability. \\
+Deviation Matrix & The register of accepted departures from binding clauses, with the recorded acceptance of each departure. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+\subsection{Optional filesystem example}
+
+The required record types in Table~\ref{tab:entities} come from the Specification. Table~\ref{tab:layout} illustrates one way to store them, using the software profile, version~0.8. Its Markdown and JSON choices are examples. A project can choose other formats that its tools can read and check, while retaining the required content, relations, history, and human authority \citep[Sections~\hyperlink{nss-1.8}{1.8} and~\hyperlink{nss-4}{4}]{pss2026}.
+
+The example places a documentation directory beside the software realization under the same version control. Paths in the table start at the documentation root. A project must adapt these bindings, complete the realization layout, and state the full Path Map in its Entry Point. An external profile reference with a list of exceptions is insufficient \citep[Section~\hyperlink{nss-14.8}{14.8}]{pss2026}. The Specification fixes only the Entry Point's root location and \texttt{INDEX} name; its extension follows the chosen format \citep[Section~\hyperlink{nss-14.3}{14.3}]{pss2026}.
+
+An embedded interface has its own identifier inside its containing specification. The connected specifications refer to one canonical declaration. Phase records describe outputs through versioned references, and verification records point to the Decision Record that closes a Gate. These links preserve each record's role without copying its governing content. Registry locations are derived from the stored artifacts, so moving a record does not require a manually edited location entry \citep[Sections~\hyperlink{nss-4.3}{4.3}, \hyperlink{nss-8.4}{8.4}, and~\hyperlink{nss-14.7}{14.7}]{pss2026}.
+
+The table is an example to complete, not a conformance result. A project also binds supporting records, local governance, procedure code, and evidence attachments, and declares their formats. Its Entry Point states the Stability Classes, decision significance test, Baseline levels and lock Gates, and change classification dimensions. The required checks and human reviews apply to the resulting project record \citep[Sections~\hyperlink{nss-14.3}{14.3} and~\hyperlink{nss-16}{16}]{pss2026}.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.43\textwidth} p{0.21\textwidth}@{}}
+\caption{One optional filesystem arrangement from software profile version~0.8. Paths and formats are illustrative; each project completes its own local Path Map.}
+\label{tab:layout} \\
+\toprule
+Entity & Example location pattern & Example format \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Entity & Example location pattern & Example format \\
+\midrule
+\endhead%
+Vision Document & \texttt{VISION.md} & Markdown \\
+Governing Principles & \texttt{PRINCIPLES.md} & Markdown \\
+Entry Point & \texttt{INDEX.md} & Markdown \\
+Registry & \texttt{REGISTRY.json} & JSON \\
+Component Specification & \texttt{components/*/SPEC.md} & Markdown \\
+Top-level System Specification & \texttt{system/SPEC.md} & Markdown \\
+Interface declarations & identified sections in the Component or System Specification; standalone declarations at \texttt{interfaces/*.md} & Markdown \\
+Decision Records & \texttt{decisions/*.md} & Markdown \\
+Records of Exploratory Work Units & \texttt{experiments/records/*.json} & JSON \\
+Work Record & \texttt{work/record.json} & JSON \\
+Plan Documents & \texttt{plans/units/*.md} & Markdown \\
+Phase artifacts & \texttt{phases/*.md} & Markdown \\
+Design and planning documents & \texttt{plans/designs/*.md} & Markdown \\
+Verification Plan & \texttt{verification/PLAN.md} & Markdown \\
+Verification Artifacts & \texttt{verification/events/*.json}; attachments have separate bindings & JSON \\
+Baseline Ledger & \texttt{registers/baselines.json} & JSON \\
+Risk Register & \texttt{registers/risks.json} & JSON \\
+Status Ledger & \texttt{registers/status.json} & JSON \\
+Deviation Matrix & \texttt{registers/deviations.json} & JSON \\
+Key Design Parameter register & \texttt{registers/parameters.json} & JSON \\
+Criticality Record & \texttt{registers/criticality.json} & JSON \\
+Executor scope declarations & \texttt{scopes/*.md} & Markdown \\
+Reusable task definitions & \texttt{procedures/*.md} & Markdown \\
+Realization and its local documentation & \texttt{../realization/}; internal layout completed by the project & declared native formats \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{multicols}{2}
+\subsection{Optional hardware example}
+
+The hardware profile, version~0.8, applies the same record bindings to a physical system built from electronic, mechanical, and firmware components. Each component has its own specification and design sources, and a larger system adds components under the same patterns. Table~\ref{tab:hwlayout} lists only the bindings that differ from Table~\ref{tab:layout}.
+
+The built units are the realization, and a physical unit has no path. No check can read the unit itself; a check reads only its description. The Specification already treats a physical realization this way: a phase that produces realization is recorded through its description, and a Baseline freezes the description, never the realization \citep[Sections~\hyperlink{nss-8.1}{8.1} and~\hyperlink{nss-9.1}{9.1}]{pss2026}. The example therefore binds the design sources, fabrication files, and firmware in the realization directory, and its declared realization layout represents each unit only by an as-built record under its serial number \citep[Section~\hyperlink{nss-14.8}{14.8}]{pss2026}.
+
+The device is fabricated, so the Entry Point declares an as-built Baseline level beside the functional and allocated levels. A bench measurement is a verification record that names the unit, the design release, and the instruments used. A reading that was not saved is not evidence \citep[Sections~\hyperlink{nss-7.18}{7.18} and~\hyperlink{nss-9.1}{9.1}]{pss2026}.
+
+The example does not supply domain-specific safety, regulatory, or approval practice, which remains with the methods and authorities of each domain. It has not been applied to a build.
+\end{multicols}
+
+\begingroup
+\footnotesize
+\begin{longtable}{@{}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.43\textwidth} p{0.21\textwidth}@{}}
+\caption{Bindings in hardware profile version~0.8 that differ from Table~\ref{tab:layout}. All other record bindings are unchanged. Paths and formats are illustrative; each project completes its own local Path Map.}
+\label{tab:hwlayout} \\
+\toprule
+Artifact & Example location pattern & Example format \\
+\midrule
+\endfirsthead%
+\multicolumn{3}{@{}l}{\tablename~\thetable{} (continued)} \\
+\toprule
+Artifact & Example location pattern & Example format \\
+\midrule
+\endhead%
+Realization: stored part & \texttt{../realization/} with \texttt{electronics/*/}, \texttt{mechanical/*/}, and \texttt{firmware/*/} per component, plus \texttt{bom/} and \texttt{releases/} & design-tool native formats and firmware source \\
+Realization: physical units & one as-built record per serial number at \texttt{production/units/*.json} & JSON \\
+Bill of materials & \texttt{../realization/bom/*.csv} & CSV \\
+Fabrication release packages & \texttt{../realization/releases/*/}, each with a digest manifest & Gerber, drill, and STEP or STL exports \\
+Supplier and process records & \texttt{production/suppliers/*.md} and \texttt{production/process/*.md} & Markdown \\
+Bench evidence attachments & \texttt{verification/data/**/*.csv} and photographs in the same tree & CSV, JPEG, PNG \\
+\bottomrule
+\end{longtable}
+\endgroup
