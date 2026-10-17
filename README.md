@@ -53,3 +53,7 @@ The generator reproduces the document text and the author credits in the paper. 
 ## License
 
 The paper and the two framework documents are licensed under [CC BY-SA 4.0](LICENSE). The two-column style comes from [brenhinkeller/preprint-template.tex](https://github.com/brenhinkeller/preprint-template.tex) and retains its [CC BY 4.0 license](paper/src/LICENSE.preprint-template).
+
+## Research support
+
+Support the research through [GitHub Sponsors](https://github.com/sponsors/fbruckhoff): USD 50 per month for ongoing independent research, or USD 500 once as a Research Supporter. With your permission, the one-time tier includes your name or company name, logo, and website link in a research supporters section on think-bigger.org.
